@@ -15,12 +15,14 @@
         * classroom details
     * **(REQUIRED)** view a student roster
         * and filter by:
-            * combined filter to include: 
+            * actions to take for the day: 
                 * `celebrate` (green), `help needed` (red) students, and students who haven't been contacted in a while (yellow)
-                * and select an action to perform
-                    * some subset of detail view actions, based on the category
-            * topic
+                  * **(REQUIRED)** Teacher can swipe action item to dismiss and log
+                     * **(OPTIONAL)** Celebrate a student by assigning a kickboard badge
+                     * **(OPTIONAL)** Help a student by logging the action taken and result
+                     * **(OPTIONAL)** Call a student or a student's parent to dismiss an item from the yellow state
             * classroom
+               * all students subgrouped by topic
     * **(REQUIRED)** view details for each student
         * and view the following data
             * **(REQUIRED)** basic data (name, contact info, parent contact info)
