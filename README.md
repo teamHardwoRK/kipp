@@ -6,30 +6,28 @@
 * Hugo Nguyen [@hughhn](https://github.com/hughhn)
 
 ## User Stories
+* **Form factor:** tablet
+
 *NOTE:* Required stories are in **BOLD**
 
-* Teachers should be able to:
+* Teachers/Teaching assistants, and classroom monitors should be able to:
     * **log in**
-    * **enter in data similar to kickboard**
-        * **quickly access any student in a given class**
-        * **quickly log the following actions against any student:**
-            * **paycheck deductions**
-            * **paycheck increases**
-            * **character scores**
-                * **Curiosity, Gratitude, Grit, Optimism, Self Control, Social Intelligence, Zest** 
-    * **view kickboard data for a given student**         
-    * **view a list of actionable students.  This includes the following categories:**
-        * **stars (needs to be recognized)**
-        * **needs to be monitored**
-        * **requires help**
-    * **view notable students by class**
-    * perform actions on notable students
-        * view data for any actionable student
-            * progress, time spent, retries
-        * call/sms/email parents
-    * broadcast an animated video recognizing students (e.g., projector, chromecast)
+    * **view a class roster**
+        * **switch between different class rosters**
+        * **filter students by gender**
+        * **view class-level behavior statistics**
+        * **view a feed of behavior entries for the class**
+            * **perform actions on a student within the feed (e.g., call, text, email, add note)**
+        * **view highest and lowest performing students**
+        * **view a single student's details**
+            * **view feed and statistics for the student (includes behavior events from other classes)**
+            * view action logs (e.g., parent calls, conferences, etc.)
+        * **add a behavior event for a student**
+            * **examples: talking during class (bad), being disruptive (bad), helping others (good)**
+        * take attendance each day
+    * project the latest classroom feed onto a classroom chromecast enabled display
+    * add custom behavior events
+    * add course milestones to the feed.  E.g., add an event to the feed when a students completes a classwork section.
+        
+        
     
-* Students should be able to:
-    * log in
-    * view kickboard data on themselves and classmates
-    * view progression
