@@ -24,5 +24,4 @@ public class ParseUserUtils {
             return null;
         }
     }
-
 }

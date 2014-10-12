@@ -1,16 +1,87 @@
 package com.teamhardwork.kipp.models;
 
-import com.teamhardwork.kipp.models.users.Student;
+import com.parse.ParseClassName;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.teamhardwork.kipp.enums.Discipline;
 import com.teamhardwork.kipp.models.users.Teacher;
 
 import java.util.Date;
-import java.util.List;
 
-public class SchoolClass {
-    String name;
-    Teacher teacher;
-    List<Student> students;
+@ParseClassName("SchoolClass")
+public class SchoolClass extends ParseObject{
+    static final String DISCIPLINE = "discipline";
+    static final String NAME = "name";
+    static final String TEACHER = "teacher";
+    static final String START_TIME = "startTime";
+    static final String END_TIME = "endTime";
 
-    Date startTime;
-    Date endTime;
+    public static SchoolClass findSchoolClass(SchoolClass schoolClass) {
+        SchoolClass savedSchoolClass = null;
+
+        ParseQuery<SchoolClass> query = ParseQuery.getQuery(SchoolClass.class);
+        query
+            .whereEqualTo(DISCIPLINE, schoolClass.getDiscipline().name())
+            .whereEqualTo(NAME, schoolClass.getName());
+
+        try {
+            savedSchoolClass = query.getFirst();
+        } catch (ParseException e) {}
+
+        return savedSchoolClass;
+    }
+
+    /**
+     * Note on setting start and end times for classes. The only relevant fields are day and time.
+     * Since year is irrelevant, use the epoch as the reference for Thursday.  All times are UTC.
+     *
+     * MON: 1970-01-05
+     * TUES: 1970-01-06
+     * WED: 1970-01-07
+     * THURS: 1970-01-01
+     * FRI: 1970-01-02
+     * SAT: 1970-01-03
+     * SUNDAY: 1970-01-04
+     *
+     * Format: "1970-01-01 10:45 -0000"
+     */
+    public void setStartTime(Date startTime) {
+        put(START_TIME, startTime);
+    }
+
+    public Date getEndTime() {
+        return getDate(END_TIME);
+    }
+
+    public void setEndTime(Date endTime) {
+        put(END_TIME, endTime);
+    }
+    public Discipline getDiscipline() {
+        return Discipline.valueOf(getString(DISCIPLINE));
+    }
+
+    public void setDiscipline(Discipline discipline) {
+        put(DISCIPLINE, discipline.name());
+    }
+
+    public String getName() {
+        return getString(NAME);
+    }
+
+    public void setName(String name) {
+        put(NAME, name);
+    }
+
+    public Teacher getTeacher() {
+        return (Teacher) getParseObject(TEACHER);
+    }
+
+    public void setTeacher(Teacher teacher) {
+        put(TEACHER, teacher);
+    }
+
+    public Date getStartTime() {
+        return getDate(START_TIME);
+    }
 }

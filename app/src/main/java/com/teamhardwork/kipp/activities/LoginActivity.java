@@ -29,11 +29,6 @@ public class LoginActivity extends Activity {
         Parse.initialize(this, KippApplication.PARSE_APPLICATION_ID, KippApplication.PARSE_CLIENT_KEY);
 
         setupViews();
-        try {
-            Seed.seedData();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
     }
 
     private void setupViews() {

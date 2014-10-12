@@ -45,8 +45,8 @@ public class KippUser extends ParseObject {
         setGender(gender);
     }
 
-    public static <T extends KippUser> boolean doesExist(T user, String parseClassName) {
-        boolean doesExist = false;
+    public static <T extends KippUser> T findUser(T user, String parseClassName) {
+        T savedUser = null;
 
         ParseQuery<T> query = ParseQuery.getQuery(parseClassName);
         query
@@ -54,13 +54,9 @@ public class KippUser extends ParseObject {
             .whereEqualTo(LAST_NAME, user.getLastName());
 
         try {
-            if(query.find().size() > 0) {
-                doesExist = true;
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return doesExist;
+            savedUser = query.getFirst();
+        } catch (ParseException e) {}
+        return savedUser;
     }
 
     // The following fields are already in ParseUser: email, username

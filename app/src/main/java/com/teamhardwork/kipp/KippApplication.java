@@ -2,11 +2,15 @@ package com.teamhardwork.kipp;
 
 import android.app.Application;
 
+import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.teamhardwork.kipp.models.Action;
+import com.teamhardwork.kipp.models.SchoolClass;
 import com.teamhardwork.kipp.models.users.KippUser;
 import com.teamhardwork.kipp.models.users.Student;
 import com.teamhardwork.kipp.models.users.Teacher;
+import com.teamhardwork.kipp.utilities.Seed;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +22,14 @@ public class KippApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Parse.initialize(this, PARSE_APPLICATION_ID, PARSE_CLIENT_KEY);
         registerParseSubclasses();
+
+        try {
+            Seed.seedData();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     static void registerParseSubclasses() {
@@ -27,6 +38,7 @@ public class KippApplication extends Application {
         classes.add(KippUser.class);
         classes.add(Teacher.class);
         classes.add(Student.class);
+        classes.add(SchoolClass.class);
 
         for(Class subclass: classes) {
             ParseObject.registerSubclass(subclass);
