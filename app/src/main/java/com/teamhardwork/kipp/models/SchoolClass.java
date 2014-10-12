@@ -1,13 +1,18 @@
 package com.teamhardwork.kipp.models;
 
+import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.teamhardwork.kipp.enums.Discipline;
+import com.teamhardwork.kipp.models.users.Student;
 import com.teamhardwork.kipp.models.users.Teacher;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @ParseClassName("SchoolClass")
 public class SchoolClass extends ParseObject{
@@ -16,6 +21,7 @@ public class SchoolClass extends ParseObject{
     static final String TEACHER = "teacher";
     static final String START_TIME = "startTime";
     static final String END_TIME = "endTime";
+    public static final String ROSTER = "roster";
 
     public static SchoolClass findSchoolClass(SchoolClass schoolClass) {
         SchoolClass savedSchoolClass = null;
@@ -30,6 +36,38 @@ public class SchoolClass extends ParseObject{
         } catch (ParseException e) {}
 
         return savedSchoolClass;
+    }
+
+    public void addStudent(Student student) {
+        getStudentRelation().add(student);
+    }
+
+    public void removeStudent(Student student){
+        getStudentRelation().remove(student);
+    }
+
+    public List<Student> getRoster() {
+        List<Student> roster = new ArrayList<Student>();
+        ParseQuery query = getStudentRelation().getQuery();
+
+        try {
+            roster = query.find();
+        } catch (ParseException e) {}
+
+        return roster;
+    }
+
+    public void getClassRosterAsyc(FindCallback<Student> callback) {
+        ParseQuery query = getStudentRelation().getQuery();
+        query.findInBackground(callback);
+    }
+
+    public ParseRelation<Student> getStudentRelation() {
+        return getRelation(ROSTER);
+    }
+
+    public void setClassRoster(List<Student> roster) {
+        put(ROSTER, roster);
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.teamhardwork.kipp;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -18,6 +19,7 @@ import java.util.List;
 public class KippApplication extends Application {
     public static final String PARSE_APPLICATION_ID = "6fb5KhXW73bUQKwdAb807wiIt9tROQ2HtHAYmKOq";
     public static final String PARSE_CLIENT_KEY = "y703WGXSG0rY4qvuP1dhM3vn1Qo4efXMMXoxtj12";
+    public static final String TAG = "kippApplication";
 
     @Override
     public void onCreate() {
@@ -28,7 +30,7 @@ public class KippApplication extends Application {
         try {
             Seed.seedData();
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.d(TAG, e.getStackTrace().toString());
         }
     }
 
