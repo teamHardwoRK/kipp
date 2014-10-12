@@ -12,11 +12,11 @@ import com.parse.LogInCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
+import com.teamhardwork.kipp.utilities.Seed;
 
 public class LoginActivity extends Activity {
-    public static final String YOUR_APPLICATION_ID = "6fb5KhXW73bUQKwdAb807wiIt9tROQ2HtHAYmKOq";
-    public static final String YOUR_CLIENT_KEY = "y703WGXSG0rY4qvuP1dhM3vn1Qo4efXMMXoxtj12";
     private EditText etUsername;
     private EditText etPassword;
     private Button btnLogin;
@@ -26,9 +26,14 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        Parse.initialize(this, KippApplication.PARSE_APPLICATION_ID, KippApplication.PARSE_CLIENT_KEY);
 
-        Parse.initialize(this, YOUR_APPLICATION_ID, YOUR_CLIENT_KEY);
         setupViews();
+        try {
+            Seed.seedData();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setupViews() {
