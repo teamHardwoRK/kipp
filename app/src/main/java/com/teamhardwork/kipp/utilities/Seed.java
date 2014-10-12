@@ -4,8 +4,12 @@ import android.util.Log;
 
 import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.teamhardwork.kipp.enums.ActionType;
+import com.teamhardwork.kipp.enums.Behavior;
 import com.teamhardwork.kipp.enums.Discipline;
 import com.teamhardwork.kipp.enums.Gender;
+import com.teamhardwork.kipp.models.Action;
+import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.SchoolClass;
 import com.teamhardwork.kipp.models.users.KippUser;
 import com.teamhardwork.kipp.models.users.Student;
@@ -17,7 +21,11 @@ import java.util.List;
 public class Seed {
     static final String TAG = "Seed";
 
-    public static void seedData() throws ParseException {
+    public static void seedHugoData() {}
+    public static void seedRaymondData() {}
+
+    public static void seedKevinData() throws ParseException {
+        /** IDEMPOTENT INSTRUCTIONS **/
         Teacher teacherOne = createTeacher("billwalsh", "Bill", "Walsh", Gender.MALE, new Date(), null);
         Teacher teacherTwo = createTeacher("donshula", "Don", "Shula", Gender.MALE, new Date(), null);
 
@@ -32,8 +40,10 @@ public class Seed {
         classOne.addStudent(studentOne);
         classOne.addStudent(studentTwo);
         classOne.addStudent(studentThree);
+        classOne.addStudent(studentFour);
         classOne.save();
 
+        classTwo.addStudent(studentOne);
         classTwo.addStudent(studentTwo);
         classTwo.addStudent(studentThree);
         classTwo.addStudent(studentFour);
@@ -48,6 +58,57 @@ public class Seed {
 
         Log.d(TAG, "class size: " + classOneRoster.size());
         Log.d(TAG, "student class list size: " + studentOneClasses.size());
+
+        /** NON-IDEMPOTENT INSTRUCTIONS - DUPLICATE WARNING **/
+
+//        // Behavior Events
+//        BehaviorEvent eventOne = createBehaviorEvent(studentOne, classOne, Behavior.CLEANING_UP, new Date(), "Good Job!");
+//        eventOne.save();
+//        BehaviorEvent eventTwo = createBehaviorEvent(studentOne, classOne, Behavior.DRESS_CODE_VIOLATION, new Date(), null);
+//        eventTwo.save();
+//        BehaviorEvent eventThree = createBehaviorEvent(studentTwo, classTwo, Behavior.DRESS_CODE_VIOLATION, new Date(), "Are you blind?!");
+//        eventThree.save();
+//        BehaviorEvent eventFour = createBehaviorEvent(studentThree, classOne, Behavior.LACK_OF_INTEGRITY, new Date(), "Despicable!");
+//        eventFour.save();
+//        BehaviorEvent eventFive = createBehaviorEvent(studentOne, classOne, Behavior.ON_TASK, new Date(), "That's what I'm talking 'bout!");
+//        eventFive.save();
+//        BehaviorEvent eventSix = createBehaviorEvent(studentTwo, classOne, Behavior.LATE, new Date(), null);
+//        eventSix.save();
+//        BehaviorEvent eventSeven = createBehaviorEvent(studentOne, classOne, Behavior.TALKING, new Date(), "Shut it!");
+//        eventSeven.save();
+
+//        // Actions
+//        Action actionOne = createAction(studentOne, classOne, ActionType.EMAIL, new Date(), null, "Gotta show some love.");
+//        actionOne.save();
+//        Action actionTwo = createAction(studentOne, classOne, ActionType.PARENT_CALL, new Date(), null, "Damn brat.");
+//        actionTwo.save();
+//        Action actionThree = createAction(studentOne, classTwo, ActionType.NOTE, new Date(), null, "What is he thinking?");
+//        actionThree.save();
+//        Action actionFour = createAction(studentFour, classOne, ActionType.PARENT_CALL, new Date(), null, "She doesn't pay attention.");
+//        actionFour.save();
+    }
+
+    public static Action createAction(Student student, SchoolClass schoolClass, ActionType type, Date occurredAt, BehaviorEvent event, String notes) {
+        Action action = new Action();
+        action.setStudent(student);
+        action.setSchoolClass(schoolClass);
+        action.setType(type);
+        action.setOccurredAt(occurredAt);
+        action.setBehaviorEvent(event);
+        action.setNotes(notes);
+
+        return action;
+    }
+
+    public static BehaviorEvent createBehaviorEvent(Student student, SchoolClass schoolClass, Behavior behavior, Date occurredAt, String notes) {
+        BehaviorEvent event = new BehaviorEvent();
+        event.setStudent(student);
+        event.setSchoolClass(schoolClass);
+        event.setBehavior(behavior);
+        event.setOccurredAt(occurredAt);
+        event.setNotes(notes);
+
+        return event;
     }
 
     public static SchoolClass createClass(String name, Discipline discipline, Teacher teacher, String startTime, String endTime) throws ParseException {

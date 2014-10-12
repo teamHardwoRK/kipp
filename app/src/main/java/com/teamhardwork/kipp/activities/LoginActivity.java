@@ -14,7 +14,6 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
-import com.teamhardwork.kipp.utilities.Seed;
 
 public class LoginActivity extends Activity {
     private EditText etUsername;
