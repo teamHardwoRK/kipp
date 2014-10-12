@@ -10,12 +10,18 @@ import java.util.Date;
 @ParseClassName("Action")
 public class Action extends ParseObject {
     static final String TYPE = "type";
-    private static final String NOTES = "notes";
-    private static final String OCCURRED_AT = "occurredAt";
-    private static final String STUDENT = "student";
+    static final String NOTES = "notes";
+    static final String OCCURRED_AT = "occurredAt";
+    static final String STUDENT = "student";
+    static final String BEHAVIOR_EVENT = "behaviorEvent";
+    static final String SCHOOL_CLASS = "schoolClass";
 
-    public Action() {
-        // Default constructor is required by ParseObject.
+    public SchoolClass getSchoolClass() {
+        return (SchoolClass) getParseObject(SCHOOL_CLASS);
+    }
+
+    public void setSchoolClass(SchoolClass schoolClass) {
+        put(SCHOOL_CLASS, schoolClass);
     }
 
     public ActionType getType() {
@@ -34,12 +40,12 @@ public class Action extends ParseObject {
         put(OCCURRED_AT, occurredAt);
     }
 
-    public String getNote() {
+    public String getNotes() {
         return getString(NOTES);
     }
 
-    public void setNote(String note) {
-        put(NOTES, note);
+    public void setNotes(String notes) {
+        put(NOTES, notes);
     }
 
     public void setStudent(Student student) {
@@ -48,5 +54,15 @@ public class Action extends ParseObject {
 
     public Student getStudent() {
         return (Student) getParseObject(STUDENT);
+    }
+
+    public BehaviorEvent getBehaviorEvent() {
+        return (BehaviorEvent) getParseObject(BEHAVIOR_EVENT);
+    }
+
+    public void setBehaviorEvent(BehaviorEvent event) {
+        if(event != null) {
+            put(BEHAVIOR_EVENT, event);
+        }
     }
 }

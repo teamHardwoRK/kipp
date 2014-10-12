@@ -100,7 +100,7 @@ public class KippUser extends ParseObject {
         put(GENDER, gender.name());
     }
 
-    public ParseUser getUser(ParseUser user) {
+    public ParseUser getUser() {
         return getParseUser(USER);
     }
 

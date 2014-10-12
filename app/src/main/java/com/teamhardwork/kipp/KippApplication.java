@@ -7,6 +7,7 @@ import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.teamhardwork.kipp.models.Action;
+import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.SchoolClass;
 import com.teamhardwork.kipp.models.users.KippUser;
 import com.teamhardwork.kipp.models.users.Student;
@@ -28,12 +29,13 @@ public class KippApplication extends Application {
         registerParseSubclasses();
 
         try {
-            Seed.seedData();
+            Seed.seedKevinData();
         } catch (ParseException e) {
-            Log.d(TAG, e.getStackTrace().toString());
+            Log.d(TAG, e.getMessage());
         }
     }
 
+    // All models saved to Parse must be registered.
     static void registerParseSubclasses() {
         List<Class> classes = new ArrayList<Class>();
         classes.add(Action.class);
@@ -41,6 +43,7 @@ public class KippApplication extends Application {
         classes.add(Teacher.class);
         classes.add(Student.class);
         classes.add(SchoolClass.class);
+        classes.add(BehaviorEvent.class);
 
         for(Class subclass: classes) {
             ParseObject.registerSubclass(subclass);
