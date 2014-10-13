@@ -20,5 +20,6 @@ android {
 }
 
 dependencies {
+    compile project(':HoloGraphLibrary')
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }

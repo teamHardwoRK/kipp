@@ -7,5 +7,6 @@
     <string name="username_label">Username</string>
     <string name="password_label">Password</string>
     <string name="login_btn_label">Log in</string>
+    <string name="title_activity_stats">StatsActivity</string>
 
 </resources>
