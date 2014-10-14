@@ -1,5 +1,6 @@
 package com.teamhardwork.kipp.models.users;
 
+import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -20,6 +21,12 @@ public class Student extends KippUser {
 
     public Student(ParseUser user, String firstName, String lastName, Gender gender, Date dateOfBirth, String telephoneNumber) {
         super(user, firstName, lastName, gender, dateOfBirth, telephoneNumber);
+    }
+
+    public static void findStudent(ParseUser parseUser, FindCallback<Student> callback) {
+        ParseQuery<Student> query = ParseQuery.getQuery(Student.class);
+        query.whereEqualTo(USER, parseUser);
+        query.findInBackground(callback);
     }
 
     public List<SchoolClass> getClassList() {

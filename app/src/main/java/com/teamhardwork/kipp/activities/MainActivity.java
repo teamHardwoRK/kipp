@@ -1,30 +1,55 @@
 package com.teamhardwork.kipp.activities;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.echo.holographlibrary.PieGraph;
 import com.echo.holographlibrary.PieSlice;
+import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
 import com.teamhardwork.kipp.R;
+import com.teamhardwork.kipp.fragments.FeedFragment;
+import com.teamhardwork.kipp.models.users.Teacher;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends Activity {
-
+    ParseUser currentUser;
+    Teacher teacher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        currentUser = ParseUser.getCurrentUser();
+
         setupMockRoster();
-        setupMockFeed();
         setupMockLeaderboard();
         setupMockStatsModule();
+        populateFeed();
+    }
+
+    private void populateFeed() {
+        Teacher.findTeacher(currentUser, new GetCallback<Teacher>() {
+            @Override
+            public void done(Teacher teacher, ParseException e) {
+                MainActivity.this.teacher = teacher;
+                FeedFragment fragment = FeedFragment.getInstance(teacher);
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.add(R.id.flClassFeed, fragment);
+                transaction.commit();
+            }
+        });
     }
 
     private void setupMockRoster() {
@@ -37,17 +62,6 @@ public class MainActivity extends Activity {
         itemsAdapter.add("Jane Doe");
         ListView lvRoster = (ListView) findViewById(R.id.lvClassRoster);
         lvRoster.setAdapter(itemsAdapter);
-    }
-
-    private void setupMockFeed() {
-        ArrayList<String> feed = new ArrayList<String>();
-        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, feed);
-        itemsAdapter.add("Feed");
-        itemsAdapter.add("John Doe making noise (1 min ago in Math - Mr. Wright)");
-        itemsAdapter.add("Jane Doe being a distraction (3 hrs ago in Eng - Mrs. Wong)");
-        itemsAdapter.add("Bruce Wayne helped others (1 day ago)\n");
-        ListView lvFeed = (ListView) findViewById(R.id.lvFeed);
-        lvFeed.setAdapter(itemsAdapter);
     }
 
     private void setupMockLeaderboard() {
