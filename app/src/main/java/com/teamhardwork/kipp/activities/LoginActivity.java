@@ -27,6 +27,9 @@ public class LoginActivity extends Activity {
         Parse.initialize(this, KippApplication.PARSE_APPLICATION_ID, KippApplication.PARSE_CLIENT_KEY);
 
         setupViews();
+        if (ParseUser.getCurrentUser() != null && ParseUser.getCurrentUser().isAuthenticated()) {
+            onLoginSuccess();
+        }
     }
 
     private void setupViews() {

@@ -1,26 +1,20 @@
 package com.teamhardwork.kipp.activities;
 
+
 import android.app.Activity;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
-import android.widget.ListView;
 
-import com.echo.holographlibrary.PieGraph;
-import com.echo.holographlibrary.PieSlice;
-import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.fragments.FeedFragment;
+import com.teamhardwork.kipp.fragments.RosterFragment;
 import com.teamhardwork.kipp.models.users.Teacher;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends Activity {
     ParseUser currentUser;
@@ -33,10 +27,19 @@ public class MainActivity extends Activity {
 
         currentUser = ParseUser.getCurrentUser();
 
-        setupMockRoster();
-        setupMockLeaderboard();
-        setupMockStatsModule();
-        populateFeed();
+//        setupMockRoster();
+//        setupMockLeaderboard();
+//        setupMockStatsModule();
+//        populateFeed();
+
+        // Construct a fragment transaction
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+        // Make changes to fragments
+        ft.replace(R.id.flRoster, new RosterFragment());
+        // Commit the fragment transaction
+        ft.addToBackStack(null);
+        ft.commit();
     }
 
     private void populateFeed() {
@@ -60,8 +63,8 @@ public class MainActivity extends Activity {
         itemsAdapter.add("Clark Kent");
         itemsAdapter.add("John Doe");
         itemsAdapter.add("Jane Doe");
-        ListView lvRoster = (ListView) findViewById(R.id.lvClassRoster);
-        lvRoster.setAdapter(itemsAdapter);
+//        ListView lvRoster = (ListView) findViewById(R.id.lvLeaderBoard);
+//        lvRoster.setAdapter(itemsAdapter);
     }
 
     private void setupMockLeaderboard() {
@@ -72,26 +75,26 @@ public class MainActivity extends Activity {
         itemsAdapter.add("John Doe");
         itemsAdapter.add("Worst Students:");
         itemsAdapter.add("Jane Doe");
-        ListView lvLeaderboard = (ListView) findViewById(R.id.lvLeaderBoard);
-        lvLeaderboard.setAdapter(itemsAdapter);
+//        ListView lvLeaderboard = (ListView) findViewById(R.id.lvLeaderBoard);
+//        lvLeaderboard.setAdapter(itemsAdapter);
     }
 
     private void setupMockStatsModule(){
-        PieGraph pg = (PieGraph)findViewById(R.id.pgTest);
-        PieSlice slice = new PieSlice();
-        slice.setColor(Color.parseColor("#99CC00"));
-        slice.setValue(2);
-        slice.setTitle("I'm a good boy");
-        pg.addSlice(slice);
-        slice = new PieSlice();
-        slice.setColor(Color.parseColor("#FFBB33"));
-        slice.setValue(3);
-        slice.setTitle("I'm a bad boy");
-        pg.addSlice(slice);
-        slice = new PieSlice();
-        slice.setColor(Color.parseColor("#AA66CC"));
-        slice.setValue(8);
-        slice.setTitle("Awkward silence");
-        pg.addSlice(slice);
+//        PieGraph pg = (PieGraph)findViewById(R.id.pgTest);
+//        PieSlice slice = new PieSlice();
+//        slice.setColor(Color.parseColor("#99CC00"));
+//        slice.setValue(2);
+//        slice.setTitle("I'm a good boy");
+//        pg.addSlice(slice);
+//        slice = new PieSlice();
+//        slice.setColor(Color.parseColor("#FFBB33"));
+//        slice.setValue(3);
+//        slice.setTitle("I'm a bad boy");
+//        pg.addSlice(slice);
+//        slice = new PieSlice();
+//        slice.setColor(Color.parseColor("#AA66CC"));
+//        slice.setValue(8);
+//        slice.setTitle("Awkward silence");
+//        pg.addSlice(slice);
     }
 }
