@@ -19,7 +19,6 @@ public class LoginActivity extends Activity {
     private EditText etUsername;
     private EditText etPassword;
     private Button btnLogin;
-    private ParseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,29 +37,28 @@ public class LoginActivity extends Activity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ParseUser.logInInBackground(etUsername.getText().toString(), etPassword.getText().toString(), new LogInCallback() {
-                    public void done(ParseUser user, ParseException e) {
-                        if (user != null) {
-                            currentUser = user;
-                            onLoginSuccess(currentUser);
-                        } else {
-                            Toast.makeText(LoginActivity.this, "Failed to log in!", Toast.LENGTH_SHORT).show();
-                            if (e != null) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                });
-
+                doLogin();
             }
         });
     }
 
-    public void onLoginSuccess(ParseUser user) {
+    public void doLogin() {
+        ParseUser.logInInBackground(etUsername.getText().toString(), etPassword.getText().toString(), new LogInCallback() {
+            public void done(ParseUser user, ParseException e) {
+                if (user != null) {
+                    onLoginSuccess();
+                } else {
+                    Toast.makeText(LoginActivity.this, "Failed to log in!", Toast.LENGTH_SHORT).show();
+                    if (e != null) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    public void onLoginSuccess() {
         Intent i = new Intent(this, MainActivity.class);
-        i.putExtra("user", user.getUsername());
-        i.putExtra("email", user.getEmail());
-        i.putExtra("session", user.getSessionToken());
         startActivity(i);
     }
 }

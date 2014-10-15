@@ -7,7 +7,6 @@
     <supports-screens
         android:largeScreens="true"
         android:normalScreens="false"
-        android:requiresSmallestWidthDp="600"
         android:smallScreens="false"
         android:xlargeScreens="true" />
 
