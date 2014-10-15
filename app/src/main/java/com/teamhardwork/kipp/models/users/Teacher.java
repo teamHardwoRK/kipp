@@ -3,6 +3,7 @@ package com.teamhardwork.kipp.models.users;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.teamhardwork.kipp.enums.Gender;
@@ -22,9 +23,20 @@ public class Teacher extends KippUser {
         super(user, firstName, lastName, gender, dateOfBirth, telephoneNumber);
     }
 
-    public static void findTeacher(ParseUser parseUser, GetCallback<Teacher> callback) {
+    public static void findTeacherAsync(ParseUser parseUser, GetCallback<Teacher> callback) {
         ParseQuery<Teacher> query = ParseQuery.getQuery(Teacher.class);
         query.whereEqualTo(USER, parseUser);
         query.getFirstInBackground(callback);
+    }
+
+    public static Teacher findTeacher(ParseUser parseUser) throws ParseException {
+        ParseQuery<Teacher> query = ParseQuery.getQuery(Teacher.class);
+        query.whereEqualTo(USER, parseUser);
+        return query.getFirst();
+    }
+
+    public static Teacher findTeacherById(String id) throws ParseException {
+        ParseQuery<Teacher> query = ParseQuery.getQuery(Teacher.class);
+        return query.get(id);
     }
 }

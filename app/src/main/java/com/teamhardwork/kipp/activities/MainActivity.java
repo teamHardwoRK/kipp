@@ -1,37 +1,32 @@
 package com.teamhardwork.kipp.activities;
 
 import android.app.Activity;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import com.echo.holographlibrary.PieGraph;
 import com.echo.holographlibrary.PieSlice;
-import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.fragments.FeedFragment;
 import com.teamhardwork.kipp.models.users.Teacher;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends Activity {
-    ParseUser currentUser;
     Teacher teacher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        currentUser = ParseUser.getCurrentUser();
+        teacher = ((KippApplication) getApplication()).getTeacher();
 
         setupMockRoster();
         setupMockLeaderboard();
@@ -40,16 +35,10 @@ public class MainActivity extends Activity {
     }
 
     private void populateFeed() {
-        Teacher.findTeacher(currentUser, new GetCallback<Teacher>() {
-            @Override
-            public void done(Teacher teacher, ParseException e) {
-                MainActivity.this.teacher = teacher;
-                FeedFragment fragment = FeedFragment.getInstance(teacher);
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.add(R.id.flClassFeed, fragment);
-                transaction.commit();
-            }
-        });
+        FeedFragment fragment = FeedFragment.getInstance(teacher);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.add(R.id.flClassFeed, fragment);
+        transaction.commit();
     }
 
     private void setupMockRoster() {

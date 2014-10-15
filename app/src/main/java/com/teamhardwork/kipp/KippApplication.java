@@ -1,9 +1,12 @@
 package com.teamhardwork.kipp;
 
 import android.app.Application;
+import android.widget.Toast;
 
 import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 import com.teamhardwork.kipp.models.Action;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.SchoolClass;
@@ -19,6 +22,9 @@ public class KippApplication extends Application {
     public static final String PARSE_APPLICATION_ID = "6fb5KhXW73bUQKwdAb807wiIt9tROQ2HtHAYmKOq";
     public static final String PARSE_CLIENT_KEY = "y703WGXSG0rY4qvuP1dhM3vn1Qo4efXMMXoxtj12";
     public static final String TAG = "kippApplication";
+    public static final String APP_PACKAGE = "com.teamhardwork.kipp";
+
+    Teacher teacher;
 
     @Override
     public void onCreate() {
@@ -41,5 +47,26 @@ public class KippApplication extends Application {
         for(Class subclass: classes) {
             ParseObject.registerSubclass(subclass);
         }
+    }
+
+    public void setTeacher() {
+        if(teacher == null) {
+            ParseUser user = ParseUser.getCurrentUser();
+
+            if(user != null) {
+                try {
+                    teacher = Teacher.findTeacher(user);
+                } catch (ParseException e) {
+                    Toast.makeText(this, "User does not have a teacher account.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
+    public Teacher getTeacher() {
+        if(teacher == null) {
+            setTeacher();
+        }
+        return teacher;
     }
 }

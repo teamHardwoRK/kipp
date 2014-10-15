@@ -34,30 +34,28 @@ public class LoginActivity extends Activity {
         etPassword = (EditText) findViewById(R.id.etPassword);
         btnLogin = (Button) findViewById(R.id.btnLogin);
 
+        if(ParseUser.getCurrentUser() != null) {
+            onLoginSuccess();
+        }
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                doLogin();
-            }
-        });
-    }
-
-    public void doLogin() {
-        ParseUser.logInInBackground(etUsername.getText().toString(), etPassword.getText().toString(), new LogInCallback() {
-            public void done(ParseUser user, ParseException e) {
-                if (user != null) {
-                    onLoginSuccess();
-                } else {
-                    Toast.makeText(LoginActivity.this, "Failed to log in!", Toast.LENGTH_SHORT).show();
-                    if (e != null) {
-                        e.printStackTrace();
+                ParseUser.logInInBackground(etUsername.getText().toString(), etPassword.getText().toString(), new LogInCallback() {
+                    public void done(ParseUser user, ParseException e) {
+                        if (user != null) {
+                            onLoginSuccess();
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Failed to log in!", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
+                });
             }
         });
     }
 
-    public void onLoginSuccess() {
+    void onLoginSuccess() {
+        ((KippApplication) getApplication()).setTeacher();
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
     }
