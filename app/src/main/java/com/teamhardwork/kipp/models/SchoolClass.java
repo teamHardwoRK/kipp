@@ -30,12 +30,18 @@ public class SchoolClass extends ParseObject{
         query
             .whereEqualTo(DISCIPLINE, schoolClass.getDiscipline().name())
             .whereEqualTo(NAME, schoolClass.getName());
-
         try {
             savedSchoolClass = query.getFirst();
         } catch (ParseException e) {}
 
         return savedSchoolClass;
+    }
+
+    public static SchoolClass findSchoolClassByTeacher(Teacher teacher) throws ParseException {
+        // TODO: Add logic to get class by current time.
+        ParseQuery<SchoolClass> query = ParseQuery.getQuery(SchoolClass.class);
+        query.whereEqualTo(TEACHER, teacher);
+        return query.getFirst();
     }
 
     public void addStudent(Student student) {

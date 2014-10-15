@@ -8,5 +8,7 @@
     <string name="password_label">Password</string>
     <string name="login_btn_label">Log in</string>
     <string name="title_activity_stats">StatsActivity</string>
+    <string name="default_behavior_name">Behavior Name</string>
+    <string name="default_student_name">Student Name</string>
 
 </resources>

@@ -9,8 +9,8 @@ import java.util.Date;
 
 @ParseClassName("BehaviorEvent")
 public class BehaviorEvent extends ParseObject {
-    static final String STUDENT = "student";
-    static final String SCHOOL_CLASS = "schoolClass";
+    public static final String STUDENT = "student";
+    public static final String SCHOOL_CLASS = "schoolClass";
     static final String BEHAVIOR = "behavior";
     static final String OCCURRED_AT = "occurredAt";
     static final String NOTES = "notes";

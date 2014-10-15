@@ -56,6 +56,7 @@ public class LoginActivity extends Activity {
 
     void onLoginSuccess() {
         ((KippApplication) getApplication()).setTeacher();
+        ((KippApplication) getApplication()).setSchoolClass();
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
     }

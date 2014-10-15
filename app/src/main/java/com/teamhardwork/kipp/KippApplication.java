@@ -25,6 +25,7 @@ public class KippApplication extends Application {
     public static final String APP_PACKAGE = "com.teamhardwork.kipp";
 
     Teacher teacher;
+    SchoolClass schoolClass;
 
     @Override
     public void onCreate() {
@@ -68,5 +69,22 @@ public class KippApplication extends Application {
             setTeacher();
         }
         return teacher;
+    }
+
+    public void setSchoolClass() {
+        if (schoolClass == null) {
+            try {
+                schoolClass = SchoolClass.findSchoolClassByTeacher(teacher);
+            } catch (ParseException e) {
+                Toast.makeText(this, "Teacher does not have a class.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public SchoolClass getSchoolClass() {
+        if (schoolClass == null) {
+            setSchoolClass();
+        }
+        return schoolClass;
     }
 }
