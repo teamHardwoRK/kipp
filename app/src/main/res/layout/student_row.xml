@@ -15,20 +15,15 @@
             android:layout_height="wrap_content"
             android:id="@+id/btnNegative"
             style="@style/ListButtonAction"
-            android:text="Not So Good"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnInfo"
-            style="@style/ListButtonAction"
-            android:text="Info"/>
+            android:background="#FF0300"
+            android:text="Bad"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/btnPositive"
             style="@style/ListButtonAction"
+            android:background="#10FF34"
             android:text="Good"/>
 
     </LinearLayout>

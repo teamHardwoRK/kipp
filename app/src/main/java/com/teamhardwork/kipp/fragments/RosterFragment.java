@@ -12,9 +12,10 @@ import android.widget.AbsListView;
 
 import com.fortysevendeg.swipelistview.BaseSwipeListViewListener;
 import com.fortysevendeg.swipelistview.SwipeListView;
+import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.adapters.StudentArrayAdapter;
-import com.teamhardwork.kipp.enums.Gender;
+import com.teamhardwork.kipp.models.SchoolClass;
 import com.teamhardwork.kipp.models.users.Student;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ import java.util.List;
 public class RosterFragment extends Fragment {
     private SwipeListView lvStudents;
     private List<Student> students;
+    SchoolClass schoolClass;
     StudentArrayAdapter aStudents;
 
     public RosterFragment() {
@@ -38,23 +40,8 @@ public class RosterFragment extends Fragment {
         super.onCreate(savedInstanceState);
         students = new ArrayList<Student>();
 
-        Student a = new Student();
-        a.setFirstName("Bruce");
-        a.setLastName("Wayne");
-        a.setGender(Gender.MALE);
-        students.add(a);
-
-        Student b = new Student();
-        b.setFirstName("Jackie");
-        b.setLastName("Chan");
-        b.setGender(Gender.MALE);
-        students.add(b);
-
-        Student c = new Student();
-        c.setFirstName("Jennifer");
-        c.setLastName("Lawrence");
-        c.setGender(Gender.FEMALE);
-        students.add(c);
+        SchoolClass schoolClass = ((KippApplication) getActivity().getApplication()).getSchoolClass();
+        students = schoolClass.getRoster();
 
         aStudents = new StudentArrayAdapter(getActivity(), R.layout.student_row, students);
     }
