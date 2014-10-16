@@ -9,9 +9,6 @@ import android.widget.ListView;
 
 import com.echo.holographlibrary.PieGraph;
 import com.echo.holographlibrary.PieSlice;
-import com.parse.GetCallback;
-import com.parse.ParseException;
-import com.parse.ParseUser;
 import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.fragments.FeedFragment;

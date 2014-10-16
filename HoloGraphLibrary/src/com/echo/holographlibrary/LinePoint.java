@@ -3,7 +3,6 @@
  * 	   daniel.nadeau01@gmail.com
  * 	   danielnadeau.blogspot.com
  *
- * 
  * 	   Licensed to the Apache Software Foundation (ASF) under one
        or more contributor license agreements.  See the NOTICE file
        distributed with this work for additional information
@@ -29,49 +28,80 @@ import android.graphics.Region;
 
 public class LinePoint {
 
-    private float x = 0;
-	private float y = 0;
-	private Path path;
-	private Region region;
-	
-	public LinePoint(float x, float y) {
-		super();
-		this.x = x;
-		this.y = y;
-	}
+    private final Path mPath = new Path();
+    private final Region mRegion = new Region();
+    private float mX;
+    private float mY;
+    private int mColor = 0xFF000000;
+    private int mSelectedColor = -1;
 
-    public LinePoint() { }
+    public LinePoint() {
+        this(0, 0);
+    }
 
-	public float getX() {
-		return x;
-	}
+    public LinePoint(double x, double y) {
+        this((float) x, (float) y);
+    }
 
-	public void setX(float x) {
-		this.x = x;
-	}
+    public LinePoint(float x, float y) {
+        mX = x;
+        mY = y;
+    }
 
-	public float getY() {
-		return y;
-	}
+    public float getX() {
+        return mX;
+    }
 
-	public void setY(float y) {
-		this.y = y;
-	}
+    public void setX(float x) {
+        mX = x;
+    }
 
-	public Region getRegion() {
-		return region;
-	}
+    public float getY() {
+        return mY;
+    }
 
-	public void setRegion(Region region) {
-		this.region = region;
-	}
+    public void setY(float y) {
+        mY = y;
+    }
 
-	public Path getPath() {
-		return path;
-	}
+    public void setX(double x) {
+        mX = (float) x;
+    }
 
-	public void setPath(Path path) {
-		this.path = path;
-	}
+    public void setY(double y) {
+        mY = (float) y;
+    }
 
+    public Region getRegion() {
+        return mRegion;
+    }
+
+    public Path getPath() {
+        return mPath;
+    }
+
+    @Override
+    public String toString() {
+        return "x= " + mX + ", y= " + mY;
+    }
+
+    public int getColor() {
+        return mColor;
+    }
+
+    public void setColor(int color) {
+        mColor = color;
+    }
+
+    public int getSelectedColor() {
+        if (-1 == mSelectedColor) {
+            mSelectedColor = Utils.darkenColor(mColor);
+            mSelectedColor &= 0x80FFFFFF;
+        }
+        return mSelectedColor;
+    }
+
+    public void setSelectedColor(int selectedColor) {
+        mSelectedColor = selectedColor;
+    }
 }
