@@ -12,12 +12,15 @@ import com.echo.holographlibrary.PieSlice;
 import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.fragments.FeedFragment;
+import com.teamhardwork.kipp.fragments.RosterFragment;
 import com.teamhardwork.kipp.models.users.Teacher;
 
 import java.util.ArrayList;
 
 public class MainActivity extends Activity {
     Teacher teacher;
+    private FeedFragment feedFragment;
+    private RosterFragment rosterFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,29 +28,18 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         teacher = ((KippApplication) getApplication()).getTeacher();
 
-        setupMockRoster();
         setupMockLeaderboard();
         setupMockStatsModule();
         populateFeed();
     }
 
     private void populateFeed() {
-        FeedFragment fragment = FeedFragment.getInstance(teacher);
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.add(R.id.flClassFeed, fragment);
-        transaction.commit();
-    }
-
-    private void setupMockRoster() {
-        ArrayList<String> roster = new ArrayList<String>();
-        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, roster);
-        itemsAdapter.add("Class Roster");
-        itemsAdapter.add("Bruce Wayne");
-        itemsAdapter.add("Clark Kent");
-        itemsAdapter.add("John Doe");
-        itemsAdapter.add("Jane Doe");
-        ListView lvRoster = (ListView) findViewById(R.id.lvClassRoster);
-        lvRoster.setAdapter(itemsAdapter);
+        feedFragment = FeedFragment.getInstance(teacher);
+        rosterFragment = new RosterFragment();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.add(R.id.flClassFeed, feedFragment);
+        ft.add(R.id.flRoster, rosterFragment);
+        ft.commit();
     }
 
     private void setupMockLeaderboard() {

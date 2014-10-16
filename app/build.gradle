@@ -21,5 +21,6 @@ android {
 
 dependencies {
     compile project(':HoloGraphLibrary')
+    compile project(':swipelistview')
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }

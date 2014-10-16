@@ -6,58 +6,45 @@
 
     <LinearLayout
         android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="0.25"
-        android:orientation="vertical"
-        android:layout_height="match_parent">
-        
-        <LinearLayout
+        android:orientation="vertical">
+        <FrameLayout
+            android:id="@+id/flRoster"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-            <Button
-                android:layout_width="wrap_content"
-                android:text="Girls"
-                android:layout_height="wrap_content" />
-            <Button
-                android:layout_width="wrap_content"
-                android:text="Boys"
-                android:layout_height="wrap_content" />
-            <Button
-                android:layout_width="wrap_content"
-                android:text="All"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/lvClassRoster">
-        </ListView>
+        </FrameLayout>
     </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/flClassFeed"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.4">
-    </FrameLayout>
 
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_weight="0.35"
-        android:orientation="vertical"
-        android:layout_height="match_parent">
-        <ListView
-            android:layout_width="wrap_content"
-            android:id="@+id/lvLeaderBoard"
-            android:layout_weight="1"
-            android:layout_height="match_parent">
-        </ListView>
+        android:layout_height="match_parent"
+        android:layout_weight="0.25"
+        android:orientation="vertical">
+        <FrameLayout
+            android:id="@+id/flClassFeed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4">
+        </FrameLayout>
+    </LinearLayout>
 
-        <com.echo.holographlibrary.PieGraph
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.35"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/lvLeaderBoard"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:id="@+id/pgTest">
-        </com.echo.holographlibrary.PieGraph>
+            android:layout_weight="1"></ListView>
+
+        <com.echo.holographlibrary.PieGraph
+            android:id="@+id/pgTest"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"></com.echo.holographlibrary.PieGraph>
     </LinearLayout>
 </LinearLayout>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+    <LinearLayout
+        android:id="@+id/back"
+        android:tag="back"
+        style="@style/ListBackContent"
+        >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnNegative"
+            style="@style/ListButtonAction"
+            android:text="Not So Good"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnInfo"
+            style="@style/ListButtonAction"
+            android:text="Info"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnPositive"
+            style="@style/ListButtonAction"
+            android:text="Good"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:id="@+id/front"
+        android:tag="front"
+        style="@style/ListFrontContent">
+
+        <ImageView
+            style="@style/ListImage"
+            android:id="@+id/ivProfilePic"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/ivProfilePic"
+            style="@style/ListTitle"
+            android:id="@+id/tvName"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/ivProfilePic"
+            android:layout_below="@id/tvName"
+            style="@style/ListDescription"
+            android:id="@+id/tvDescription"/>
+
+    </RelativeLayout>
+
+    </FrameLayout>
