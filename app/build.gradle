@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.1"
+    buildToolsVersion "20.0.0"
 
     defaultConfig {
         applicationId "com.teamhardwork.kipp"
@@ -21,6 +21,9 @@ android {
 
 dependencies {
     compile project(':HoloGraphLibrary')
+//    compile ('com.fortysevendeg.swipelistview:swipelistview:1.0-SNAPSHOT@aar') {
+//        transitive = true
+//    }
     compile project(':swipelistview')
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }

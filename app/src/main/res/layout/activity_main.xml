@@ -8,14 +8,14 @@
         android:id="@+id/flRoster"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.4">
+        android:layout_weight="1">
     </FrameLayout>
 
     <FrameLayout
         android:id="@+id/flClassFeed"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.4">
+        android:layout_weight="0">
     </FrameLayout>
 
 </LinearLayout>
