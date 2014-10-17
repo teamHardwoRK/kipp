@@ -20,22 +20,17 @@ public class StatsActivity extends Activity {
         // TODO: Holograph graphs can't have labels on donut charts. Find a better library
         PieGraph pg = (PieGraph)findViewById(R.id.pgTest);
         PieSlice slice = new PieSlice();
-        slice.setColor(Color.parseColor("#99CC00"));
+        slice.setColor(Color.parseColor("#33CC00"));
         slice.setValue(2);
-        slice.setTitle("I'm a good boy");
+        slice.setTitle("Good");
         pg.addSlice(slice);
         slice = new PieSlice();
-        slice.setColor(Color.parseColor("#FFBB33"));
+        slice.setColor(Color.parseColor("#FF3333"));
         slice.setValue(3);
-        slice.setTitle("I'm a bad boy");
-        pg.addSlice(slice);
-        slice = new PieSlice();
-        slice.setColor(Color.parseColor("#AA66CC"));
-        slice.setValue(8);
-        slice.setTitle("Awkward silence");
+        slice.setTitle("Bad");
         pg.addSlice(slice);
 
-        pg.setInnerCircleRatio(50);
+        pg.setInnerCircleRatio(200);
     }
 
 

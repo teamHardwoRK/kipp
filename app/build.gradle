@@ -22,5 +22,6 @@ android {
 dependencies {
     compile project(':HoloGraphLibrary')
     compile project(':swipelistview')
+    compile 'com.jakewharton:butterknife:5.1.2'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
