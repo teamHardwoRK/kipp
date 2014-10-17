@@ -5,32 +5,63 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.echo.holographlibrary.PieGraph;
 import com.echo.holographlibrary.PieSlice;
+import com.parse.FindCallback;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.teamhardwork.kipp.R;
+import com.teamhardwork.kipp.models.BehaviorEvent;
+import com.teamhardwork.kipp.models.SchoolClass;
+import com.teamhardwork.kipp.models.users.Teacher;
+import com.teamhardwork.kipp.queries.BehaviorRetriever;
+import com.teamhardwork.kipp.utilities.behavior_event.BehaviorEventListFilterer;
+
+import java.text.ParseException;
+import java.util.List;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 public class StatsActivity extends Activity {
+    @InjectView(R.id.pgTest) PieGraph pg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stats);
+        ButterKnife.inject(this);
 
-        // TODO: Holograph graphs can't have labels on donut charts. Find a better library
-        PieGraph pg = (PieGraph)findViewById(R.id.pgTest);
-        PieSlice slice = new PieSlice();
-        slice.setColor(Color.parseColor("#33CC00"));
-        slice.setValue(2);
-        slice.setTitle("Good");
-        pg.addSlice(slice);
-        slice = new PieSlice();
-        slice.setColor(Color.parseColor("#FF3333"));
-        slice.setValue(3);
-        slice.setTitle("Bad");
-        pg.addSlice(slice);
+        try {
+            SchoolClass testClass = SchoolClass.findById("kNUWSLcaQZ");
+            BehaviorRetriever.findBySchoolClass(testClass, new FindCallback<BehaviorEvent>() {
+                @Override
+                public void done(List<BehaviorEvent> behaviorEvents, com.parse.ParseException e) {
+                    List<BehaviorEvent> good = BehaviorEventListFilterer.keepGood(behaviorEvents);
+                    List<BehaviorEvent> bad = BehaviorEventListFilterer.keepBad(behaviorEvents);
+                    setupGoodBadChart(good, bad);
+                }
+            });
+        } catch (com.parse.ParseException e) {
+            Toast.makeText(this, "Error in test data", Toast.LENGTH_SHORT).show();
+        }
+    }
 
+    private void setupGoodBadChart(List<BehaviorEvent> good, List<BehaviorEvent> bad) {
         pg.setInnerCircleRatio(200);
+        addSlice(Color.parseColor("#33CC00"), good.size(), "Good");
+        addSlice(Color.parseColor("#FF3333"), bad.size(), "Bad");
+    }
+
+    private void addSlice(int colorId, int value, String title) {
+        PieSlice slice = new PieSlice();
+        slice.setColor(colorId);
+        slice.setValue(value);
+        slice.setTitle(title);
+        pg.addSlice(slice);
     }
 
 

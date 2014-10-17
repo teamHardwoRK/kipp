@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 @ParseClassName("SchoolClass")
-public class SchoolClass extends ParseObject{
+public class SchoolClass extends ParseObject {
     static final String DISCIPLINE = "discipline";
     static final String NAME = "name";
     static final String TEACHER = "teacher";
@@ -28,11 +28,12 @@ public class SchoolClass extends ParseObject{
 
         ParseQuery<SchoolClass> query = ParseQuery.getQuery(SchoolClass.class);
         query
-            .whereEqualTo(DISCIPLINE, schoolClass.getDiscipline().name())
-            .whereEqualTo(NAME, schoolClass.getName());
+                .whereEqualTo(DISCIPLINE, schoolClass.getDiscipline().name())
+                .whereEqualTo(NAME, schoolClass.getName());
         try {
             savedSchoolClass = query.getFirst();
-        } catch (ParseException e) {}
+        } catch (ParseException e) {
+        }
 
         return savedSchoolClass;
     }
@@ -48,7 +49,7 @@ public class SchoolClass extends ParseObject{
         getStudentRelation().add(student);
     }
 
-    public void removeStudent(Student student){
+    public void removeStudent(Student student) {
         getStudentRelation().remove(student);
     }
 
@@ -58,7 +59,8 @@ public class SchoolClass extends ParseObject{
 
         try {
             roster = query.find();
-        } catch (ParseException e) {}
+        } catch (ParseException e) {
+        }
 
         return roster;
     }
@@ -79,7 +81,7 @@ public class SchoolClass extends ParseObject{
     /**
      * Note on setting start and end times for classes. The only relevant fields are day and time.
      * Since year is irrelevant, use the epoch as the reference for Thursday.  All times are UTC.
-     *
+     * <p/>
      * MON: 1970-01-05
      * TUES: 1970-01-06
      * WED: 1970-01-07
@@ -87,7 +89,7 @@ public class SchoolClass extends ParseObject{
      * FRI: 1970-01-02
      * SAT: 1970-01-03
      * SUNDAY: 1970-01-04
-     *
+     * <p/>
      * Format: "1970-01-01 10:45 -0000"
      */
     public void setStartTime(Date startTime) {
@@ -101,6 +103,7 @@ public class SchoolClass extends ParseObject{
     public void setEndTime(Date endTime) {
         put(END_TIME, endTime);
     }
+
     public Discipline getDiscipline() {
         return Discipline.valueOf(getString(DISCIPLINE));
     }
@@ -127,5 +130,10 @@ public class SchoolClass extends ParseObject{
 
     public Date getStartTime() {
         return getDate(START_TIME);
+    }
+
+    public static SchoolClass findById(String id) throws ParseException {
+        ParseQuery<SchoolClass> query = ParseQuery.getQuery(SchoolClass.class);
+        return query.get(id);
     }
 }
