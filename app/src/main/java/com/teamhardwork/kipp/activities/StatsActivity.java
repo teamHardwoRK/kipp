@@ -5,29 +5,34 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.echo.holographlibrary.PieGraph;
 import com.echo.holographlibrary.PieSlice;
 import com.parse.FindCallback;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.SchoolClass;
-import com.teamhardwork.kipp.models.users.Teacher;
 import com.teamhardwork.kipp.queries.BehaviorRetriever;
 import com.teamhardwork.kipp.utilities.behavior_event.BehaviorEventListFilterer;
 
-import java.text.ParseException;
+import java.text.MessageFormat;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
+import android.view.ViewGroup.LayoutParams;
+
 public class StatsActivity extends Activity {
-    @InjectView(R.id.pgTest) PieGraph pg;
+    @InjectView(R.id.pgTest)
+    PieGraph pg;
+
+    @InjectView(R.id.llLegend)
+    LinearLayout llLegend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +55,33 @@ public class StatsActivity extends Activity {
         }
     }
 
+    private static final int GOOD_COLOR_ID = Color.parseColor("#33CC00");
+    private static final int BAD_COLOR_ID = Color.parseColor("#FF3333");
+
     private void setupGoodBadChart(List<BehaviorEvent> good, List<BehaviorEvent> bad) {
         pg.setInnerCircleRatio(200);
-        addSlice(Color.parseColor("#33CC00"), good.size(), "Good");
-        addSlice(Color.parseColor("#FF3333"), bad.size(), "Bad");
+        addSlice(GOOD_COLOR_ID, good.size(), "Good");
+        addSlice(BAD_COLOR_ID, bad.size(), "Bad");
+        setupLegend(good, bad);
+    }
+
+    private void setupLegend(List<BehaviorEvent> good, List<BehaviorEvent> bad) {
+        int totalSize = good.size() + bad.size();
+        String goodPercentage = MessageFormat.format("{0,number,#.##%}", ((double) good.size()) / totalSize);
+        String badPercentage = MessageFormat.format("{0,number,#.##%}", ((double) bad.size()) / totalSize);
+        addToLegend("Good: " + goodPercentage, GOOD_COLOR_ID);
+        addToLegend("Bad: " + badPercentage, BAD_COLOR_ID);
+    }
+
+    private void addToLegend(String text, int colorId) {
+        LayoutParams lparams = new ViewGroup.LayoutParams(LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT);
+        TextView legendItem = new TextView(this);
+        legendItem.setLayoutParams(lparams);
+        legendItem.setText(text);
+        legendItem.setTextColor(colorId);
+        llLegend.addView(legendItem);
+
     }
 
     private void addSlice(int colorId, int value, String title) {
