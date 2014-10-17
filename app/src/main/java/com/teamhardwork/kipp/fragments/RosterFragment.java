@@ -41,7 +41,9 @@ public class RosterFragment extends Fragment {
         students = new ArrayList<Student>();
 
         SchoolClass schoolClass = ((KippApplication) getActivity().getApplication()).getSchoolClass();
-        students = schoolClass.getRoster();
+        if (schoolClass != null) {
+            students = schoolClass.getRoster();
+        }
 
         aStudents = new StudentArrayAdapter(getActivity(), R.layout.student_row, students);
     }
