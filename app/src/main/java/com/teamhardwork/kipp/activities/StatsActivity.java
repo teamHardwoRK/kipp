@@ -34,6 +34,8 @@ public class StatsActivity extends Activity {
         slice.setValue(8);
         slice.setTitle("Awkward silence");
         pg.addSlice(slice);
+
+        pg.setInnerCircleRatio(50);
     }
 
 
