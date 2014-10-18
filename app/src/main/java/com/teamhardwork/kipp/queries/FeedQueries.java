@@ -14,11 +14,11 @@ import java.util.List;
  *  Queries that provide data for Behavior Feeds.
  */
 public class FeedQueries {
-    public static List<BehaviorEvent> getClassFeed(SchoolClass schoolClass) throws ParseException {
+    public static void getClassFeed(SchoolClass schoolClass, FindCallback<BehaviorEvent> callback) throws ParseException {
         ParseQuery<BehaviorEvent> query = ParseQuery.getQuery(BehaviorEvent.class);
         query.whereEqualTo(BehaviorEvent.SCHOOL_CLASS, schoolClass);
         query.include(BehaviorEvent.STUDENT);
-        return query.find();
+        query.findInBackground(callback);
     }
 
     public static void getStudentFeed(Student student, FindCallback<BehaviorEvent> callback) {

@@ -2,13 +2,15 @@ package com.teamhardwork.kipp.activities;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.echo.holographlibrary.PieGraph;
-import com.echo.holographlibrary.PieSlice;
+import com.parse.ParseUser;
 import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.fragments.FeedFragment;
@@ -31,15 +33,18 @@ public class MainActivity extends Activity {
 
         setupMockLeaderboard();
         setupStatsModule();
-        populateFeed();
+        createFragments();
     }
 
-    private void populateFeed() {
-        feedFragment = FeedFragment.getInstance(teacher);
-        rosterFragment = new RosterFragment();
+    private void createFragments() {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+        feedFragment = FeedFragment.getInstance(teacher);
         ft.add(R.id.flClassFeed, feedFragment);
+
+        rosterFragment = new RosterFragment();
         ft.add(R.id.flRoster, rosterFragment);
+
         ft.commit();
     }
 
@@ -59,5 +64,25 @@ public class MainActivity extends Activity {
         getFragmentManager().beginTransaction()
                 .replace(R.id.flStatsContainer, new StatsFragment())
                 .commit();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_logout:
+                ParseUser.logOut();
+                Intent intent = new Intent(this, LoginActivity.class);
+                this.finish();
+                startActivity(intent);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

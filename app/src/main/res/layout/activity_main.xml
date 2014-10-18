@@ -26,7 +26,8 @@
             android:id="@+id/flClassFeed"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.4"></FrameLayout>
+            android:layout_weight="0.4">
+        </FrameLayout>
     </LinearLayout>
 
     <LinearLayout
