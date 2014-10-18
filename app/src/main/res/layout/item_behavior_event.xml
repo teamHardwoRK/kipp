@@ -17,4 +17,11 @@
         android:text="@string/default_behavior_name"
         android:layout_below="@id/tvStudentName"
         />
+    <TextView
+        android:id="@+id/tvEventTimestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvBehaviorName"
+        android:text="11:53am - Monday, Oct 5"
+        />
 </RelativeLayout>

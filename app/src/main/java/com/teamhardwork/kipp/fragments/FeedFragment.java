@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -16,6 +18,7 @@ import com.teamhardwork.kipp.adapters.BehaviorEventAdapter;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.SchoolClass;
 import com.teamhardwork.kipp.models.users.KippUser;
+import com.teamhardwork.kipp.models.users.Student;
 import com.teamhardwork.kipp.queries.FeedQueries;
 
 import java.util.List;
@@ -32,9 +35,12 @@ public class FeedFragment extends Fragment {
     @InjectView(R.id.pbBehaviorFeed)
     ProgressBar pbBehaviorFeed;
 
-    public static FeedFragment getInstance(KippUser user) {
+    FeedListener listener;
+
+    public static FeedFragment getInstance(KippUser user, FeedListener listener) {
         FeedFragment fragment = new FeedFragment();
         fragment.user = user;
+        fragment.listener = listener;
 
         return fragment;
     }
@@ -55,6 +61,7 @@ public class FeedFragment extends Fragment {
 
                     pbBehaviorFeed.setVisibility(View.GONE);
                     lvBehaviorFeed.setVisibility(View.VISIBLE);
+                    setupListViewListener();
                 }
             });
         } catch (ParseException e) {
@@ -62,5 +69,19 @@ public class FeedFragment extends Fragment {
         }
 
         return view;
+    }
+
+    void setupListViewListener() {
+        lvBehaviorFeed.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                BehaviorEvent event = (BehaviorEvent) lvBehaviorFeed.getItemAtPosition(position);
+                listener.addAction(event);
+            }
+        });
+    }
+
+    public interface FeedListener {
+        public void addAction(BehaviorEvent event);
     }
 }

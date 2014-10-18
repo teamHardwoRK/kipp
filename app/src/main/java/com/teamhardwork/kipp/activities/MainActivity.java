@@ -1,6 +1,7 @@
 package com.teamhardwork.kipp.activities;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,14 +14,17 @@ import android.widget.ListView;
 import com.parse.ParseUser;
 import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
+import com.teamhardwork.kipp.dialogfragments.AddActionDialogFragment;
 import com.teamhardwork.kipp.fragments.FeedFragment;
 import com.teamhardwork.kipp.fragments.RosterFragment;
 import com.teamhardwork.kipp.fragments.StatsFragment;
+import com.teamhardwork.kipp.models.BehaviorEvent;
+import com.teamhardwork.kipp.models.users.Student;
 import com.teamhardwork.kipp.models.users.Teacher;
 
 import java.util.ArrayList;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements FeedFragment.FeedListener {
     Teacher teacher;
     private FeedFragment feedFragment;
     private RosterFragment rosterFragment;
@@ -39,7 +43,7 @@ public class MainActivity extends Activity {
     private void createFragments() {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
 
-        feedFragment = FeedFragment.getInstance(teacher);
+        feedFragment = FeedFragment.getInstance(teacher, this);
         ft.add(R.id.flClassFeed, feedFragment);
 
         rosterFragment = new RosterFragment();
@@ -84,5 +88,12 @@ public class MainActivity extends Activity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void addAction(BehaviorEvent event) {
+        AddActionDialogFragment dialogFragment = AddActionDialogFragment.getInstance(event);
+
+        dialogFragment.show(getFragmentManager(), "dialog_fragment_add_action");
     }
 }
