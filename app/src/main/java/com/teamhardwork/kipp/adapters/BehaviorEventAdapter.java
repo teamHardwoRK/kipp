@@ -46,7 +46,7 @@ public class BehaviorEventAdapter extends ArrayAdapter<BehaviorEvent> {
         holder.tvEventTimestamp.setText(age(event));
 
         if(!RuntimeUtils.isInDebugMode()) {
-            setAgeTimer(holder.timer, holder.tvEventTimestamp, event);
+            // setAgeTimer(holder.timer, holder.tvEventTimestamp, event);
         }
 
         return convertView;
@@ -65,7 +65,7 @@ public class BehaviorEventAdapter extends ArrayAdapter<BehaviorEvent> {
                 });
             }
         };
-        timer.schedule(task, 2000, 1500);
+        timer.schedule(task, 3000, 3000);
     }
 
     String age(BehaviorEvent event) {
