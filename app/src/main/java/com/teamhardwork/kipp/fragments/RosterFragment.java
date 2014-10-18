@@ -1,6 +1,7 @@
 package com.teamhardwork.kipp.fragments;
 
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 
 import com.fortysevendeg.swipelistview.BaseSwipeListViewListener;
 import com.fortysevendeg.swipelistview.SwipeListView;
@@ -23,17 +25,22 @@ import com.teamhardwork.kipp.models.users.Student;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link android.app.Fragment} subclass.
- *
- */
 public class RosterFragment extends Fragment {
     private SwipeListView lvStudents;
     SchoolClass schoolClass;
     StudentArrayAdapter aStudents;
 
-    public RosterFragment() {
-        // Required empty public constructor
+    private OnStudentSelectedListener onStudentSelectedListener;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof OnStudentSelectedListener) {
+            onStudentSelectedListener = (OnStudentSelectedListener) activity;
+        } else {
+            throw new ClassCastException(activity.toString()
+                    + " must implement RosterFragment.OnStudentSelectedListener");
+        }
     }
 
     @Override
@@ -180,6 +187,15 @@ public class RosterFragment extends Fragment {
             }
         });
 
+        lvStudents.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Student clicked = aStudents.getItem(i);
+                onStudentSelectedListener.onStudentSelected(clicked);
+                return true;
+            }
+        });
+
         reloadListView();
     }
 
@@ -198,5 +214,9 @@ public class RosterFragment extends Fragment {
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         float px = dp * (metrics.densityDpi / 160f);
         return (int) px;
+    }
+
+    public interface OnStudentSelectedListener {
+        void onStudentSelected(Student student);
     }
 }

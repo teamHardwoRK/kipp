@@ -7,8 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.Toast;
 
 import com.parse.ParseUser;
 import com.teamhardwork.kipp.KippApplication;
@@ -19,11 +18,11 @@ import com.teamhardwork.kipp.fragments.LeaderboardFragment;
 import com.teamhardwork.kipp.fragments.RosterFragment;
 import com.teamhardwork.kipp.fragments.StatsFragment;
 import com.teamhardwork.kipp.models.BehaviorEvent;
+import com.teamhardwork.kipp.models.users.Student;
 import com.teamhardwork.kipp.models.users.Teacher;
 
-import java.util.ArrayList;
-
-public class MainActivity extends Activity implements FeedFragment.FeedListener {
+public class MainActivity extends Activity implements FeedFragment.FeedListener,
+        RosterFragment.OnStudentSelectedListener {
     Teacher teacher;
     private FeedFragment feedFragment;
     private RosterFragment rosterFragment;
@@ -32,6 +31,8 @@ public class MainActivity extends Activity implements FeedFragment.FeedListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getActionBar().setHomeButtonEnabled(true);
+
         teacher = ((KippApplication) getApplication()).getTeacher();
 
         setupLeaderboard();
@@ -57,7 +58,7 @@ public class MainActivity extends Activity implements FeedFragment.FeedListener 
                 .commit();
     }
 
-    private void setupStatsModule(){
+    private void setupStatsModule() {
         getFragmentManager().beginTransaction()
                 .replace(R.id.flStatsContainer, new StatsFragment())
                 .commit();
@@ -72,12 +73,16 @@ public class MainActivity extends Activity implements FeedFragment.FeedListener 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.action_logout:
                 ParseUser.logOut();
                 Intent intent = new Intent(this, LoginActivity.class);
                 this.finish();
                 startActivity(intent);
+                break;
+
+            case android.R.id.home:
+                onClassSelected();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -88,5 +93,15 @@ public class MainActivity extends Activity implements FeedFragment.FeedListener 
         AddActionDialogFragment dialogFragment = AddActionDialogFragment.getInstance(event);
 
         dialogFragment.show(getFragmentManager(), "dialog_fragment_add_action");
+    }
+
+    @Override
+    public void onStudentSelected(Student student) {
+        getActionBar().setTitle("Detail view for " + student.getFullName());
+        Toast.makeText(this, student.getFirstName() + " selected", Toast.LENGTH_SHORT).show();
+    }
+
+    private void onClassSelected() {
+        getActionBar().setTitle("Math 101 - Bob Loblaw"); // Hard coded for now
     }
 }

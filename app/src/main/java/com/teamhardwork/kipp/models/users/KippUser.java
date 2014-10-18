@@ -115,4 +115,8 @@ public class KippUser extends ParseObject {
     public void setUser(ParseUser user) {
         put(USER, user);
     }
+
+    public String getFullName() {
+        return getFirstName() + " " + getLastName();
+    }
 }
