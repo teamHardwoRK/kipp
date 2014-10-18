@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.utilities.DateUtilities;
+import com.teamhardwork.kipp.utilities.RuntimeUtils;
 
 import java.util.List;
 import java.util.Timer;
@@ -42,7 +43,10 @@ public class BehaviorEventAdapter extends ArrayAdapter<BehaviorEvent> {
         final BehaviorEvent event = getItem(position);
         holder.tvBehaviorName.setText(event.getBehavior().getTitle());
         holder.tvStudentName.setText(event.getStudent().getFirstName() + " " + event.getStudent().getLastName());
-        setAgeTimer(holder.timer, holder.tvEventTimestamp, event);
+        holder.tvEventTimestamp.setText(age(event));
+
+        if(!RuntimeUtils.isInDebugMode())
+            setAgeTimer(holder.timer, holder.tvEventTimestamp, event);
 
         return convertView;
     }
@@ -55,14 +59,16 @@ public class BehaviorEventAdapter extends ArrayAdapter<BehaviorEvent> {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        textView.setText(DateUtilities.timestampAge(event.getOccurredAt()) +
-                                " " + activity.getResources().getString(R.string.past_label));
+                        textView.setText(age(event));
                     }
                 });
             }
         };
+        timer.schedule(task, 1000, 1000);
+    }
 
-        timer.schedule(task, 0, 1000);
+    String age(BehaviorEvent event) {
+        return DateUtilities.timestampAge(event.getOccurredAt()) +  " " + getContext().getResources().getString(R.string.past_label);
     }
 
     class ViewHolder {
