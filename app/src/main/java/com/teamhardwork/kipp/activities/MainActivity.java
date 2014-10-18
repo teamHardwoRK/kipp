@@ -13,6 +13,7 @@ import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.fragments.FeedFragment;
 import com.teamhardwork.kipp.fragments.RosterFragment;
+import com.teamhardwork.kipp.fragments.StatsFragment;
 import com.teamhardwork.kipp.models.users.Teacher;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class MainActivity extends Activity {
         teacher = ((KippApplication) getApplication()).getTeacher();
 
         setupMockLeaderboard();
-        setupMockStatsModule();
+        setupStatsModule();
         populateFeed();
     }
 
@@ -54,22 +55,9 @@ public class MainActivity extends Activity {
         lvLeaderboard.setAdapter(itemsAdapter);
     }
 
-    private void setupMockStatsModule(){
-        PieGraph pg = (PieGraph)findViewById(R.id.pgTest);
-        PieSlice slice = new PieSlice();
-        slice.setColor(Color.parseColor("#99CC00"));
-        slice.setValue(2);
-        slice.setTitle("I'm a good boy");
-        pg.addSlice(slice);
-        slice = new PieSlice();
-        slice.setColor(Color.parseColor("#FFBB33"));
-        slice.setValue(3);
-        slice.setTitle("I'm a bad boy");
-        pg.addSlice(slice);
-        slice = new PieSlice();
-        slice.setColor(Color.parseColor("#AA66CC"));
-        slice.setValue(8);
-        slice.setTitle("Awkward silence");
-        pg.addSlice(slice);
+    private void setupStatsModule(){
+        getFragmentManager().beginTransaction()
+                .replace(R.id.flStatsContainer, new StatsFragment())
+                .commit();
     }
 }
