@@ -15,6 +15,7 @@ import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.dialogfragments.AddActionDialogFragment;
 import com.teamhardwork.kipp.fragments.FeedFragment;
+import com.teamhardwork.kipp.fragments.LeaderboardFragment;
 import com.teamhardwork.kipp.fragments.RosterFragment;
 import com.teamhardwork.kipp.fragments.StatsFragment;
 import com.teamhardwork.kipp.models.BehaviorEvent;
@@ -33,7 +34,7 @@ public class MainActivity extends Activity implements FeedFragment.FeedListener 
         setContentView(R.layout.activity_main);
         teacher = ((KippApplication) getApplication()).getTeacher();
 
-        setupMockLeaderboard();
+        setupLeaderboard();
         setupStatsModule();
         createFragments();
     }
@@ -50,16 +51,10 @@ public class MainActivity extends Activity implements FeedFragment.FeedListener 
         ft.commit();
     }
 
-    private void setupMockLeaderboard() {
-        ArrayList<String> leaderBoard = new ArrayList<String>();
-        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, leaderBoard);
-        itemsAdapter.add("Top Students:");
-        itemsAdapter.add("Bruce Wayne");
-        itemsAdapter.add("John Doe");
-        itemsAdapter.add("Worst Students:");
-        itemsAdapter.add("Jane Doe");
-        ListView lvLeaderboard = (ListView) findViewById(R.id.lvLeaderBoard);
-        lvLeaderboard.setAdapter(itemsAdapter);
+    private void setupLeaderboard() {
+        getFragmentManager().beginTransaction()
+                .replace(R.id.flLeaderboardContainer, new LeaderboardFragment())
+                .commit();
     }
 
     private void setupStatsModule(){

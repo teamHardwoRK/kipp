@@ -16,6 +16,12 @@
         android:id="@+id/llLegend"
         android:layout_centerInParent="true"
         android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="Class behavior history"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 
 </RelativeLayout>

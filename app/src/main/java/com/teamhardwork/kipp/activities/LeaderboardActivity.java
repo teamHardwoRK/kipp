@@ -1,44 +1,39 @@
 package com.teamhardwork.kipp.activities;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.ListView;
 import android.widget.Toast;
 
-import com.echo.holographlibrary.PieGraph;
-import com.echo.holographlibrary.PieSlice;
 import com.parse.FindCallback;
 import com.teamhardwork.kipp.R;
+import com.teamhardwork.kipp.adapters.LeaderboardAdapter;
+import com.teamhardwork.kipp.fragments.LeaderboardFragment;
 import com.teamhardwork.kipp.fragments.StatsFragment;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.SchoolClass;
+import com.teamhardwork.kipp.models.users.Student;
 import com.teamhardwork.kipp.queries.BehaviorRetriever;
 import com.teamhardwork.kipp.utilities.behavior_event.BehaviorEventListFilterer;
+import com.teamhardwork.kipp.utilities.student.StudentListFilterer;
 
-import java.text.MessageFormat;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-import android.view.ViewGroup.LayoutParams;
-
 // TODO: For testing purposes. Remove when done.
-public class StatsActivity extends Activity {
+public class LeaderboardActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_stats);
+        setContentView(R.layout.activity_leaderboard);
 
         getFragmentManager().beginTransaction()
-                .replace(R.id.flStatsContainer, new StatsFragment())
+                .replace(R.id.flLeaderboardContainer, new LeaderboardFragment())
                 .commit();
     }
 
@@ -46,7 +41,7 @@ public class StatsActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.stats, menu);
+        getMenuInflater().inflate(R.menu.leaderboard, menu);
         return true;
     }
 

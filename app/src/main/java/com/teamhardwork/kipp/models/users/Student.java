@@ -16,6 +16,8 @@ public class Student extends KippUser {
     List<Parent> parentList;
     List<SchoolClass> classList;
 
+    private static final String POINTS = "points";
+
     public Student() {
     }
 
@@ -39,5 +41,13 @@ public class Student extends KippUser {
         } catch (ParseException e) {}
 
         return classes;
+    }
+
+    public int getPoints() {
+        return getInt(POINTS);
+    }
+
+    public void setPoints(int points) {
+        put(POINTS, points);
     }
 }

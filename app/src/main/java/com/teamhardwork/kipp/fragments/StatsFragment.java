@@ -49,7 +49,7 @@ public class StatsFragment extends Fragment {
         return rtnView;
     }
 
-    public void setupGoodBadChart() {
+    private void setupGoodBadChart() {
         try {
             SchoolClass testClass = SchoolClass.findById("d1RmWrazIm");
             BehaviorRetriever.findBySchoolClass(testClass, new FindCallback<BehaviorEvent>() {
