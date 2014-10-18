@@ -1,7 +1,5 @@
 package com.teamhardwork.kipp.enums;
 
-import com.teamhardwork.kipp.R;
-
 import java.util.ArrayList;
 import java.util.List;
 

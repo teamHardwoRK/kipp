@@ -51,7 +51,7 @@ public class StatsFragment extends Fragment {
 
     public void setupGoodBadChart() {
         try {
-            SchoolClass testClass = SchoolClass.findById("kNUWSLcaQZ");
+            SchoolClass testClass = SchoolClass.findById("d1RmWrazIm");
             BehaviorRetriever.findBySchoolClass(testClass, new FindCallback<BehaviorEvent>() {
                 @Override
                 public void done(List<BehaviorEvent> behaviorEvents, com.parse.ParseException e) {

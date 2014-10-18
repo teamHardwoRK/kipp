@@ -19,8 +19,8 @@ public class Student extends KippUser {
     public Student() {
     }
 
-    public Student(ParseUser user, String firstName, String lastName, Gender gender, Date dateOfBirth, String telephoneNumber) {
-        super(user, firstName, lastName, gender, dateOfBirth, telephoneNumber);
+    public Student(ParseUser user, String email, String firstName, String lastName, Gender gender, Date dateOfBirth, String telephoneNumber) {
+        super(user, email, firstName, lastName, gender, dateOfBirth, telephoneNumber);
     }
 
     public static void findStudent(ParseUser parseUser, FindCallback<Student> callback) {

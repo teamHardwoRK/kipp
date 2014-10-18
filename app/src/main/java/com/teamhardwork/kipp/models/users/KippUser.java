@@ -1,6 +1,5 @@
 package com.teamhardwork.kipp.models.users;
 
-import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -19,6 +18,7 @@ public class KippUser extends ParseObject {
     static final String USER = "user";
     static final String DATE_OF_BIRTH = "dateOfbirth";
     static final String TELEPHONE_NUMBER = "telephoneNumber";
+    static final String EMAIL = "email";
     static final String FIRST_NAME = "firstName";
     static final String LAST_NAME = "lastName";
     static final String GENDER = "gender";
@@ -27,6 +27,7 @@ public class KippUser extends ParseObject {
     }
 
     public KippUser(ParseUser user,
+                    String email,
                     String firstName,
                     String lastName,
                     Gender gender,
@@ -50,9 +51,7 @@ public class KippUser extends ParseObject {
         T savedUser = null;
 
         ParseQuery<T> query = ParseQuery.getQuery(parseClassName);
-        query
-            .whereEqualTo(FIRST_NAME, user.getFirstName())
-            .whereEqualTo(LAST_NAME, user.getLastName());
+        query.whereEqualTo(EMAIL, user.getEmail());
 
         try {
             savedUser = query.getFirst();
@@ -60,7 +59,15 @@ public class KippUser extends ParseObject {
         return savedUser;
     }
 
-    // The following fields are already in ParseUser: email, username
+    public String getEmail() {
+        return getString(EMAIL);
+    }
+
+    public void setEmail(String email) {
+        put(EMAIL, email);
+    }
+
+    // The following fields are already in ParseUser: username
     public Date getDateOfBirth() {
         return getDate(DATE_OF_BIRTH);
     }

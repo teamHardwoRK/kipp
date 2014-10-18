@@ -15,5 +15,7 @@
     <string name="past_label">ago</string>
     <string name="title_add_action">Actions</string>
     <string name="default_action_type_name">Action Name</string>
+    <string name="choose_email_client">Choose an email app</string>
+    <string name="salutation">Dear</string>
 
 </resources>

@@ -61,7 +61,7 @@ public class FeedFragment extends Fragment {
 
                     pbBehaviorFeed.setVisibility(View.GONE);
                     lvBehaviorFeed.setVisibility(View.VISIBLE);
-                    setupListViewListener();
+                    setupListeners();
                 }
             });
         } catch (ParseException e) {
@@ -71,7 +71,7 @@ public class FeedFragment extends Fragment {
         return view;
     }
 
-    void setupListViewListener() {
+    void setupListeners() {
         lvBehaviorFeed.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
