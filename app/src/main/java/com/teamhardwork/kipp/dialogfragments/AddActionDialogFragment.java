@@ -21,6 +21,8 @@ import com.teamhardwork.kipp.models.Action;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.users.Student;
 
+import org.apache.http.protocol.HTTP;
+
 import java.util.Date;
 
 import butterknife.ButterKnife;
@@ -70,12 +72,12 @@ public class AddActionDialogFragment extends DialogFragment {
                 type = (ActionType) lvActions.getItemAtPosition(position);
                 Activity activity = getActivity();
                 Intent intent = new Intent();
+                String telephone = student.getTelephonNumber();
                 String message = "";
 
                 boolean hasInfo = false;
                 switch (type) {
                     case CALL:
-                        String telephone = student.getTelephonNumber();
                         if(telephone != null) {
                             hasInfo = true;
 
@@ -104,6 +106,14 @@ public class AddActionDialogFragment extends DialogFragment {
                     case NOTE:
                         break;
                     case TEXT:
+                        if(telephone != null) {
+                            hasInfo = true;
+
+                            intent = new Intent(Intent.ACTION_SENDTO);
+                            intent.setType(HTTP.PLAIN_TEXT_TYPE);
+                            intent.setData(Uri.parse("smsto:" + telephone));
+                            intent.putExtra("sms_text", student.getFirstName() + ", ");
+                        }
                         break;
                 }
 
