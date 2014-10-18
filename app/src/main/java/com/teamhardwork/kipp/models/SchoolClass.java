@@ -1,6 +1,8 @@
 package com.teamhardwork.kipp.models;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.Parse;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -45,6 +47,12 @@ public class SchoolClass extends ParseObject {
         return query.getFirst();
     }
 
+    public static void findSchoolClassByTeacherAsync(Teacher teacher, GetCallback<SchoolClass> callback) {
+        ParseQuery<SchoolClass> query = ParseQuery.getQuery(SchoolClass.class);
+        query.whereEqualTo(TEACHER, teacher);
+        query.getFirstInBackground(callback);
+    }
+
     public void addStudent(Student student) {
         getStudentRelation().add(student);
     }
@@ -65,7 +73,7 @@ public class SchoolClass extends ParseObject {
         return roster;
     }
 
-    public void getClassRosterAsyc(FindCallback<Student> callback) {
+    public void getClassRosterAsync(FindCallback<Student> callback) {
         ParseQuery query = getStudentRelation().getQuery();
         query.findInBackground(callback);
     }

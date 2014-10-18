@@ -12,6 +12,8 @@ import android.widget.AbsListView;
 
 import com.fortysevendeg.swipelistview.BaseSwipeListViewListener;
 import com.fortysevendeg.swipelistview.SwipeListView;
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.adapters.StudentArrayAdapter;
@@ -27,7 +29,6 @@ import java.util.List;
  */
 public class RosterFragment extends Fragment {
     private SwipeListView lvStudents;
-    private List<Student> students;
     SchoolClass schoolClass;
     StudentArrayAdapter aStudents;
 
@@ -38,14 +39,17 @@ public class RosterFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        students = new ArrayList<Student>();
+        aStudents = new StudentArrayAdapter(getActivity(), R.layout.student_row, new ArrayList<Student>());
 
-        SchoolClass schoolClass = ((KippApplication) getActivity().getApplication()).getSchoolClass();
+        schoolClass = ((KippApplication) getActivity().getApplication()).getSchoolClass();
         if (schoolClass != null) {
-            students = schoolClass.getRoster();
+            schoolClass.getClassRosterAsync(new FindCallback<Student>() {
+                @Override
+                public void done(List<Student> students, ParseException e) {
+                    aStudents.addAll(students);
+                }
+            });
         }
-
-        aStudents = new StudentArrayAdapter(getActivity(), R.layout.student_row, students);
     }
 
     @Override
@@ -139,7 +143,7 @@ public class RosterFragment extends Fragment {
             @Override
             public void onDismiss(int[] reverseSortedPositions) {
                 for (int position : reverseSortedPositions) {
-                    students.remove(position);
+                    aStudents.remove(aStudents.getItem(position));
                 }
                 aStudents.notifyDataSetChanged();
             }

@@ -3,12 +3,14 @@ package com.teamhardwork.kipp.dialogfragments;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
@@ -70,14 +72,24 @@ public class AddActionDialogFragment extends DialogFragment {
                 Intent intent = new Intent();
                 String message = "";
 
+                boolean hasInfo = false;
                 switch (type) {
                     case CALL:
+                        String telephone = student.getTelephonNumber();
+                        if(telephone != null) {
+                            hasInfo = true;
+
+                            intent = new Intent(Intent.ACTION_CALL);
+                            intent.setData(Uri.parse("tel:" + telephone));
+                        }
                         break;
                     case EMAIL:
-                        intent = new Intent(Intent.ACTION_SEND);
                         String email = student.getEmail();
 
                         if(email != null) {
+                            hasInfo = true;
+
+                            intent = new Intent(Intent.ACTION_SEND);
                             intent.putExtra(Intent.EXTRA_EMAIL, new String[]{ email });
                             intent.setType("message/rfc822");
 
@@ -94,7 +106,11 @@ public class AddActionDialogFragment extends DialogFragment {
                     case TEXT:
                         break;
                 }
-                startActivityForResult(Intent.createChooser(intent, message), EMAIL_REQUEST_CODE);
+
+                if(hasInfo)
+                    startActivityForResult(Intent.createChooser(intent, message), EMAIL_REQUEST_CODE);
+                else
+                    Toast.makeText(getActivity(), "No contact data", Toast.LENGTH_SHORT).show();
             }
         });
     }
