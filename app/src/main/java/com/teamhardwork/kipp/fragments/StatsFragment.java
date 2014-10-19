@@ -45,52 +45,63 @@ public class StatsFragment extends BaseKippFragment {
         View rtnView = inflater.inflate(R.layout.fragment_stats, container, false);
         ButterKnife.inject(this, rtnView);
 
-        setupGoodBadChartForClass();
+        setupGoodBadChart();
+        updateChartForClass();
 
         return rtnView;
     }
 
-    public void setupGoodBadChartForClass() {
+    public void updateChartForClass() {
         FeedQueries.getClassFeed(currentClass, new FindCallback<BehaviorEvent>() {
             @Override
             public void done(List<BehaviorEvent> behaviorEvents, com.parse.ParseException e) {
-                List<BehaviorEvent> good = BehaviorEventListFilterer.keepGood(behaviorEvents);
-                List<BehaviorEvent> bad = BehaviorEventListFilterer.keepBad(behaviorEvents);
-                populateGoodBadChart(good, bad);
+                updateChart(behaviorEvents);
                 tvLegendDescription.setText("Class behavior history");
             }
         });
 
     }
 
-    public void setupGoodBadChartForStudent(final Student currentStudent) {
+    public void updateChartForStudent(final Student currentStudent) {
         FeedQueries.getStudentFeed(currentStudent, new FindCallback<BehaviorEvent>() {
             @Override
             public void done(List<BehaviorEvent> behaviorEvents, com.parse.ParseException e) {
-                List<BehaviorEvent> good = BehaviorEventListFilterer.keepGood(behaviorEvents);
-                List<BehaviorEvent> bad = BehaviorEventListFilterer.keepBad(behaviorEvents);
-                populateGoodBadChart(good, bad);
+                updateChart(behaviorEvents);
                 tvLegendDescription.setText("Student behavior history");
             }
         });
     }
 
-    private void populateGoodBadChart(List<BehaviorEvent> good, List<BehaviorEvent> bad) {
+    private void setupGoodBadChart() {
         pg.setInnerCircleRatio(200);
-        pg.removeSlices();
-        addSlice(GOOD_COLOR_ID, good.size(), "Good");
-        addSlice(BAD_COLOR_ID, bad.size(), "Bad");
-        setupLegend(good, bad);
+
+        addSlice(GOOD_COLOR_ID, 0, "Good");
+        addSlice(BAD_COLOR_ID, 0, "Bad");
+
+        tvGood.setTextColor(GOOD_COLOR_ID);
+        tvBad.setTextColor(BAD_COLOR_ID);
     }
 
-    private void setupLegend(List<BehaviorEvent> good, List<BehaviorEvent> bad) {
+    private void updateChart(List<BehaviorEvent> behaviorEvents) {
+        List<BehaviorEvent> good = BehaviorEventListFilterer.keepGood(behaviorEvents);
+        List<BehaviorEvent> bad = BehaviorEventListFilterer.keepBad(behaviorEvents);
+
+        updateLegend(good, bad);
+        updateSlices(good, bad);
+    }
+
+    private void updateSlices(List<BehaviorEvent> good, List<BehaviorEvent> bad) {
+        pg.getSlice(0).setGoalValue(good.size());
+        pg.getSlice(1).setGoalValue(bad.size());
+        pg.animateToGoalValues();
+    }
+
+    private void updateLegend(List<BehaviorEvent> good, List<BehaviorEvent> bad) {
         int totalSize = good.size() + bad.size();
         String goodPercentage = MessageFormat.format("{0,number,#.##%}", ((double) good.size()) / totalSize);
         String badPercentage = MessageFormat.format("{0,number,#.##%}", ((double) bad.size()) / totalSize);
         tvGood.setText("Good: " + goodPercentage);
-        tvGood.setTextColor(GOOD_COLOR_ID);
         tvBad.setText("Bad: " + badPercentage);
-        tvBad.setTextColor(BAD_COLOR_ID);
     }
 
     private void addSlice(int colorId, int value, String title) {

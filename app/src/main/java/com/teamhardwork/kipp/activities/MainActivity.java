@@ -101,12 +101,12 @@ public class MainActivity extends Activity implements FeedFragment.FeedListener,
     public void onStudentSelected(Student student) {
         getActionBar().setTitle("Detail view for " + student.getFullName());
         feedFragment.changeToStudentFeed(student);
-        statsFragment.setupGoodBadChartForStudent(student);
+        statsFragment.updateChartForStudent(student);
         Toast.makeText(this, student.getFirstName() + " selected", Toast.LENGTH_SHORT).show();
     }
 
     private void onClassSelected() {
         getActionBar().setTitle("Math 101 - Bob Loblaw"); // Hard coded for now
-        statsFragment.setupGoodBadChartForClass();
+        statsFragment.updateChartForClass();
     }
 }
