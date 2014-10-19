@@ -1,12 +1,15 @@
 package com.teamhardwork.kipp;
 
 import android.app.Application;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.teamhardwork.kipp.models.Action;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.SchoolClass;
@@ -21,8 +24,8 @@ import java.util.List;
 public class KippApplication extends Application {
     public static final String PARSE_APPLICATION_ID = "6fb5KhXW73bUQKwdAb807wiIt9tROQ2HtHAYmKOq";
     public static final String PARSE_CLIENT_KEY = "y703WGXSG0rY4qvuP1dhM3vn1Qo4efXMMXoxtj12";
-    public static final String TAG = "kippApplication";
-    public static final String APP_PACKAGE = "com.teamhardwork.kipp";
+    public static final String PARSE_REST_API_KEY = "5yTa9Zu5tc4pec64UP9k2CGn1U7bKQmBZsjlSWoi";
+    public static final String TAG = "com.teamhardwork.kipp.kippApplication";
 
     Teacher teacher;
     SchoolClass schoolClass;
@@ -48,6 +51,21 @@ public class KippApplication extends Application {
         super.onCreate();
         Parse.initialize(this, PARSE_APPLICATION_ID, PARSE_CLIENT_KEY);
         registerParseSubclasses();
+        registerPushNotifications();
+    }
+
+    public void registerPushNotifications() {
+        ParsePush.subscribeInBackground("", new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    Log.d(TAG, "Successfully subcribed to broadcast channel.");
+                }
+                else {
+                    Log.d(TAG, "Failed to subscribe to push notifications.");
+                }
+            }
+        });
     }
 
     public void setTeacher() {
