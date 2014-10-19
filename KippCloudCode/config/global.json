@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "KIPP": {
+            "applicationId": "6fb5KhXW73bUQKwdAb807wiIt9tROQ2HtHAYmKOq", 
+            "masterKey": "gHKvyflbu4MgtmPVkuE4kxU3Y171daCSQFjNJL32"
+        }, 
+        "_default": {
+            "link": "KIPP"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.3.0"
+    }
+}

@@ -21,8 +21,15 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class BehaviorEventAdapter extends ArrayAdapter<BehaviorEvent> {
-    public BehaviorEventAdapter(Context context, List<BehaviorEvent> events) {
-        super(context, R.layout.item_behavior_event, events);
+    List<BehaviorEvent> eventList;
+
+    public BehaviorEventAdapter(Context context, List<BehaviorEvent> eventList) {
+        super(context, R.layout.item_behavior_event, eventList);
+        this.eventList = eventList;
+    }
+
+    public List<BehaviorEvent> getEventList() {
+        return eventList;
     }
 
     @Override

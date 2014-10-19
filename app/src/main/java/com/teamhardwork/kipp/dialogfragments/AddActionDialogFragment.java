@@ -94,7 +94,8 @@ public class AddActionDialogFragment extends DialogFragment {
                     hideProgressBar();
                 }
             });
-        } else {
+        }
+        else {
             ParseQuery<Student> query = ParseQuery.getQuery(Student.class);
             query.getInBackground(studentId, new GetCallback<Student>() {
                 @Override

@@ -62,14 +62,14 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
         return convertView;
     }
 
-    public interface StudentAdapterListener {
-        void addAction(Student student);
-    }
-
     private static class ViewHolder {
         ImageView ivProfilePic;
         TextView tvName;
         TextView tvDescription;
         Button btnContact;
+    }
+
+    public interface StudentAdapterListener {
+        void addAction(Student student);
     }
 }

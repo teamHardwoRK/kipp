@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,6 +27,7 @@ import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.SchoolClass;
 import com.teamhardwork.kipp.models.users.Student;
 import com.teamhardwork.kipp.models.users.Teacher;
+import com.teamhardwork.kipp.receivers.KippPushBroadcastReceiver;
 
 import java.util.ArrayList;
 
@@ -40,11 +42,12 @@ public class MainActivity extends Activity implements
     private final String STATS_FRAGMENT_TAG = "StatsFragment";
     private final String BEHAVIOR_PAGER_FRAGMENT_TAG = "BehaviorPagerFragment";
 
-    SchoolClass schoolClass;
-    Teacher teacher;
+    private SchoolClass schoolClass;
+    private Teacher teacher;
     private FeedFragment feedFragment;
     private RosterFragment rosterFragment;
     private StatsFragment statsFragment;
+    private KippPushBroadcastReceiver pushReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +89,33 @@ public class MainActivity extends Activity implements
         getFragmentManager().beginTransaction()
                 .replace(R.id.flStatsContainer, statsFragment)
                 .commit();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        pushReceiver = new KippPushBroadcastReceiver(new KippPushBroadcastReceiver.Callback() {
+            @Override
+            public void onPushReceive() {
+                feedFragment.updateData();
+            }
+        });
+        IntentFilter receiveIntentFilter = new IntentFilter();
+        receiveIntentFilter.addAction("com.parse.push.intent.RECEIVE");
+        receiveIntentFilter.addAction("com.parse.push.intent.DELETE");
+        receiveIntentFilter.addAction("com.parse.push.intent.OPEN");
+
+        registerReceiver(pushReceiver, receiveIntentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (pushReceiver != null) {
+            unregisterReceiver(pushReceiver);
+        }
     }
 
     @Override

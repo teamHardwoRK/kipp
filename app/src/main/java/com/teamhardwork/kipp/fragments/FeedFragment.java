@@ -26,6 +26,10 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class FeedFragment extends Fragment {
+    FeedType feedType;
+    SchoolClass schoolClass;
+    Student student;
+
     @InjectView(R.id.lvBehaviorFeed)
     ListView lvBehaviorFeed;
 
@@ -51,13 +55,14 @@ public class FeedFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_feed, container, false);
         ButterKnife.inject(this, view);
 
-        SchoolClass schoolClass = ((KippApplication) getActivity().getApplication()).getSchoolClass();
+        schoolClass = ((KippApplication) getActivity().getApplication()).getSchoolClass();
 
         FeedQueries.getClassFeed(schoolClass, new FindCallback<BehaviorEvent>() {
             @Override
             public void done(List<BehaviorEvent> events, ParseException e) {
                 adapter = new BehaviorEventAdapter(getActivity(), events);
                 lvBehaviorFeed.setAdapter(adapter);
+                feedType = FeedType.CLASS;
 
                 hideProgressBar();
                 setupListeners();
@@ -86,14 +91,36 @@ public class FeedFragment extends Fragment {
         lvBehaviorFeed.setVisibility(View.VISIBLE);
     }
 
+    public void updateData() {
+        FindCallback<BehaviorEvent> callback = new FindCallback<BehaviorEvent>() {
+            @Override
+            public void done(List<BehaviorEvent> eventList, ParseException e) {
+                for(BehaviorEvent event : eventList) {
+                    adapter.insert(event, 0);
+                }
+            }
+        };
+
+        switch(feedType) {
+           case STUDENT:
+               FeedQueries.getLatestStudentEvents(student, adapter.getEventList(), callback);
+               break;
+           case CLASS:
+               FeedQueries.getLatestClassEvents(schoolClass, adapter.getEventList(), callback);
+               break;
+       }
+    }
+
     public void changeToStudentFeed(Student student) {
         showProgressBar();
+        this.student = student;
 
         FeedQueries.getStudentFeed(student, new FindCallback<BehaviorEvent>() {
             @Override
             public void done(List<BehaviorEvent> behaviorEvents, ParseException e) {
                 adapter.clear();
                 adapter.addAll(behaviorEvents);
+                feedType = FeedType.STUDENT;
                 hideProgressBar();
             }
         });
@@ -101,12 +128,14 @@ public class FeedFragment extends Fragment {
 
     public void changeToClassFeed(SchoolClass schoolClass) {
         showProgressBar();
+        this.schoolClass = schoolClass;
 
         FeedQueries.getClassFeed(schoolClass, new FindCallback<BehaviorEvent>() {
             @Override
             public void done(List<BehaviorEvent> behaviorEvents, ParseException e) {
                 adapter.clear();
                 adapter.addAll(behaviorEvents);
+                feedType = FeedType.CLASS;
                 hideProgressBar();
             }
         });
@@ -114,5 +143,10 @@ public class FeedFragment extends Fragment {
 
     public interface FeedListener {
         public void addAction(BehaviorEvent event);
+    }
+
+    public enum FeedType {
+        STUDENT,
+        CLASS;
     }
 }
