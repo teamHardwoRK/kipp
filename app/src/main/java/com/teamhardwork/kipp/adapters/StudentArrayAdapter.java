@@ -32,7 +32,7 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Student student = getItem(position);
+        final Student student = getItem(position);
 
         ViewHolder v;
         if (convertView == null) {
@@ -65,10 +65,14 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
         v.btnContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "btnContact pressed!", Toast.LENGTH_SHORT).show();
+                ((StudentAdapterListener) getContext()).addAction(student);
             }
         });
         return convertView;
+    }
+
+    public interface StudentAdapterListener {
+        void addAction(Student student);
     }
 
     private static class ViewHolder {

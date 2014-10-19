@@ -94,8 +94,7 @@ public class AddActionDialogFragment extends DialogFragment {
                     hideProgressBar();
                 }
             });
-        }
-        else {
+        } else {
             ParseQuery<Student> query = ParseQuery.getQuery(Student.class);
             query.getInBackground(studentId, new GetCallback<Student>() {
                 @Override
@@ -143,9 +142,11 @@ public class AddActionDialogFragment extends DialogFragment {
                             intent.setType("message/rfc822");
 
                             if (event != null) {
-                                intent.putExtra(Intent.EXTRA_SUBJECT, event.getBehavior().getTitle() + " - " + event.getOccurredAt().toString());
+                                intent.putExtra(Intent.EXTRA_SUBJECT, event.getBehavior().getTitle() +
+                                        " - " + event.getOccurredAt().toString());
                             }
-                            intent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.salutation) + student.getFirstName() + ",\n");
+                            intent.putExtra(Intent.EXTRA_TEXT, activity.getResources().getString(R.string.salutation) +
+                                    " " + student.getFirstName() + ",\n");
 
                             message = activity.getResources().getString(R.string.choose_email_client);
                         }

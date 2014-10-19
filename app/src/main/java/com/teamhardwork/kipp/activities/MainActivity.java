@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.parse.ParseUser;
 import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
+import com.teamhardwork.kipp.adapters.StudentArrayAdapter;
 import com.teamhardwork.kipp.dialogfragments.AddActionDialogFragment;
 import com.teamhardwork.kipp.fragments.BehaviorFragment;
 import com.teamhardwork.kipp.fragments.BehaviorPagerFragment;
@@ -28,10 +29,12 @@ import com.teamhardwork.kipp.models.users.Teacher;
 
 import java.util.ArrayList;
 
-public class MainActivity extends Activity implements FeedFragment.FeedListener,
+public class MainActivity extends Activity implements
+        BehaviorFragment.BehaviorListener,
+        FeedFragment.FeedListener,
         RosterFragment.OnStudentSelectedListener,
         RosterFragment.RosterSwipeListener,
-        BehaviorFragment.BehaviorListener {
+        StudentArrayAdapter.StudentAdapterListener {
     private final String FEED_FRAGMENT_TAG = "FeedFragment";
     private final String ROSTER_FRAGMENT_TAG = "RosterFragment";
     private final String STATS_FRAGMENT_TAG = "StatsFragment";
@@ -112,6 +115,13 @@ public class MainActivity extends Activity implements FeedFragment.FeedListener,
     @Override
     public void addAction(BehaviorEvent event) {
         AddActionDialogFragment dialogFragment = AddActionDialogFragment.getInstance(event);
+
+        dialogFragment.show(getFragmentManager(), "dialog_fragment_add_action");
+    }
+
+    @Override
+    public void addAction(Student student) {
+        AddActionDialogFragment dialogFragment = AddActionDialogFragment.getInstance(student);
 
         dialogFragment.show(getFragmentManager(), "dialog_fragment_add_action");
     }
