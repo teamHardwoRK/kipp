@@ -4,25 +4,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
-import android.widget.Toast;
 
-import com.parse.FindCallback;
 import com.teamhardwork.kipp.R;
-import com.teamhardwork.kipp.adapters.LeaderboardAdapter;
 import com.teamhardwork.kipp.fragments.LeaderboardFragment;
-import com.teamhardwork.kipp.fragments.StatsFragment;
-import com.teamhardwork.kipp.models.BehaviorEvent;
-import com.teamhardwork.kipp.models.SchoolClass;
-import com.teamhardwork.kipp.models.users.Student;
-import com.teamhardwork.kipp.queries.BehaviorRetriever;
-import com.teamhardwork.kipp.utilities.behavior_event.BehaviorEventListFilterer;
-import com.teamhardwork.kipp.utilities.student.StudentListFilterer;
-
-import java.util.List;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 // TODO: For testing purposes. Remove when done.
 public class LeaderboardActivity extends Activity {

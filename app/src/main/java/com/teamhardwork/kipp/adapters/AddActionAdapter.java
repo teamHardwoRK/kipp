@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.enums.ActionType;
 import com.teamhardwork.kipp.enums.Role;
@@ -25,12 +24,11 @@ public class AddActionAdapter extends ArrayAdapter<ActionType> {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
 
-        if(convertView == null) {
+        if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_add_action, parent, false);
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
-        }
-        else {
+        } else {
             holder = (ViewHolder) convertView.getTag();
         }
 

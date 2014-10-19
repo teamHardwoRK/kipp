@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -35,6 +34,7 @@ public class FeedFragment extends Fragment {
     @InjectView(R.id.pbBehaviorFeed)
     ProgressBar pbBehaviorFeed;
 
+    BehaviorEventAdapter adapter;
     FeedListener listener;
 
     public static FeedFragment getInstance(KippUser user, FeedListener listener) {
@@ -52,22 +52,16 @@ public class FeedFragment extends Fragment {
 
         SchoolClass schoolClass = ((KippApplication) getActivity().getApplication()).getSchoolClass();
 
-        try {
-            FeedQueries.getClassFeed(schoolClass, new FindCallback<BehaviorEvent>() {
-                @Override
-                public void done(List<BehaviorEvent> events, ParseException e) {
-                    BehaviorEventAdapter adapter = new BehaviorEventAdapter(getActivity(), events);
-                    lvBehaviorFeed.setAdapter(adapter);
+        FeedQueries.getClassFeed(schoolClass, new FindCallback<BehaviorEvent>() {
+            @Override
+            public void done(List<BehaviorEvent> events, ParseException e) {
+                adapter = new BehaviorEventAdapter(getActivity(), events);
+                lvBehaviorFeed.setAdapter(adapter);
 
-                    pbBehaviorFeed.setVisibility(View.GONE);
-                    lvBehaviorFeed.setVisibility(View.VISIBLE);
-                    setupListeners();
-                }
-            });
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
+                hideProgressBar();
+                setupListeners();
+            }
+        });
         return view;
     }
 
@@ -77,6 +71,43 @@ public class FeedFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 BehaviorEvent event = (BehaviorEvent) lvBehaviorFeed.getItemAtPosition(position);
                 listener.addAction(event);
+            }
+        });
+    }
+
+    void showProgressBar() {
+        lvBehaviorFeed.setVisibility(View.GONE);
+        pbBehaviorFeed.setVisibility(View.VISIBLE);
+    }
+
+    void hideProgressBar() {
+        pbBehaviorFeed.setVisibility(View.GONE);
+        lvBehaviorFeed.setVisibility(View.VISIBLE);
+    }
+
+    public void changeToStudentFeed(Student student) {
+        showProgressBar();
+
+        FeedQueries.getStudentFeed(student, new FindCallback<BehaviorEvent>() {
+            @Override
+            public void done(List<BehaviorEvent> behaviorEvents, ParseException e) {
+                adapter.clear();
+                adapter.addAll(behaviorEvents);
+                hideProgressBar();
+            }
+        });
+
+    }
+
+    public void changeToClassFeed(SchoolClass schoolClass) {
+        showProgressBar();
+
+        FeedQueries.getClassFeed(schoolClass, new FindCallback<BehaviorEvent>() {
+            @Override
+            public void done(List<BehaviorEvent> behaviorEvents, ParseException e) {
+                adapter.clear();
+                adapter.addAll(behaviorEvents);
+                hideProgressBar();
             }
         });
     }

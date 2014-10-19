@@ -29,14 +29,13 @@ public class BehaviorEventAdapter extends ArrayAdapter<BehaviorEvent> {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
 
-        if(convertView == null) {
+        if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_behavior_event, parent, false);
 
             holder = new ViewHolder(convertView);
 
             convertView.setTag(holder);
-        }
-        else {
+        } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
@@ -45,7 +44,7 @@ public class BehaviorEventAdapter extends ArrayAdapter<BehaviorEvent> {
         holder.tvStudentName.setText(event.getStudent().getFirstName() + " " + event.getStudent().getLastName());
         holder.tvEventTimestamp.setText(age(event));
 
-        if(!RuntimeUtils.isInDebugMode()) {
+        if (!RuntimeUtils.isInDebugMode()) {
             // setAgeTimer(holder.timer, holder.tvEventTimestamp, event);
         }
 
@@ -69,7 +68,7 @@ public class BehaviorEventAdapter extends ArrayAdapter<BehaviorEvent> {
     }
 
     String age(BehaviorEvent event) {
-        return DateUtilities.timestampAge(event.getOccurredAt()) +  " " + getContext().getResources().getString(R.string.past_label);
+        return DateUtilities.timestampAge(event.getOccurredAt()) + " " + getContext().getResources().getString(R.string.past_label);
     }
 
     class ViewHolder {
@@ -83,7 +82,7 @@ public class BehaviorEventAdapter extends ArrayAdapter<BehaviorEvent> {
         TextView tvEventTimestamp;
 
         Timer timer;
-        
+
         public ViewHolder(View view) {
             timer = new Timer();
             ButterKnife.inject(this, view);

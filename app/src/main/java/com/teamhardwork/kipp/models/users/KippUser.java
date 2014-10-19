@@ -39,7 +39,7 @@ public class KippUser extends ParseObject {
         setLastName(lastName);
         setDateOfBirth(dateOfBirth);
 
-        if(telephoneNumber == null) {
+        if (telephoneNumber == null) {
             telephoneNumber = "1234567890";
         }
         setTelephoneNumber(telephoneNumber);
@@ -55,7 +55,8 @@ public class KippUser extends ParseObject {
 
         try {
             savedUser = query.getFirst();
-        } catch (ParseException e) {}
+        } catch (ParseException e) {
+        }
         return savedUser;
     }
 

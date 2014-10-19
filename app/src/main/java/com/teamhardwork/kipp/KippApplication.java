@@ -27,13 +27,6 @@ public class KippApplication extends Application {
     Teacher teacher;
     SchoolClass schoolClass;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        Parse.initialize(this, PARSE_APPLICATION_ID, PARSE_CLIENT_KEY);
-        registerParseSubclasses();
-    }
-
     // All models saved to Parse must be registered.
     static void registerParseSubclasses() {
         List<Class> classes = new ArrayList<Class>();
@@ -45,16 +38,23 @@ public class KippApplication extends Application {
         classes.add(Action.class);
         classes.add(BehaviorEvent.class);
 
-        for(Class subclass: classes) {
+        for (Class subclass : classes) {
             ParseObject.registerSubclass(subclass);
         }
     }
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Parse.initialize(this, PARSE_APPLICATION_ID, PARSE_CLIENT_KEY);
+        registerParseSubclasses();
+    }
+
     public void setTeacher() {
-        if(teacher == null) {
+        if (teacher == null) {
             ParseUser user = ParseUser.getCurrentUser();
 
-            if(user != null) {
+            if (user != null) {
                 try {
                     teacher = Teacher.findTeacher(user);
                 } catch (ParseException e) {
@@ -65,7 +65,7 @@ public class KippApplication extends Application {
     }
 
     public Teacher getTeacher() {
-        if(teacher == null) {
+        if (teacher == null) {
             setTeacher();
         }
         return teacher;

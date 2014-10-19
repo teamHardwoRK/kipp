@@ -1,10 +1,9 @@
 package com.teamhardwork.kipp.fragments;
 
 
-
+import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,15 +27,12 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class StatsFragment extends Fragment {
-    @InjectView(R.id.pgTest)
-    PieGraph pg;
-
-    @InjectView(R.id.llLegend)
-    LinearLayout llLegend;
-
     private static final int GOOD_COLOR_ID = Color.parseColor("#33CC00");
     private static final int BAD_COLOR_ID = Color.parseColor("#FF3333");
-
+    @InjectView(R.id.pgTest)
+    PieGraph pg;
+    @InjectView(R.id.llLegend)
+    LinearLayout llLegend;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

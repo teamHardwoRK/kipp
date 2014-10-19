@@ -1,6 +1,5 @@
 package com.teamhardwork.kipp.models.users;
 
-import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;

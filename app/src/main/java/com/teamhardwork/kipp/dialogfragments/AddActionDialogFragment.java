@@ -78,7 +78,7 @@ public class AddActionDialogFragment extends DialogFragment {
                 boolean hasInfo = false;
                 switch (type) {
                     case CALL:
-                        if(telephone != null) {
+                        if (telephone != null) {
                             hasInfo = true;
 
                             intent = new Intent(Intent.ACTION_CALL);
@@ -88,11 +88,11 @@ public class AddActionDialogFragment extends DialogFragment {
                     case EMAIL:
                         String email = student.getEmail();
 
-                        if(email != null) {
+                        if (email != null) {
                             hasInfo = true;
 
                             intent = new Intent(Intent.ACTION_SEND);
-                            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{ email });
+                            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
                             intent.setType("message/rfc822");
 
                             if (event != null) {
@@ -106,7 +106,7 @@ public class AddActionDialogFragment extends DialogFragment {
                     case NOTE:
                         break;
                     case TEXT:
-                        if(telephone != null) {
+                        if (telephone != null) {
                             hasInfo = true;
 
                             intent = new Intent(Intent.ACTION_SENDTO);
@@ -117,7 +117,7 @@ public class AddActionDialogFragment extends DialogFragment {
                         break;
                 }
 
-                if(hasInfo)
+                if (hasInfo)
                     startActivityForResult(Intent.createChooser(intent, message), EMAIL_REQUEST_CODE);
                 else
                     Toast.makeText(getActivity(), "No contact data", Toast.LENGTH_SHORT).show();
@@ -127,14 +127,14 @@ public class AddActionDialogFragment extends DialogFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch(resultCode) {
+        switch (resultCode) {
             // implicit EMAIL intents always return RESULT_CANCELED
             case Activity.RESULT_CANCELED:
 
                 Action action = new Action();
                 action.setType(type);
 
-                if(event != null) {
+                if (event != null) {
                     action.setBehaviorEvent(event);
                 }
 

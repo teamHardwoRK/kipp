@@ -17,11 +17,7 @@ public enum ActionType {
 
     ActionType(String displayName, Role role) {
         this.displayName = displayName;
-        this.role  = role;
-    }
-
-    public String getDisplayName() {
-        return displayName;
+        this.role = role;
     }
 
     public static List<ActionType> findForRole(Role role) {
@@ -29,14 +25,18 @@ public enum ActionType {
 
         ActionType[] allTypes = values();
 
-        for(int i = 0; i < allTypes.length; i++) {
+        for (int i = 0; i < allTypes.length; i++) {
             ActionType type = allTypes[i];
 
-            if(type.role == role) {
+            if (type.role == role) {
                 typeList.add(type);
             }
         }
 
         return typeList;
+    }
+
+    public String getDisplayName() {
+        return displayName;
     }
 }

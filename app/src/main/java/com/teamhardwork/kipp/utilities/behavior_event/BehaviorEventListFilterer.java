@@ -10,7 +10,7 @@ public class BehaviorEventListFilterer {
 
     public static List<BehaviorEvent> keepGood(List<BehaviorEvent> list) {
         List<BehaviorEvent> kept = new ArrayList<BehaviorEvent>();
-        for (BehaviorEvent event: list) {
+        for (BehaviorEvent event : list) {
             Behavior curBehavior = event.getBehavior();
             int points = curBehavior.getPoints();
             if (points > 0) {
@@ -22,7 +22,7 @@ public class BehaviorEventListFilterer {
 
     public static List<BehaviorEvent> keepBad(List<BehaviorEvent> list) {
         List<BehaviorEvent> kept = new ArrayList<BehaviorEvent>();
-        for (BehaviorEvent event: list) {
+        for (BehaviorEvent event : list) {
             Behavior curBehavior = event.getBehavior();
             int points = curBehavior.getPoints();
             if (points < 0) {

@@ -26,10 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RosterFragment extends Fragment {
-    private SwipeListView lvStudents;
     SchoolClass schoolClass;
     StudentArrayAdapter aStudents;
-
+    private SwipeListView lvStudents;
     private OnStudentSelectedListener onStudentSelectedListener;
 
     @Override

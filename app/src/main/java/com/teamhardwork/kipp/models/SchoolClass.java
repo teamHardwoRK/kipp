@@ -17,12 +17,12 @@ import java.util.List;
 
 @ParseClassName("SchoolClass")
 public class SchoolClass extends ParseObject {
+    public static final String ROSTER = "roster";
     static final String DISCIPLINE = "discipline";
     static final String NAME = "name";
     static final String TEACHER = "teacher";
     static final String START_TIME = "startTime";
     static final String END_TIME = "endTime";
-    public static final String ROSTER = "roster";
 
     public static SchoolClass findSchoolClass(SchoolClass schoolClass) {
         SchoolClass savedSchoolClass = null;
@@ -50,6 +50,11 @@ public class SchoolClass extends ParseObject {
         ParseQuery<SchoolClass> query = ParseQuery.getQuery(SchoolClass.class);
         query.whereEqualTo(TEACHER, teacher);
         query.getFirstInBackground(callback);
+    }
+
+    public static SchoolClass findById(String id) throws ParseException {
+        ParseQuery<SchoolClass> query = ParseQuery.getQuery(SchoolClass.class);
+        return query.get(id);
     }
 
     public void addStudent(Student student) {
@@ -83,24 +88,6 @@ public class SchoolClass extends ParseObject {
 
     public void setClassRoster(List<Student> roster) {
         put(ROSTER, roster);
-    }
-
-    /**
-     * Note on setting start and end times for classes. The only relevant fields are day and time.
-     * Since year is irrelevant, use the epoch as the reference for Thursday.  All times are UTC.
-     * <p/>
-     * MON: 1970-01-05
-     * TUES: 1970-01-06
-     * WED: 1970-01-07
-     * THURS: 1970-01-01
-     * FRI: 1970-01-02
-     * SAT: 1970-01-03
-     * SUNDAY: 1970-01-04
-     * <p/>
-     * Format: "1970-01-01 10:45 -0000"
-     */
-    public void setStartTime(Date startTime) {
-        put(START_TIME, startTime);
     }
 
     public Date getEndTime() {
@@ -139,8 +126,21 @@ public class SchoolClass extends ParseObject {
         return getDate(START_TIME);
     }
 
-    public static SchoolClass findById(String id) throws ParseException {
-        ParseQuery<SchoolClass> query = ParseQuery.getQuery(SchoolClass.class);
-        return query.get(id);
+    /**
+     * Note on setting start and end times for classes. The only relevant fields are day and time.
+     * Since year is irrelevant, use the epoch as the reference for Thursday.  All times are UTC.
+     * <p/>
+     * MON: 1970-01-05
+     * TUES: 1970-01-06
+     * WED: 1970-01-07
+     * THURS: 1970-01-01
+     * FRI: 1970-01-02
+     * SAT: 1970-01-03
+     * SUNDAY: 1970-01-04
+     * <p/>
+     * Format: "1970-01-01 10:45 -0000"
+     */
+    public void setStartTime(Date startTime) {
+        put(START_TIME, startTime);
     }
 }

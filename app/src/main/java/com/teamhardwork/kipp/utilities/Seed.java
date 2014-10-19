@@ -21,8 +21,11 @@ import java.util.List;
 public class Seed {
     static final String TAG = "Seed";
 
-    public static void seedHugoData() {}
-    public static void seedRaymondData() {}
+    public static void seedHugoData() {
+    }
+
+    public static void seedRaymondData() {
+    }
 
     public static void seedKevinData() throws ParseException {
         /** IDEMPOTENT INSTRUCTIONS **/
@@ -121,7 +124,7 @@ public class Seed {
 
         SchoolClass savedSchoolClass = SchoolClass.findSchoolClass(schoolClass);
 
-        if(savedSchoolClass == null) {
+        if (savedSchoolClass == null) {
             schoolClass.save();
             savedSchoolClass = SchoolClass.findSchoolClass(schoolClass);
         }
@@ -137,11 +140,12 @@ public class Seed {
         Teacher teacher = new Teacher(teacherUser, email, firstName, lastName, gender, birthdate, telephoneNumber);
         Teacher savedTeacher = KippUser.findUser(teacher, KippUser.TEACHER_CLASS_NAME);
 
-        if(savedTeacher == null) {
+        if (savedTeacher == null) {
             try {
                 teacher.save();
                 savedTeacher = KippUser.findUser(teacher, KippUser.TEACHER_CLASS_NAME);
-            } catch (ParseException e) {}
+            } catch (ParseException e) {
+            }
         }
         return savedTeacher;
     }
@@ -155,11 +159,12 @@ public class Seed {
         Student student = new Student(studentUser, email, firstName, lastName, gender, birthdate, telephoneNumber);
         Student savedStudent = KippUser.findUser(student, KippUser.STUDENT_CLASS_NAME);
 
-        if(savedStudent == null) {
+        if (savedStudent == null) {
             try {
                 student.save();
                 savedStudent = KippUser.findUser(student, KippUser.STUDENT_CLASS_NAME);
-            } catch (ParseException e) {}
+            } catch (ParseException e) {
+            }
         }
         return savedStudent;
     }

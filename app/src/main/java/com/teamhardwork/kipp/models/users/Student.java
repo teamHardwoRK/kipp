@@ -13,10 +13,9 @@ import java.util.List;
 
 @ParseClassName(KippUser.STUDENT_CLASS_NAME)
 public class Student extends KippUser {
+    private static final String POINTS = "points";
     List<Parent> parentList;
     List<SchoolClass> classList;
-
-    private static final String POINTS = "points";
 
     public Student() {
     }
@@ -38,7 +37,8 @@ public class Student extends KippUser {
 
         try {
             classes = query.find();
-        } catch (ParseException e) {}
+        } catch (ParseException e) {
+        }
 
         return classes;
     }

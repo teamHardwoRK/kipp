@@ -10,11 +10,11 @@ public class ParseUserUtils {
         try {
             user.signUp();
         } catch (ParseException e) {
-        }
-        finally {
+        } finally {
             return findUserWithUsername(user.getUsername());
         }
     }
+
     public static ParseUser findUserWithUsername(String username) {
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereEqualTo("username", username);

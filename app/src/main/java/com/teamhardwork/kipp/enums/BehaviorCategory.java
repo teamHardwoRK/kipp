@@ -18,10 +18,10 @@ public enum BehaviorCategory {
 
         Iterator<Behavior> iterator = behaviors.iterator();
 
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             Behavior behavior = iterator.next();
 
-            if(behavior.getCategory() != this) {
+            if (behavior.getCategory() != this) {
                 iterator.remove();
             }
         }

@@ -48,12 +48,12 @@ public class Action extends ParseObject {
         put(NOTES, notes);
     }
 
-    public void setStudent(Student student) {
-        put(STUDENT, student);
-    }
-
     public Student getStudent() {
         return (Student) getParseObject(STUDENT);
+    }
+
+    public void setStudent(Student student) {
+        put(STUDENT, student);
     }
 
     public BehaviorEvent getBehaviorEvent() {
@@ -61,7 +61,7 @@ public class Action extends ParseObject {
     }
 
     public void setBehaviorEvent(BehaviorEvent event) {
-        if(event != null) {
+        if (event != null) {
             put(BEHAVIOR_EVENT, event);
         }
     }

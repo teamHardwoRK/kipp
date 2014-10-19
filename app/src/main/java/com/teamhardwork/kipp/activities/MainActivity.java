@@ -98,6 +98,7 @@ public class MainActivity extends Activity implements FeedFragment.FeedListener,
     @Override
     public void onStudentSelected(Student student) {
         getActionBar().setTitle("Detail view for " + student.getFullName());
+        feedFragment.changeToStudentFeed(student);
         Toast.makeText(this, student.getFirstName() + " selected", Toast.LENGTH_SHORT).show();
     }
 

@@ -52,7 +52,7 @@ public class BehaviorEvent extends ParseObject {
     }
 
     public void setNotes(String notes) {
-        if(notes == null) {
+        if (notes == null) {
             notes = "";
         }
 
