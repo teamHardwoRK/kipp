@@ -52,17 +52,18 @@ public class SchoolClass extends ParseObject {
         query.getFirstInBackground(callback);
     }
 
+<<<<<<< HEAD
+    public static SchoolClass findById(String id) throws ParseException {
+        ParseQuery<SchoolClass> query = ParseQuery.getQuery(SchoolClass.class);
+        return query.get(id);
+=======
     public static void getSchoolClassAsync(String schoolClassId, GetCallback<SchoolClass> callback) {
         ParseQuery<SchoolClass> query = ParseQuery.getQuery(SchoolClass.class);
         // First try to find from the cache and only then go to network
         query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
         // Execute the query to find the object with ID
         query.getInBackground(schoolClassId, callback);
-    }
-
-    public static SchoolClass findById(String id) throws ParseException {
-        ParseQuery<SchoolClass> query = ParseQuery.getQuery(SchoolClass.class);
-        return query.get(id);
+>>>>>>> roster
     }
 
     public void addStudent(Student student) {

@@ -25,6 +25,8 @@ import java.util.List;
 public class StudentArrayAdapter extends ArrayAdapter<Student> {
     private Context context;
 
+<<<<<<< HEAD
+=======
     private static class ViewHolder {
         ImageView ivProfilePic;
         TextView tvName;
@@ -33,6 +35,7 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
         Button btnContact;
     }
 
+>>>>>>> roster
     public StudentArrayAdapter(Context context, int resource, List<Student> students) {
         super(context, resource, students);
         this.context = context;
@@ -59,7 +62,11 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
 
         ((SwipeListView) parent).recycle(convertView, position);
 
+//        v.ivProfilePic.setImageResource(android.R.color.transparent);
         v.ivProfilePic.setImageResource(R.drawable.ic_logo);
+//        ImageLoader imageLoader = ImageLoader.getInstance();
+//        imageLoader.displayImage(student.getProfilePicUrl(),
+//                v.ivProfilePic);
         v.tvName.setText(Html.fromHtml("<b>" + student.getFirstName() + " " + student.getLastName() + "</b>"));
         v.tvDescription.setText(Html.fromHtml("<i>" + student.getGender().toString() + "</i>"));
 
@@ -77,5 +84,13 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
             }
         });
         return convertView;
+    }
+
+    private static class ViewHolder {
+        ImageView ivProfilePic;
+        TextView tvName;
+        TextView tvDescription;
+        Button btnNegative;
+        Button btnPositive;
     }
 }

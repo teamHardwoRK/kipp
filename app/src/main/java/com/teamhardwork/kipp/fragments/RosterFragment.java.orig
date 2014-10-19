@@ -10,8 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+<<<<<<< HEAD
 import android.widget.AdapterView;
+=======
 import android.widget.Toast;
+>>>>>>> roster
 
 import com.fortysevendeg.swipelistview.BaseSwipeListViewListener;
 import com.fortysevendeg.swipelistview.SwipeListView;
@@ -30,9 +33,12 @@ public class RosterFragment extends Fragment {
     SchoolClass schoolClass;
     List<Student> students;
     StudentArrayAdapter aStudents;
-    SwipeListView lvStudents;
-    private RosterSwipeListener listener;
+<<<<<<< HEAD
+    private SwipeListView lvStudents;
     private OnStudentSelectedListener onStudentSelectedListener;
+=======
+    private RosterSwipeListener listener;
+>>>>>>> roster
 
     @Override
     public void onAttach(Activity activity) {
@@ -42,12 +48,6 @@ public class RosterFragment extends Fragment {
         } else {
             throw new ClassCastException(activity.toString()
                     + " must implement RosterFragment.OnStudentSelectedListener");
-        }
-        if (activity instanceof RosterSwipeListener) {
-            listener = (RosterSwipeListener) activity;
-        } else {
-            throw new ClassCastException(activity.toString()
-                    + " must implement RosterFragment.RosterSwipeListener");
         }
     }
 
@@ -243,15 +243,28 @@ public class RosterFragment extends Fragment {
         return (int) px;
     }
 
-    public void reset() {
-        lvStudents.closeOpenedItems();
-    }
-    
+<<<<<<< HEAD
     public interface OnStudentSelectedListener {
         void onStudentSelected(Student student);
+=======
+    public void reset() {
+        lvStudents.closeOpenedItems();
     }
 
     public interface RosterSwipeListener {
         public void toggleBehaviorFragment(boolean open, ArrayList<String> studentIds, String schoolClassId, boolean positive);
+    }
+
+    // Store the listener (activity) that will have events fired once the fragment is attached
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof RosterSwipeListener) {
+            listener = (RosterSwipeListener) activity;
+        } else {
+            throw new ClassCastException(activity.toString()
+                    + " must implement RosterFragment.RosterSwipeListener");
+        }
+>>>>>>> roster
     }
 }

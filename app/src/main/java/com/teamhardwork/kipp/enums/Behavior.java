@@ -32,4 +32,12 @@ public enum Behavior {
     public int getPoints() {
         return points;
     }
+
+    public boolean equalsName(String otherTitle){
+        return (otherTitle == null)? false:title.equals(otherTitle);
+    }
+
+    public String toString() {
+        return title;
+    }
 }
