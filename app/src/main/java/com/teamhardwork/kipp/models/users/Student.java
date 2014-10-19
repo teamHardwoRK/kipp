@@ -1,6 +1,7 @@
 package com.teamhardwork.kipp.models.users;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -27,6 +28,14 @@ public class Student extends KippUser {
         ParseQuery<Student> query = ParseQuery.getQuery(Student.class);
         query.whereEqualTo(USER, parseUser);
         query.findInBackground(callback);
+    }
+
+    public static void getStudentAsync(String studentId, GetCallback<Student> callback) {
+        ParseQuery<Student> query = ParseQuery.getQuery(Student.class);
+        // First try to find from the cache and only then go to network
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
+        // Execute the query to find the object with ID
+        query.getInBackground(studentId, callback);
     }
 
     public List<SchoolClass> getClassList() {

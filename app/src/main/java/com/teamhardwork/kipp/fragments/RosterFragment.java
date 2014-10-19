@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.Toast;
 
 import com.fortysevendeg.swipelistview.BaseSwipeListViewListener;
 import com.fortysevendeg.swipelistview.SwipeListView;
@@ -31,9 +32,18 @@ public class RosterFragment extends Fragment {
     private SwipeListView lvStudents;
     SchoolClass schoolClass;
     StudentArrayAdapter aStudents;
+    private RosterSwipeListener listener;
 
     public RosterFragment() {
         // Required empty public constructor
+    }
+
+    public static RosterFragment newInstance(RosterSwipeListener listener) {
+        RosterFragment fragment = new RosterFragment();
+        fragment.listener = listener;
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -106,6 +116,17 @@ public class RosterFragment extends Fragment {
         lvStudents.setSwipeListViewListener(new BaseSwipeListViewListener() {
             @Override
             public void onOpened(int position, boolean toRight) {
+                if (toRight == true) {
+                    Toast.makeText(getActivity(), "toRight", Toast.LENGTH_SHORT).show();
+                    ArrayList<Student> selectedStudents = new ArrayList<Student>();
+                    selectedStudents.add(aStudents.getItem(position));
+                    listener.showBehaviorFragment(selectedStudents, schoolClass, true);
+                } else {
+                    Toast.makeText(getActivity(), "toLeft", Toast.LENGTH_SHORT).show();
+                    ArrayList<Student> selectedStudents = new ArrayList<Student>();
+                    selectedStudents.add(aStudents.getItem(position));
+                    listener.showBehaviorFragment(selectedStudents, schoolClass, false);
+                }
             }
 
             @Override
@@ -198,5 +219,9 @@ public class RosterFragment extends Fragment {
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         float px = dp * (metrics.densityDpi / 160f);
         return (int) px;
+    }
+
+    public interface RosterSwipeListener {
+        public void showBehaviorFragment(List<Student> students, SchoolClass schoolClass, boolean positive);
     }
 }

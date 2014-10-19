@@ -2,7 +2,6 @@ package com.teamhardwork.kipp.models;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
-import com.parse.Parse;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -51,6 +50,14 @@ public class SchoolClass extends ParseObject {
         ParseQuery<SchoolClass> query = ParseQuery.getQuery(SchoolClass.class);
         query.whereEqualTo(TEACHER, teacher);
         query.getFirstInBackground(callback);
+    }
+
+    public static void getSchoolClassAsync(String schoolClassId, GetCallback<SchoolClass> callback) {
+        ParseQuery<SchoolClass> query = ParseQuery.getQuery(SchoolClass.class);
+        // First try to find from the cache and only then go to network
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
+        // Execute the query to find the object with ID
+        query.getInBackground(schoolClassId, callback);
     }
 
     public void addStudent(Student student) {

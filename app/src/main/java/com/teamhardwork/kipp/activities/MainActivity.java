@@ -14,18 +14,23 @@ import com.parse.ParseUser;
 import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.dialogfragments.AddActionDialogFragment;
+import com.teamhardwork.kipp.fragments.BehaviorPagerFragment;
 import com.teamhardwork.kipp.fragments.FeedFragment;
 import com.teamhardwork.kipp.fragments.RosterFragment;
 import com.teamhardwork.kipp.fragments.StatsFragment;
 import com.teamhardwork.kipp.models.BehaviorEvent;
+import com.teamhardwork.kipp.models.SchoolClass;
+import com.teamhardwork.kipp.models.users.Student;
 import com.teamhardwork.kipp.models.users.Teacher;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class MainActivity extends Activity implements FeedFragment.FeedListener {
+public class MainActivity extends Activity implements FeedFragment.FeedListener, RosterFragment.RosterSwipeListener {
     Teacher teacher;
     private FeedFragment feedFragment;
     private RosterFragment rosterFragment;
+    private BehaviorPagerFragment pagerFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +49,8 @@ public class MainActivity extends Activity implements FeedFragment.FeedListener 
         feedFragment = FeedFragment.getInstance(teacher, this);
         ft.add(R.id.flClassFeed, feedFragment);
 
-        rosterFragment = new RosterFragment();
-        ft.add(R.id.flRoster, rosterFragment);
+        rosterFragment = RosterFragment.newInstance(this);
+        ft.replace(R.id.flRoster, rosterFragment);
 
         ft.commit();
     }
@@ -93,5 +98,19 @@ public class MainActivity extends Activity implements FeedFragment.FeedListener 
         AddActionDialogFragment dialogFragment = AddActionDialogFragment.getInstance(event);
 
         dialogFragment.show(getFragmentManager(), "dialog_fragment_add_action");
+    }
+
+    public void showBehaviorFragment(List<Student> students, SchoolClass schoolClass, boolean isPositive) {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+        ArrayList<String> studentIds = new ArrayList<String>();
+        for (int i = 0; i < students.size(); i++) {
+            studentIds.add(students.get(i).getObjectId());
+        }
+        pagerFragment = BehaviorPagerFragment.newInstance(studentIds, schoolClass.getObjectId(), isPositive);
+        ft.replace(R.id.flClassFeed, pagerFragment);
+        ft.addToBackStack(null);
+
+        ft.commit();
     }
 }

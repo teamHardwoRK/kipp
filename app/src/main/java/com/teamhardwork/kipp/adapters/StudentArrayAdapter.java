@@ -29,8 +29,8 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
         ImageView ivProfilePic;
         TextView tvName;
         TextView tvDescription;
-        Button btnNegative;
-        Button btnPositive;
+        Button btnNote;
+        Button btnContact;
     }
 
     public StudentArrayAdapter(Context context, int resource, List<Student> students) {
@@ -50,8 +50,8 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
             v.ivProfilePic = (ImageView) convertView.findViewById(R.id.ivProfilePic);
             v.tvName = (TextView) convertView.findViewById(R.id.tvName);
             v.tvDescription = (TextView) convertView.findViewById(R.id.tvDescription);
-            v.btnNegative = (Button) convertView.findViewById(R.id.btnNegative);
-            v.btnPositive = (Button) convertView.findViewById(R.id.btnPositive);
+            v.btnNote = (Button) convertView.findViewById(R.id.btnNote);
+            v.btnContact = (Button) convertView.findViewById(R.id.btnContact);
             convertView.setTag(v);
         } else {
             v = (ViewHolder) convertView.getTag();
@@ -67,17 +67,17 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
         v.tvName.setText(Html.fromHtml("<b>" + student.getFirstName() + " " + student.getLastName() + "</b>"));
         v.tvDescription.setText(Html.fromHtml("<i>" + student.getGender().toString() + "</i>"));
 
-        v.btnNegative.setOnClickListener(new View.OnClickListener() {
+        v.btnNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "btnNegative pressed!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "btnNote pressed!", Toast.LENGTH_SHORT).show();
             }
         });
 
-        v.btnPositive.setOnClickListener(new View.OnClickListener() {
+        v.btnContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "btnPositive pressed!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "btnContact pressed!", Toast.LENGTH_SHORT).show();
             }
         });
         return convertView;
