@@ -1,6 +1,8 @@
 package com.teamhardwork.kipp.activities;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,23 +16,24 @@ import com.parse.ParseUser;
 import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.dialogfragments.AddActionDialogFragment;
+import com.teamhardwork.kipp.fragments.BehaviorFragment;
 import com.teamhardwork.kipp.fragments.BehaviorPagerFragment;
 import com.teamhardwork.kipp.fragments.FeedFragment;
 import com.teamhardwork.kipp.fragments.RosterFragment;
 import com.teamhardwork.kipp.fragments.StatsFragment;
 import com.teamhardwork.kipp.models.BehaviorEvent;
-import com.teamhardwork.kipp.models.SchoolClass;
-import com.teamhardwork.kipp.models.users.Student;
 import com.teamhardwork.kipp.models.users.Teacher;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class MainActivity extends Activity implements FeedFragment.FeedListener, RosterFragment.RosterSwipeListener {
+public class MainActivity extends Activity implements FeedFragment.FeedListener, RosterFragment.RosterSwipeListener, BehaviorFragment.BehaviorListener {
+    private final String FEED_FRAGMENT_TAG = "FeedFragment";
+    private final String ROSTER_FRAGMENT_TAG = "RosterFragment";
+    private final String STATS_FRAGMENT_TAG = "StatsFragment";
+    private final String BEHAVIOR_PAGER_FRAGMENT_TAG = "BehaviorPagerFragment";
     Teacher teacher;
     private FeedFragment feedFragment;
     private RosterFragment rosterFragment;
-    private BehaviorPagerFragment pagerFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +50,10 @@ public class MainActivity extends Activity implements FeedFragment.FeedListener,
         FragmentTransaction ft = getFragmentManager().beginTransaction();
 
         feedFragment = FeedFragment.getInstance(teacher, this);
-        ft.add(R.id.flClassFeed, feedFragment);
+        ft.add(R.id.flClassFeed, feedFragment, FEED_FRAGMENT_TAG);
 
-        rosterFragment = RosterFragment.newInstance(this);
-        ft.replace(R.id.flRoster, rosterFragment);
+        rosterFragment = RosterFragment.newInstance();
+        ft.replace(R.id.flRoster, rosterFragment, ROSTER_FRAGMENT_TAG);
 
         ft.commit();
     }
@@ -100,16 +103,60 @@ public class MainActivity extends Activity implements FeedFragment.FeedListener,
         dialogFragment.show(getFragmentManager(), "dialog_fragment_add_action");
     }
 
-    public void showBehaviorFragment(List<Student> students, SchoolClass schoolClass, boolean isPositive) {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-
-        ArrayList<String> studentIds = new ArrayList<String>();
-        for (int i = 0; i < students.size(); i++) {
-            studentIds.add(students.get(i).getObjectId());
+    public void toggleBehaviorFragment(boolean open, ArrayList<String> studentIds, String schoolClassId, boolean isPositive) {
+        if (open == true) {
+            showBehaviorPagerFragment(studentIds, schoolClassId, isPositive);
+        } else {
+            closeBehaviorPagerFragment();
         }
-        pagerFragment = BehaviorPagerFragment.newInstance(studentIds, schoolClass.getObjectId(), isPositive);
-        ft.replace(R.id.flClassFeed, pagerFragment);
-        ft.addToBackStack(null);
+    }
+
+    public void showBehaviorPagerFragment(ArrayList<String> studentIds, String schoolClassId, boolean isPositive) {
+        FragmentManager fm = getFragmentManager();
+        Fragment feedFragment = fm.findFragmentByTag(FEED_FRAGMENT_TAG);
+        Fragment pagerFragment = fm.findFragmentByTag(BEHAVIOR_PAGER_FRAGMENT_TAG);
+
+        FragmentTransaction ft = fm.beginTransaction();
+
+        if (feedFragment != null) {
+            ft.hide(feedFragment);
+        }
+
+        if (pagerFragment == null) {
+            pagerFragment = BehaviorPagerFragment.newInstance(studentIds, schoolClassId, isPositive);
+            ft.add(R.id.flClassFeed, pagerFragment, BEHAVIOR_PAGER_FRAGMENT_TAG);
+        } else {
+            ft.detach(pagerFragment);
+
+            ((BehaviorPagerFragment)pagerFragment).reset(studentIds, schoolClassId, isPositive);
+
+            ft.attach(pagerFragment);
+            ft.show(pagerFragment);
+        }
+
+        ft.commit();
+    }
+
+    public void closeBehaviorPagerFragment() {
+        FragmentManager fm = getFragmentManager();
+        Fragment feedFragment = fm.findFragmentByTag(FEED_FRAGMENT_TAG);
+        Fragment rosterFragment = fm.findFragmentByTag(ROSTER_FRAGMENT_TAG);
+        Fragment pagerFragment = fm.findFragmentByTag(BEHAVIOR_PAGER_FRAGMENT_TAG);
+
+        // close behavior fragment and show feed Fragment
+        FragmentTransaction ft = fm.beginTransaction();
+
+        if (pagerFragment != null) {
+            ft.detach(pagerFragment);
+        }
+
+        if (rosterFragment != null) {
+            ((RosterFragment)rosterFragment).reset();
+        }
+
+        if (feedFragment != null) {
+            ft.show(feedFragment);
+        }
 
         ft.commit();
     }

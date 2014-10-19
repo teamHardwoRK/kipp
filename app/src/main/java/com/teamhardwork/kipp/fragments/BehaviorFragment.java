@@ -1,6 +1,7 @@
 package com.teamhardwork.kipp.fragments;
 
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,11 +25,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * A simple {@link android.app.Fragment} subclass.
- * Use the {@link BehaviorFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class BehaviorFragment extends Fragment {
     private static final String ARG_PARAM1 = "student_ids";
     private static final String ARG_PARAM2 = "school_class";
@@ -52,15 +48,8 @@ public class BehaviorFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * @param studentIds    Student Parse ID.
-     * @param schoolClassId School Class Parse ID.
-     * @return A new instance of fragment BehaviorFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static BehaviorFragment newInstance(BehaviorListener listener, ArrayList<String> studentIds, String schoolClassId, boolean isPositive) {
+    public static BehaviorFragment newInstance(ArrayList<String> studentIds, String schoolClassId, boolean isPositive) {
         BehaviorFragment fragment = new BehaviorFragment();
-        fragment.listener = listener;
         Bundle args = new Bundle();
         args.putStringArrayList(ARG_PARAM1, studentIds);
         args.putString(ARG_PARAM2, schoolClassId);
@@ -84,19 +73,9 @@ public class BehaviorFragment extends Fragment {
         }
 
         if (this.studentIds == null || this.schoolClassId == null) {
-            Toast.makeText(getActivity(), "cannot get studentId or schoolClassId", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "cannot get studentIds or schoolClassId", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        String studentId = studentIds.get(0);
-        Student.getStudentAsync(studentId, new GetCallback<Student>() {
-            @Override
-            public void done(Student foundStudent, ParseException e) {
-                if (e == null && foundStudent != null) {
-                    students.add(foundStudent);
-                }
-            }
-        });
 
         SchoolClass.getSchoolClassAsync(schoolClassId, new GetCallback<SchoolClass>() {
             @Override
@@ -106,6 +85,17 @@ public class BehaviorFragment extends Fragment {
                 }
             }
         });
+
+        for (int i = 0; i < studentIds.size(); i++) {
+            Student.getStudentAsync(studentIds.get(i), new GetCallback<Student>() {
+                @Override
+                public void done(Student foundStudent, ParseException e) {
+                    if (e == null && foundStudent != null) {
+                        students.add(foundStudent);
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -136,22 +126,24 @@ public class BehaviorFragment extends Fragment {
         lvBehaviors.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long mylng) {
-                BehaviorEvent behaviorEvent = new BehaviorEvent();
-                behaviorEvent.setBehavior(behaviors.get(position));
-                behaviorEvent.setSchoolClass(schoolClass);
-                behaviorEvent.setStudent(students.get(0));
-                behaviorEvent.setOccurredAt(new Date());
-                behaviorEvent.setNotes("");
-//                behaviorEvent.saveInBackground();
-                try {
-                    behaviorEvent.save();
-                    Toast.makeText(getActivity(), "behaviorEvent saved", Toast.LENGTH_SHORT).show();
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                for (int i = 0; i < students.size(); i++) {
+                    BehaviorEvent behaviorEvent = new BehaviorEvent();
+                    behaviorEvent.setBehavior(behaviors.get(position));
+                    behaviorEvent.setSchoolClass(schoolClass);
+                    behaviorEvent.setStudent(students.get(i));
+                    behaviorEvent.setOccurredAt(new Date());
+                    behaviorEvent.setNotes("");
+                    behaviorEvent.saveInBackground();
+                    Toast.makeText(getActivity(), "behaviorEvent saved for " + students.get(i).getFirstName(), Toast.LENGTH_SHORT).show();
+                    /*try {
+                        behaviorEvent.save();
+                        Toast.makeText(getActivity(), "behaviorEvent saved", Toast.LENGTH_SHORT).show();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }*/
                 }
 
-                getFragmentManager().popBackStack();
-                listener.closeBehaviorFragment();
+                listener.closeBehaviorPagerFragment();
             }
         });
 
@@ -159,6 +151,18 @@ public class BehaviorFragment extends Fragment {
     }
 
     public interface BehaviorListener {
-        public void closeBehaviorFragment();
+        public void closeBehaviorPagerFragment();
+    }
+
+    // Store the listener (activity) that will have events fired once the fragment is attached
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof BehaviorListener) {
+            listener = (BehaviorListener) activity;
+        } else {
+            throw new ClassCastException(activity.toString()
+                    + " must implement BehaviorFragment.BehaviorListener");
+        }
     }
 }

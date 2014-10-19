@@ -1,6 +1,7 @@
 package com.teamhardwork.kipp.fragments;
 
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -24,13 +25,10 @@ import com.teamhardwork.kipp.models.users.Student;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link android.app.Fragment} subclass.
- *
- */
 public class RosterFragment extends Fragment {
     private SwipeListView lvStudents;
     SchoolClass schoolClass;
+    List<Student> students;
     StudentArrayAdapter aStudents;
     private RosterSwipeListener listener;
 
@@ -38,9 +36,8 @@ public class RosterFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static RosterFragment newInstance(RosterSwipeListener listener) {
+    public static RosterFragment newInstance() {
         RosterFragment fragment = new RosterFragment();
-        fragment.listener = listener;
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -55,7 +52,8 @@ public class RosterFragment extends Fragment {
         if (schoolClass != null) {
             schoolClass.getClassRosterAsync(new FindCallback<Student>() {
                 @Override
-                public void done(List<Student> students, ParseException e) {
+                public void done(List<Student> foundStudents, ParseException e) {
+                    students = foundStudents;
                     aStudents.addAll(students);
                 }
             });
@@ -117,21 +115,21 @@ public class RosterFragment extends Fragment {
             @Override
             public void onOpened(int position, boolean toRight) {
                 if (toRight == true) {
-                    Toast.makeText(getActivity(), "toRight", Toast.LENGTH_SHORT).show();
-                    ArrayList<Student> selectedStudents = new ArrayList<Student>();
-                    selectedStudents.add(aStudents.getItem(position));
-                    listener.showBehaviorFragment(selectedStudents, schoolClass, true);
+                    Toast.makeText(getActivity(), "toRight of " + String.valueOf(position), Toast.LENGTH_SHORT).show();
+                    ArrayList<String> studentIds = new ArrayList<String>();
+                    studentIds.add(aStudents.getItem(position).getObjectId());
+                    listener.toggleBehaviorFragment(true, studentIds, schoolClass.getObjectId(), true);
                 } else {
-                    Toast.makeText(getActivity(), "toLeft", Toast.LENGTH_SHORT).show();
-                    ArrayList<Student> selectedStudents = new ArrayList<Student>();
-                    selectedStudents.add(aStudents.getItem(position));
-                    listener.showBehaviorFragment(selectedStudents, schoolClass, false);
+                    Toast.makeText(getActivity(), "toLeft of " + String.valueOf(position), Toast.LENGTH_SHORT).show();
+                    ArrayList<String> studentIds = new ArrayList<String>();
+                    studentIds.add(aStudents.getItem(position).getObjectId());
+                    listener.toggleBehaviorFragment(true, studentIds, schoolClass.getObjectId(), false);
                 }
             }
 
             @Override
-            public void onClosed(int i, boolean b) {
-
+            public void onClosed(int position, boolean toRight) {
+                listener.toggleBehaviorFragment(false, null, null, true);
             }
 
             @Override
@@ -221,7 +219,23 @@ public class RosterFragment extends Fragment {
         return (int) px;
     }
 
+    public void reset() {
+        lvStudents.closeOpenedItems();
+    }
+
     public interface RosterSwipeListener {
-        public void showBehaviorFragment(List<Student> students, SchoolClass schoolClass, boolean positive);
+        public void toggleBehaviorFragment(boolean open, ArrayList<String> studentIds, String schoolClassId, boolean positive);
+    }
+
+    // Store the listener (activity) that will have events fired once the fragment is attached
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof RosterSwipeListener) {
+            listener = (RosterSwipeListener) activity;
+        } else {
+            throw new ClassCastException(activity.toString()
+                    + " must implement RosterFragment.RosterSwipeListener");
+        }
     }
 }
