@@ -33,10 +33,9 @@ public class BehaviorPagerAdapter extends FragmentPagerAdapter {
         return NUM_ITEMS;
     }
 
-    public void clearAll()
-    {
+    public void clearAll() {
         // Clear all pages
-        for(int i = 0; i < pagerFragments.size(); i++) {
+        for (int i = 0; i < pagerFragments.size(); i++) {
             fm.beginTransaction().remove(pagerFragments.get(i)).commit();
         }
         pagerFragments.clear();

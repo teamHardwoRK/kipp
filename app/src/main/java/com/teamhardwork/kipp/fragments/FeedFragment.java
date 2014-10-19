@@ -1,5 +1,6 @@
 package com.teamhardwork.kipp.fragments;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,7 +17,6 @@ import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.adapters.BehaviorEventAdapter;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.SchoolClass;
-import com.teamhardwork.kipp.models.users.KippUser;
 import com.teamhardwork.kipp.models.users.Student;
 import com.teamhardwork.kipp.queries.FeedQueries;
 
@@ -26,8 +26,6 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class FeedFragment extends Fragment {
-    KippUser user;
-
     @InjectView(R.id.lvBehaviorFeed)
     ListView lvBehaviorFeed;
 
@@ -37,12 +35,15 @@ public class FeedFragment extends Fragment {
     BehaviorEventAdapter adapter;
     FeedListener listener;
 
-    public static FeedFragment getInstance(KippUser user, FeedListener listener) {
+    public static FeedFragment getInstance() {
         FeedFragment fragment = new FeedFragment();
-        fragment.user = user;
-        fragment.listener = listener;
-
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        this.listener = (FeedListener) activity;
     }
 
     @Override
@@ -96,7 +97,6 @@ public class FeedFragment extends Fragment {
                 hideProgressBar();
             }
         });
-
     }
 
     public void changeToClassFeed(SchoolClass schoolClass) {

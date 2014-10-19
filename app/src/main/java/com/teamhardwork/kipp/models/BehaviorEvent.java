@@ -11,8 +11,8 @@ import java.util.Date;
 public class BehaviorEvent extends ParseObject {
     public static final String STUDENT = "student";
     public static final String SCHOOL_CLASS = "schoolClass";
+    public static final String OCCURRED_AT = "occurredAt";
     static final String BEHAVIOR = "behavior";
-    static final String OCCURRED_AT = "occurredAt";
     static final String NOTES = "notes";
 
     public Student getStudent() {

@@ -39,6 +39,9 @@ public class DateUtilities {
         if (period.getDays() > 0) {
             sb.append(period.getDays()).append("d ");
         }
+        if (period.getHours() > 0) {
+            sb.append(period.getHours()).append("h ");
+        }
         sb.append(period.getMinutes()).append("m ");
         sb.append(period.getSeconds()).append("s ");
 

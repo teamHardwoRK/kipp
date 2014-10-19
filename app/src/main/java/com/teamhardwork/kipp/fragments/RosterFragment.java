@@ -34,6 +34,13 @@ public class RosterFragment extends Fragment {
     private RosterSwipeListener listener;
     private OnStudentSelectedListener onStudentSelectedListener;
 
+    public static RosterFragment newInstance() {
+        RosterFragment fragment = new RosterFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -49,13 +56,6 @@ public class RosterFragment extends Fragment {
             throw new ClassCastException(activity.toString()
                     + " must implement RosterFragment.RosterSwipeListener");
         }
-    }
-
-    public static RosterFragment newInstance() {
-        RosterFragment fragment = new RosterFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -246,7 +246,7 @@ public class RosterFragment extends Fragment {
     public void reset() {
         lvStudents.closeOpenedItems();
     }
-    
+
     public interface OnStudentSelectedListener {
         void onStudentSelected(Student student);
     }

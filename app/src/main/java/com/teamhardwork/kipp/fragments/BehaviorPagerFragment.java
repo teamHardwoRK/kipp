@@ -25,6 +25,10 @@ public class BehaviorPagerFragment extends Fragment {
     private BehaviorPagerAdapter behaviorPagerAdapter;
     private ViewPager vpPager;
 
+    public BehaviorPagerFragment() {
+        // Required empty public constructor
+    }
+
     public static BehaviorPagerFragment newInstance(ArrayList<String> studentIds, String schoolClassId, boolean isPositive) {
         BehaviorPagerFragment fragment = new BehaviorPagerFragment();
         Bundle args = new Bundle();
@@ -33,9 +37,6 @@ public class BehaviorPagerFragment extends Fragment {
         args.putBoolean(ARG_PARAM3, isPositive);
         fragment.setArguments(args);
         return fragment;
-    }
-    public BehaviorPagerFragment() {
-        // Required empty public constructor
     }
 
     @Override

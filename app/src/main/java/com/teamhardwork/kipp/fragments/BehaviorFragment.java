@@ -150,10 +150,6 @@ public class BehaviorFragment extends Fragment {
         return v;
     }
 
-    public interface BehaviorListener {
-        public void closeBehaviorPagerFragment();
-    }
-
     // Store the listener (activity) that will have events fired once the fragment is attached
     @Override
     public void onAttach(Activity activity) {
@@ -164,5 +160,9 @@ public class BehaviorFragment extends Fragment {
             throw new ClassCastException(activity.toString()
                     + " must implement BehaviorFragment.BehaviorListener");
         }
+    }
+
+    public interface BehaviorListener {
+        public void closeBehaviorPagerFragment();
     }
 }

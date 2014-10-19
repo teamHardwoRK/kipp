@@ -10,8 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.adapters.AddActionAdapter;
@@ -29,8 +33,10 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class AddActionDialogFragment extends DialogFragment {
-
     static final int EMAIL_REQUEST_CODE = 123;
+    static final String STUDENT_ID = "studentId";
+    static final String EVENT_ID = "behaviorEventId";
+
     Student student;
     BehaviorEvent event;
     ActionType type;
@@ -38,16 +44,23 @@ public class AddActionDialogFragment extends DialogFragment {
     @InjectView(R.id.lvActions)
     ListView lvActions;
 
+    @InjectView(R.id.pbAddAction)
+    ProgressBar pbAddAction;
+
     public static AddActionDialogFragment getInstance(Student student) {
         AddActionDialogFragment dialogFragment = new AddActionDialogFragment();
-        dialogFragment.student = student;
+        Bundle bundle = new Bundle();
+        bundle.putString(STUDENT_ID, student.getObjectId());
+        dialogFragment.setArguments(bundle);
 
         return dialogFragment;
     }
 
     public static AddActionDialogFragment getInstance(BehaviorEvent event) {
         AddActionDialogFragment dialogFragment = getInstance(event.getStudent());
-        dialogFragment.event = event;
+        Bundle bundle = new Bundle();
+        bundle.putString(EVENT_ID, event.getObjectId());
+        dialogFragment.setArguments(bundle);
 
         return dialogFragment;
     }
@@ -59,10 +72,44 @@ public class AddActionDialogFragment extends DialogFragment {
 
         lvActions.setAdapter(new AddActionAdapter(getActivity(), Role.STUDENT));
         setupListeners();
+        retrieveData();
 
         getDialog().setTitle(R.string.title_add_action);
 
         return view;
+    }
+
+    void retrieveData() {
+        String studentId = getArguments().getString(STUDENT_ID);
+
+        if (studentId == null) {
+            String eventId = getArguments().getString(EVENT_ID);
+
+            ParseQuery<BehaviorEvent> query = ParseQuery.getQuery(BehaviorEvent.class);
+            query.getInBackground(eventId, new GetCallback<BehaviorEvent>() {
+                @Override
+                public void done(BehaviorEvent event, ParseException e) {
+                    AddActionDialogFragment.this.event = event;
+                    AddActionDialogFragment.this.student = event.getStudent();
+                    hideProgressBar();
+                }
+            });
+        }
+        else {
+            ParseQuery<Student> query = ParseQuery.getQuery(Student.class);
+            query.getInBackground(studentId, new GetCallback<Student>() {
+                @Override
+                public void done(Student student, ParseException e) {
+                    AddActionDialogFragment.this.student = student;
+                    hideProgressBar();
+                }
+            });
+        }
+    }
+
+    void hideProgressBar() {
+        pbAddAction.setVisibility(View.GONE);
+        lvActions.setVisibility(View.VISIBLE);
     }
 
     void setupListeners() {

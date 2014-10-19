@@ -1,58 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:id="@+id/back"
-        android:tag="back"
         style="@style/ListBackContent"
-        >
+        android:tag="back">
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/btnNote"
             style="@style/ListButtonAction"
-            android:background="#FF0300"
-            android:text="Add Note"/>
-
-        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="#FF0300"
+            android:text="Add Note" />
+
+        <Button
             android:id="@+id/btnContact"
             style="@style/ListButtonAction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="#10FF34"
-            android:text="Contact"/>
+            android:text="Contact" />
 
     </LinearLayout>
 
     <RelativeLayout
-        android:orientation="vertical"
         android:id="@+id/front"
-        android:tag="front"
-        style="@style/ListFrontContent">
+        style="@style/ListFrontContent"
+        android:orientation="vertical"
+        android:tag="front">
 
         <ImageView
-            style="@style/ListImage"
-            android:id="@+id/ivProfilePic"/>
+            android:id="@+id/ivProfilePic"
+            style="@style/ListImage" />
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/ivProfilePic"
+            android:id="@+id/tvName"
             style="@style/ListTitle"
-            android:id="@+id/tvName"/>
-
-        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/ivProfilePic"
-            android:layout_below="@id/tvName"
+            android:layout_toRightOf="@id/ivProfilePic" />
+
+        <TextView
+            android:id="@+id/tvDescription"
             style="@style/ListDescription"
-            android:id="@+id/tvDescription"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvName"
+            android:layout_toRightOf="@id/ivProfilePic" />
 
     </RelativeLayout>
 
-    </FrameLayout>
+</FrameLayout>

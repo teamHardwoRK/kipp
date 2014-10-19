@@ -22,6 +22,7 @@ import com.teamhardwork.kipp.fragments.LeaderboardFragment;
 import com.teamhardwork.kipp.fragments.RosterFragment;
 import com.teamhardwork.kipp.fragments.StatsFragment;
 import com.teamhardwork.kipp.models.BehaviorEvent;
+import com.teamhardwork.kipp.models.SchoolClass;
 import com.teamhardwork.kipp.models.users.Student;
 import com.teamhardwork.kipp.models.users.Teacher;
 
@@ -35,6 +36,8 @@ public class MainActivity extends Activity implements FeedFragment.FeedListener,
     private final String ROSTER_FRAGMENT_TAG = "RosterFragment";
     private final String STATS_FRAGMENT_TAG = "StatsFragment";
     private final String BEHAVIOR_PAGER_FRAGMENT_TAG = "BehaviorPagerFragment";
+
+    SchoolClass schoolClass;
     Teacher teacher;
     private FeedFragment feedFragment;
     private RosterFragment rosterFragment;
@@ -44,9 +47,13 @@ public class MainActivity extends Activity implements FeedFragment.FeedListener,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getActionBar().setHomeButtonEnabled(true);
 
-        teacher = ((KippApplication) getApplication()).getTeacher();
+        KippApplication application = (KippApplication) getApplication();
+        teacher = application.getTeacher();
+        schoolClass = application.getSchoolClass();
+
+        getActionBar().setHomeButtonEnabled(true);
+        getActionBar().setTitle(schoolClass.getName());
 
         setupLeaderboard();
         setupStatsModule();
@@ -56,7 +63,7 @@ public class MainActivity extends Activity implements FeedFragment.FeedListener,
     private void createFragments() {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
 
-        feedFragment = FeedFragment.getInstance(teacher, this);
+        feedFragment = FeedFragment.getInstance();
         ft.add(R.id.flClassFeed, feedFragment, FEED_FRAGMENT_TAG);
 
         rosterFragment = RosterFragment.newInstance();
@@ -108,7 +115,7 @@ public class MainActivity extends Activity implements FeedFragment.FeedListener,
 
         dialogFragment.show(getFragmentManager(), "dialog_fragment_add_action");
     }
-    
+
     @Override
     public void onStudentSelected(Student student) {
         getActionBar().setTitle("Detail view for " + student.getFullName());
@@ -118,7 +125,8 @@ public class MainActivity extends Activity implements FeedFragment.FeedListener,
     }
 
     private void onClassSelected() {
-        getActionBar().setTitle("Math 101 - Bob Loblaw"); // Hard coded for now
+        getActionBar().setTitle(schoolClass.getName());
+        feedFragment.changeToClassFeed(schoolClass);
         statsFragment.updateChartForClass();
     }
 
@@ -148,7 +156,7 @@ public class MainActivity extends Activity implements FeedFragment.FeedListener,
         } else {
             ft.detach(pagerFragment);
 
-            ((BehaviorPagerFragment)pagerFragment).reset(studentIds, schoolClassId, isPositive);
+            ((BehaviorPagerFragment) pagerFragment).reset(studentIds, schoolClassId, isPositive);
 
             ft.attach(pagerFragment);
             ft.show(pagerFragment);
@@ -171,7 +179,7 @@ public class MainActivity extends Activity implements FeedFragment.FeedListener,
         }
 
         if (rosterFragment != null) {
-            ((RosterFragment)rosterFragment).reset();
+            ((RosterFragment) rosterFragment).reset();
         }
 
         if (feedFragment != null) {

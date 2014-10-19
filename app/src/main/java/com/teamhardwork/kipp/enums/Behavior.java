@@ -33,8 +33,8 @@ public enum Behavior {
         return points;
     }
 
-    public boolean equalsName(String otherTitle){
-        return (otherTitle == null)? false:title.equals(otherTitle);
+    public boolean equalsName(String otherTitle) {
+        return (otherTitle == null) ? false : title.equals(otherTitle);
     }
 
     public String toString() {

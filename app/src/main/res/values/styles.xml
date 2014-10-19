@@ -73,11 +73,11 @@
     </style>
 
     <style name="New">
-    <item name="android:textColor">@color/text_new_tag</item>
-    <item name="android:textSize">@dimen/font_size_new_tag</item>
-    <item name="android:text">NewTag</item>
-    <item name="android:background">#dddaaa</item>
-    <item name="android:padding">@dimen/padding_new_tag</item>
+        <item name="android:textColor">@color/text_new_tag</item>
+        <item name="android:textSize">@dimen/font_size_new_tag</item>
+        <item name="android:text">NewTag</item>
+        <item name="android:background">#dddaaa</item>
+        <item name="android:padding">@dimen/padding_new_tag</item>
     </style>
 
 </resources>

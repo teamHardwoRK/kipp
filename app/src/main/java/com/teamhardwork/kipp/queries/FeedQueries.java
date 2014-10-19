@@ -17,6 +17,7 @@ public class FeedQueries {
         ParseQuery<BehaviorEvent> query = ParseQuery.getQuery(BehaviorEvent.class);
         query.whereEqualTo(BehaviorEvent.SCHOOL_CLASS, schoolClass);
         query.include(BehaviorEvent.STUDENT);
+        query.orderByDescending(BehaviorEvent.OCCURRED_AT);
         query.findInBackground(callback);
     }
 
@@ -24,6 +25,7 @@ public class FeedQueries {
         ParseQuery<BehaviorEvent> query = ParseQuery.getQuery(BehaviorEvent.class);
         query.whereEqualTo(BehaviorEvent.STUDENT, student);
         query.include(BehaviorEvent.STUDENT);
+        query.orderByDescending(BehaviorEvent.OCCURRED_AT);
         query.findInBackground(callback);
     }
 

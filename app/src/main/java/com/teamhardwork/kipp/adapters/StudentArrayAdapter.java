@@ -25,14 +25,6 @@ import java.util.List;
 public class StudentArrayAdapter extends ArrayAdapter<Student> {
     private Context context;
 
-    private static class ViewHolder {
-        ImageView ivProfilePic;
-        TextView tvName;
-        TextView tvDescription;
-        Button btnNote;
-        Button btnContact;
-    }
-
     public StudentArrayAdapter(Context context, int resource, List<Student> students) {
         super(context, resource, students);
         this.context = context;
@@ -77,5 +69,13 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
             }
         });
         return convertView;
+    }
+
+    private static class ViewHolder {
+        ImageView ivProfilePic;
+        TextView tvName;
+        TextView tvDescription;
+        Button btnNote;
+        Button btnContact;
     }
 }
