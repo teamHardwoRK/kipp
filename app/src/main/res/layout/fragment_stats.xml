@@ -11,15 +11,25 @@
         android:layout_centerInParent="true" />
 
     <LinearLayout
+        android:id="@+id/llLegend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/llLegend"
         android:layout_centerInParent="true"
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/tvLegendDescription"
             android:layout_width="wrap_content"
-            android:text="Class behavior history"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvGood"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvBad"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
     </LinearLayout>

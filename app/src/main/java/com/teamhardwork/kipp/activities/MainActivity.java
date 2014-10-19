@@ -26,6 +26,7 @@ public class MainActivity extends Activity implements FeedFragment.FeedListener,
     Teacher teacher;
     private FeedFragment feedFragment;
     private RosterFragment rosterFragment;
+    private StatsFragment statsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +60,9 @@ public class MainActivity extends Activity implements FeedFragment.FeedListener,
     }
 
     private void setupStatsModule() {
+        statsFragment = new StatsFragment();
         getFragmentManager().beginTransaction()
-                .replace(R.id.flStatsContainer, new StatsFragment())
+                .replace(R.id.flStatsContainer, statsFragment)
                 .commit();
     }
 
@@ -99,10 +101,12 @@ public class MainActivity extends Activity implements FeedFragment.FeedListener,
     public void onStudentSelected(Student student) {
         getActionBar().setTitle("Detail view for " + student.getFullName());
         feedFragment.changeToStudentFeed(student);
+        statsFragment.setupGoodBadChartForStudent(student);
         Toast.makeText(this, student.getFirstName() + " selected", Toast.LENGTH_SHORT).show();
     }
 
     private void onClassSelected() {
         getActionBar().setTitle("Math 101 - Bob Loblaw"); // Hard coded for now
+        statsFragment.setupGoodBadChartForClass();
     }
 }
