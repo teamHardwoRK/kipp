@@ -4,7 +4,9 @@ import com.teamhardwork.kipp.enums.Behavior;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BehaviorEventListFilterer {
 
@@ -30,5 +32,21 @@ public class BehaviorEventListFilterer {
             }
         }
         return kept;
+    }
+
+    public static Map<Behavior, Integer> getGroupedCount(List<BehaviorEvent> behaviorEvents) {
+        HashMap<Behavior, Integer> groupedCount = new HashMap<Behavior, Integer>();
+        for (Behavior behavior : Behavior.values()) {
+            groupedCount.put(behavior, 0);
+        }
+
+
+        for (BehaviorEvent behaviorEvent : behaviorEvents) {
+            Behavior behavior = behaviorEvent.getBehavior();
+            Integer prevCount = groupedCount.get(behavior);
+            groupedCount.put(behavior, prevCount + 1);
+        }
+
+        return groupedCount;
     }
 }
