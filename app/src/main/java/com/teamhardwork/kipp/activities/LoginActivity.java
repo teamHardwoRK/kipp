@@ -14,6 +14,7 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
+import com.teamhardwork.kipp.utilities.NetworkUtils;
 
 public class LoginActivity extends Activity {
     private EditText etUsername;
@@ -24,6 +25,10 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        if (NetworkUtils.isNetworkAvailable(this) == false) {
+            Toast.makeText(this, "network not available, try again later", Toast.LENGTH_SHORT).show();
+        }
         Parse.initialize(this, KippApplication.PARSE_APPLICATION_ID, KippApplication.PARSE_CLIENT_KEY);
 
         setupViews();
