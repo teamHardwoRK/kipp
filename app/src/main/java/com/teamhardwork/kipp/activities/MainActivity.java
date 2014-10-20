@@ -47,6 +47,7 @@ public class MainActivity extends Activity implements
     private FeedFragment feedFragment;
     private RosterFragment rosterFragment;
     private StatsFragment statsFragment;
+    private LeaderboardFragment leaderboardFragment;
     private KippPushBroadcastReceiver pushReceiver;
 
     @Override
@@ -79,8 +80,9 @@ public class MainActivity extends Activity implements
     }
 
     private void setupLeaderboard() {
+        leaderboardFragment = new LeaderboardFragment();
         getFragmentManager().beginTransaction()
-                .replace(R.id.flLeaderboardContainer, new LeaderboardFragment())
+                .replace(R.id.flLeaderboardContainer, leaderboardFragment)
                 .commit();
     }
 
@@ -100,6 +102,8 @@ public class MainActivity extends Activity implements
             public void onPushReceive() {
                 feedFragment.updateData();
                 statsFragment.updateData();
+                leaderboardFragment.updateLeaderboard();
+
             }
         });
         IntentFilter receiveIntentFilter = new IntentFilter();

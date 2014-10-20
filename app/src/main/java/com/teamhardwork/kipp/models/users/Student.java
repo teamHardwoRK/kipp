@@ -56,7 +56,7 @@ public class Student extends KippUser {
         return getInt(POINTS);
     }
 
-    public void setPoints(int points) {
-        put(POINTS, points);
+    public void addPoints(int newPoints) {
+        put(POINTS, getPoints() + newPoints);
     }
 }

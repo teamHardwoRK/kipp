@@ -126,15 +126,19 @@ public class BehaviorFragment extends Fragment {
         lvBehaviors.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long mylng) {
-                for (int i = 0; i < students.size(); i++) {
+                for (Student curStudent: students) {
                     BehaviorEvent behaviorEvent = new BehaviorEvent();
                     behaviorEvent.setBehavior(behaviors.get(position));
                     behaviorEvent.setSchoolClass(schoolClass);
-                    behaviorEvent.setStudent(students.get(i));
+                    behaviorEvent.setStudent(curStudent);
                     behaviorEvent.setOccurredAt(new Date());
                     behaviorEvent.setNotes("");
                     behaviorEvent.saveInBackground();
-                    Toast.makeText(getActivity(), "behaviorEvent saved for " + students.get(i).getFirstName(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "behaviorEvent saved for " + curStudent.getFirstName(), Toast.LENGTH_SHORT).show();
+
+                    int behaviorPoints = behaviorEvent.getBehavior().getPoints();
+                    curStudent.addPoints(behaviorPoints);
+                    curStudent.saveInBackground();
                     /*try {
                         behaviorEvent.save();
                         Toast.makeText(getActivity(), "behaviorEvent saved", Toast.LENGTH_SHORT).show();

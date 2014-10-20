@@ -8,7 +8,7 @@ import java.util.List;
 
 public class StudentListFilterer {
 
-    private static Comparator<Student> pointsComparator = new Comparator<Student>() {
+    public static Comparator<Student> pointsComparator = new Comparator<Student>() {
         @Override
         public int compare(Student student, Student student2) {
             return Integer.valueOf(student.getPoints()).compareTo(student2.getPoints());
