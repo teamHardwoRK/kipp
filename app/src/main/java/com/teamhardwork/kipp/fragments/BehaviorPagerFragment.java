@@ -72,16 +72,22 @@ public class BehaviorPagerFragment extends Fragment {
 
         this.schoolClassId = schoolClassId;
         this.isPositive = isPositive;
-        behaviorPagerAdapter.clearAll();
-        vpPager.removeAllViews();
-        vpPager.setAdapter(null);
+        if (behaviorPagerAdapter != null) {
+            behaviorPagerAdapter.clearAll();
+        }
+        if (vpPager != null) {
+            vpPager.removeAllViews();
+            vpPager.setAdapter(null);
+        }
         behaviorPagerAdapter = null;
         setupPagerAdapter();
     }
 
     public void setupPagerAdapter() {
-        behaviorPagerAdapter = new BehaviorPagerAdapter(this, getFragmentManager(), studentIds, schoolClassId, isPositive);
-        vpPager.setAdapter(behaviorPagerAdapter);
+        if (vpPager != null) {
+            behaviorPagerAdapter = new BehaviorPagerAdapter(this, getFragmentManager(), studentIds, schoolClassId, isPositive);
+            vpPager.setAdapter(behaviorPagerAdapter);
+        }
     }
 
     @Override

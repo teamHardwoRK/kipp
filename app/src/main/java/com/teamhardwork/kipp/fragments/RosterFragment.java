@@ -216,9 +216,12 @@ public class RosterFragment extends Fragment {
 
         lvStudents.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Student clicked = aStudents.getItem(i);
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Student clicked = aStudents.getItem(position);
+
+//                Toast.makeText(getActivity(), "longClicked on " + String.valueOf(position), Toast.LENGTH_SHORT).show();
                 onStudentSelectedListener.onStudentSelected(clicked);
+
                 return true;
             }
         });

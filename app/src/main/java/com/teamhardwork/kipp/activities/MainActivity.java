@@ -162,6 +162,12 @@ public class MainActivity extends Activity implements
         getActionBar().setTitle("Detail view for " + student.getFullName());
         feedFragment.changeToStudentFeed(student);
         statsFragment.updateChartForStudent(student);
+        Fragment rosterFragment = getFragmentManager().findFragmentByTag(ROSTER_FRAGMENT_TAG);
+
+        // HACK: reset roster Fragment to get around swiping issue
+        if (rosterFragment != null) {
+            getFragmentManager().beginTransaction().detach(rosterFragment).attach(rosterFragment).commit();
+        }
         Toast.makeText(this, student.getFirstName() + " selected", Toast.LENGTH_SHORT).show();
     }
 
