@@ -86,6 +86,7 @@ public class AddActionDialogFragment extends DialogFragment {
             String eventId = getArguments().getString(EVENT_ID);
 
             ParseQuery<BehaviorEvent> query = ParseQuery.getQuery(BehaviorEvent.class);
+            query.include(BehaviorEvent.STUDENT);
             query.getInBackground(eventId, new GetCallback<BehaviorEvent>() {
                 @Override
                 public void done(BehaviorEvent event, ParseException e) {
