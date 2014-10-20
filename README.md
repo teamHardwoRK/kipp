@@ -28,6 +28,7 @@
     * project the latest classroom feed onto a classroom chromecast enabled display
     * add custom behavior events
     * add course milestones to the feed.  E.g., add an event to the feed when a students completes a classwork section.
-        
-        
+
+Sprint 2:
+![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Sprint 2")
     
