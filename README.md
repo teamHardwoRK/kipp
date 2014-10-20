@@ -30,5 +30,5 @@
     * add course milestones to the feed.  E.g., add an event to the feed when a students completes a classwork section.
 
 Sprint 2:
-![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Sprint 2")
+![alt text](https://github.com/teamHardwoRK/kipp/blob/master/docs/anim_kipp_sprint_2.gif "Sprint 2")
     
