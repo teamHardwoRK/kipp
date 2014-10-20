@@ -19,7 +19,7 @@ public class FeedQueries {
                                             FindCallback<BehaviorEvent> callback) {
         ParseQuery<BehaviorEvent> query = ParseQuery.getQuery(BehaviorEvent.class);
         query.whereEqualTo(BehaviorEvent.SCHOOL_CLASS, schoolClass);
-        query.whereNotContainedIn("objectId", extractObjectIds(eventList));
+        query.whereGreaterThan(BehaviorEvent.OCCURRED_AT, eventList.get(0).getOccurredAt());
         query.include(BehaviorEvent.STUDENT);
         query.orderByAscending(BehaviorEvent.OCCURRED_AT);
         query.findInBackground(callback);
@@ -29,7 +29,7 @@ public class FeedQueries {
                                             FindCallback<BehaviorEvent> callback) {
         ParseQuery<BehaviorEvent> query = ParseQuery.getQuery(BehaviorEvent.class);
         query.whereEqualTo(BehaviorEvent.STUDENT, student);
-        query.whereNotContainedIn("objectId", extractObjectIds(eventList));
+        query.whereGreaterThan(BehaviorEvent.OCCURRED_AT, eventList.get(0).getOccurredAt());
         query.include(BehaviorEvent.STUDENT);
         query.orderByAscending(BehaviorEvent.OCCURRED_AT);
         query.findInBackground(callback);
