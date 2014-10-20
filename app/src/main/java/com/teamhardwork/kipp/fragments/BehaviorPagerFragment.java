@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.adapters.BehaviorPagerAdapter;
+import com.viewpagerindicator.TitlePageIndicator;
 
 import java.util.ArrayList;
 
@@ -24,6 +25,7 @@ public class BehaviorPagerFragment extends Fragment {
 
     private BehaviorPagerAdapter behaviorPagerAdapter;
     private ViewPager vpPager;
+    private TitlePageIndicator titleIndicator;
 
     public BehaviorPagerFragment() {
         // Required empty public constructor
@@ -60,9 +62,21 @@ public class BehaviorPagerFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_behavior_pager, container, false);
 
         vpPager = (ViewPager) v.findViewById(R.id.vpPager);
-        setupPagerAdapter();
+        titleIndicator = (TitlePageIndicator) v.findViewById(R.id.titleIndicator);
+        setupPager();
 
         return v;
+    }
+
+    public void setupPager() {
+        if (vpPager != null) {
+            behaviorPagerAdapter = new BehaviorPagerAdapter(this, getFragmentManager(), studentIds, schoolClassId, isPositive);
+            vpPager.setAdapter(behaviorPagerAdapter);
+
+            if (titleIndicator != null) {
+                titleIndicator.setViewPager(vpPager);
+            }
+        }
     }
 
     public void reset(ArrayList<String> studentIds, String schoolClassId, boolean isPositive) {
@@ -80,14 +94,7 @@ public class BehaviorPagerFragment extends Fragment {
             vpPager.setAdapter(null);
         }
         behaviorPagerAdapter = null;
-        setupPagerAdapter();
-    }
-
-    public void setupPagerAdapter() {
-        if (vpPager != null) {
-            behaviorPagerAdapter = new BehaviorPagerAdapter(this, getFragmentManager(), studentIds, schoolClassId, isPositive);
-            vpPager.setAdapter(behaviorPagerAdapter);
-        }
+        setupPager();
     }
 
     @Override
