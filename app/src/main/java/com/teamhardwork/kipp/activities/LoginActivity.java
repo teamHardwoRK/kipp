@@ -28,6 +28,7 @@ public class LoginActivity extends Activity {
 
         if (NetworkUtils.isNetworkAvailable(this) == false) {
             Toast.makeText(this, "network not available, try again later", Toast.LENGTH_SHORT).show();
+            return;
         }
         Parse.initialize(this, KippApplication.PARSE_APPLICATION_ID, KippApplication.PARSE_CLIENT_KEY);
 
