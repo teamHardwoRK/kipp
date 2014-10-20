@@ -99,6 +99,7 @@ public class MainActivity extends Activity implements
             @Override
             public void onPushReceive() {
                 feedFragment.updateData();
+                statsFragment.updateData();
             }
         });
         IntentFilter receiveIntentFilter = new IntentFilter();

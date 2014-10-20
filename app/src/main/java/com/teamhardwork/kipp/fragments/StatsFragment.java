@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.echo.holographlibrary.PieGraph;
 import com.echo.holographlibrary.PieSlice;
 import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.users.Student;
@@ -27,6 +28,10 @@ import butterknife.InjectView;
 public class StatsFragment extends BaseKippFragment {
     private static final int GOOD_COLOR_ID = Color.parseColor("#33CC00");
     private static final int BAD_COLOR_ID = Color.parseColor("#FF3333");
+
+    private List<BehaviorEvent> currentBehaviorEvents;
+    private FeedFragment.FeedType currentChartType = FeedFragment.FeedType.CLASS;
+    private Student currentStudent;
 
     @InjectView(R.id.pgTest)
     PieGraph pg;
@@ -55,7 +60,9 @@ public class StatsFragment extends BaseKippFragment {
         FeedQueries.getClassFeed(currentClass, new FindCallback<BehaviorEvent>() {
             @Override
             public void done(List<BehaviorEvent> behaviorEvents, com.parse.ParseException e) {
-                updateChart(behaviorEvents);
+                currentBehaviorEvents = behaviorEvents;
+                currentChartType = FeedFragment.FeedType.CLASS;
+                updateChart(currentBehaviorEvents);
                 tvLegendDescription.setText("Class behavior history");
             }
         });
@@ -63,10 +70,13 @@ public class StatsFragment extends BaseKippFragment {
     }
 
     public void updateChartForStudent(final Student currentStudent) {
+        this.currentStudent = currentStudent;
         FeedQueries.getStudentFeed(currentStudent, new FindCallback<BehaviorEvent>() {
             @Override
             public void done(List<BehaviorEvent> behaviorEvents, com.parse.ParseException e) {
-                updateChart(behaviorEvents);
+                currentBehaviorEvents = behaviorEvents;
+                currentChartType = FeedFragment.FeedType.STUDENT;
+                updateChart(currentBehaviorEvents);
                 tvLegendDescription.setText("Student behavior history");
             }
         });
@@ -110,6 +120,25 @@ public class StatsFragment extends BaseKippFragment {
         slice.setValue(value);
         slice.setTitle(title);
         pg.addSlice(slice);
+    }
+
+    public void updateData() {
+        FindCallback<BehaviorEvent> callback = new FindCallback<BehaviorEvent>() {
+            @Override
+            public void done(List<BehaviorEvent> eventList, ParseException e) {
+                currentBehaviorEvents.addAll(eventList);
+                updateChart(currentBehaviorEvents);
+            }
+        };
+
+        switch (currentChartType) {
+            case STUDENT:
+                FeedQueries.getLatestStudentEvents(currentStudent, currentBehaviorEvents, callback);
+                break;
+            case CLASS:
+                FeedQueries.getLatestClassEvents(currentClass, currentBehaviorEvents, callback);
+                break;
+        }
     }
 
 }
