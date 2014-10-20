@@ -6,11 +6,15 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.fortysevendeg.swipelistview.BaseSwipeListViewListener;
@@ -61,6 +65,8 @@ public class RosterFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
         aStudents = new StudentArrayAdapter(getActivity(), R.layout.student_row, new ArrayList<Student>());
 
         schoolClass = ((KippApplication) getActivity().getApplication()).getSchoolClass();
@@ -84,47 +90,63 @@ public class RosterFragment extends Fragment {
         return v;
     }
 
+
     private void setupViews(View v) {
         lvStudents = (SwipeListView) v.findViewById(R.id.lvStudents);
         lvStudents.setAdapter(aStudents);
 
-        lvStudents.setChoiceMode(AbsListView.CHOICE_MODE_NONE);
-//        lvStudents.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-//            lvStudents.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
-//
-//                @Override
-//                public void onItemCheckedStateChanged(ActionMode mode, int position,
-//                                                      long id, boolean checked) {
-//                    mode.setTitle("Selected (" + lvStudents.getCountSelected() + ")");
-//                }
-//
-//                @Override
-//                public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-//                    switch (item.getItemId()) {
-//                        default:
-//                            return false;
-//                    }
-//                }
-//
-//                @Override
-//                public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-////                    MenuInflater inflater = mode.getMenuInflater();
-////                    inflater.inflate(R.menu.menu_choice_items, menu);
-//                    return true;
-//                }
-//
-//                @Override
-//                public void onDestroyActionMode(ActionMode mode) {
-//                    lvStudents.unselectedChoiceStates();
-//                }
-//
-//                @Override
-//                public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-//                    return false;
-//                }
-//            });
-//        }
+        lvStudents.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        lvStudents.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+
+            @Override
+            public void onItemCheckedStateChanged(ActionMode mode, int position,
+                                                  long id, boolean checked) {
+                mode.setTitle("Selected (" + lvStudents.getCountSelected() + " students)");
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_eval:
+                        // go show behavior Fragment
+                        List<Integer> positions = lvStudents.getPositionsSelected();
+                        ArrayList<String> studentIds = new ArrayList<String>();
+                        for (int i = 0; i < positions.size(); i++) {
+                            studentIds.add(aStudents.getItem(positions.get(i)).getObjectId());
+                        }
+                        listener.toggleBehaviorFragment(true, studentIds, schoolClass.getObjectId(), true);
+                        mode.finish();
+                        return true;
+                    case R.id.action_note:
+                        // TODO: go show note dialog
+                        mode.finish();
+                        return true;
+                    case R.id.action_filter:
+                        // TODO: go do filter
+                        mode.finish();
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                MenuInflater inflater = mode.getMenuInflater();
+                inflater.inflate(R.menu.multiple_students, menu);
+                return true;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+                lvStudents.unselectedChoiceStates();
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+        });
 
         lvStudents.setSwipeListViewListener(new BaseSwipeListViewListener() {
             @Override
@@ -168,7 +190,11 @@ public class RosterFragment extends Fragment {
 
             @Override
             public void onClickFrontView(int position) {
+                Student clicked = aStudents.getItem(position);
+                onStudentSelectedListener.onStudentSelected(clicked);
+                Toast.makeText(getActivity(), clicked.getFirstName() + " selected", Toast.LENGTH_SHORT).show();
             }
+
 
             @Override
             public void onClickBackView(int position) {
@@ -211,18 +237,6 @@ public class RosterFragment extends Fragment {
             @Override
             public void onLastListItem() {
 
-            }
-        });
-
-        lvStudents.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Student clicked = aStudents.getItem(position);
-
-//                Toast.makeText(getActivity(), "longClicked on " + String.valueOf(position), Toast.LENGTH_SHORT).show();
-                onStudentSelectedListener.onStudentSelected(clicked);
-
-                return true;
             }
         });
 

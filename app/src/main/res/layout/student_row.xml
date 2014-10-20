@@ -13,7 +13,7 @@
             style="@style/ListButtonAction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#10FF34"
+            android:background="#98FF98"
             android:text="Contact" />
 
     </LinearLayout>
