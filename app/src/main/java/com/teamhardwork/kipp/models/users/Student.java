@@ -59,4 +59,21 @@ public class Student extends KippUser {
     public void addPoints(int newPoints) {
         put(POINTS, getPoints() + newPoints);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Student student = (Student) o;
+
+        if (!getObjectId().equals(student.getObjectId())) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return getObjectId().hashCode();
+    }
 }

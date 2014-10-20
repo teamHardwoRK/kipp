@@ -22,6 +22,7 @@ public class LeaderboardFragment extends BaseKippFragment {
     @InjectView(R.id.lvLeaderboard)
     ListView lvLeaderboard;
     private LeaderboardAdapter leaderboardAdapter;
+    private List<Student> leaderboard;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,7 +38,7 @@ public class LeaderboardFragment extends BaseKippFragment {
     }
 
     private void setupLeaderboard() {
-        List<Student> leaderboard = new ArrayList<Student>();
+        leaderboard = new ArrayList<Student>();
         leaderboardAdapter = new LeaderboardAdapter(getActivity(), leaderboard);
 
         lvLeaderboard.setAdapter(leaderboardAdapter);
@@ -49,5 +50,14 @@ public class LeaderboardFragment extends BaseKippFragment {
         Collections.sort(leaderboard, StudentListFilterer.pointsComparator);
         Collections.reverse(leaderboard);
         leaderboardAdapter.addAll(leaderboard);
+    }
+
+    public void setSelectedRowForStudent(Student student) {
+        int currentI = leaderboard.indexOf(student);
+        lvLeaderboard.setSelection(currentI);
+    }
+
+    public void resetSelectedRow() {
+        lvLeaderboard.setSelection(0);
     }
 }

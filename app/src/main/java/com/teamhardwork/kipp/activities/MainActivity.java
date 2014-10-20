@@ -166,6 +166,7 @@ public class MainActivity extends Activity implements
         getActionBar().setTitle("Detail view for " + student.getFullName());
         feedFragment.changeToStudentFeed(student);
         statsFragment.updateChartForStudent(student);
+        leaderboardFragment.setSelectedRowForStudent(student);
         Toast.makeText(this, student.getFirstName() + " selected", Toast.LENGTH_SHORT).show();
     }
 
@@ -173,6 +174,7 @@ public class MainActivity extends Activity implements
         getActionBar().setTitle(schoolClass.getName());
         feedFragment.changeToClassFeed(schoolClass);
         statsFragment.updateChartForClass();
+        leaderboardFragment.resetSelectedRow();
     }
 
     public void toggleBehaviorFragment(boolean open, ArrayList<String> studentIds, String schoolClassId, boolean isPositive) {
