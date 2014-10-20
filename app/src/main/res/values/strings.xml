@@ -16,5 +16,8 @@
     <string name="default_action_type_name">Action Name</string>
     <string name="choose_email_client">Choose an email app</string>
     <string name="salutation">Dear</string>
+    <string name="default_timestamp">5h 33m 7s</string>
+    <string name="behavior_feed_title">Behavior Feed</string>
+    <string name="action_feed_title">Action Log</string>
 
 </resources>

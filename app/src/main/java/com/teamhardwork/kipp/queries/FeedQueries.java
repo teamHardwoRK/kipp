@@ -51,10 +51,21 @@ public class FeedQueries {
         query.findInBackground(callback);
     }
 
-    public static List<Action> getStudentActionLog(Student student) {
-        List<Action> actionList = null;
+    public static void getStudentActionLog(Student student, FindCallback<Action> callback) {
+        ParseQuery<Action> query = ParseQuery.getQuery(Action.class);
+        query.whereEqualTo(Action.STUDENT, student);
+        query.include(Action.STUDENT);
+        query.orderByDescending(Action.OCCURRED_AT);
+        query.findInBackground(callback);
+    }
 
-        return actionList;
+    public static void getLatestActionLog(Student student, List<Action> actionList, FindCallback<Action> callback) {
+        ParseQuery<Action> query = ParseQuery.getQuery(Action.class);
+        query.whereEqualTo(Action.STUDENT, student);
+        query.whereGreaterThan(Action.OCCURRED_AT, actionList.get(0).getOccurredAt());
+        query.include(Action.STUDENT);
+        query.orderByAscending(Action.OCCURRED_AT);
+        query.findInBackground(callback);
     }
 
     static List<String> extractObjectIds(List<? extends ParseObject> parseObjectsList) {

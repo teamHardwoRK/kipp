@@ -11,8 +11,8 @@ import java.util.Date;
 public class Action extends ParseObject {
     static final String TYPE = "type";
     static final String NOTES = "notes";
-    static final String OCCURRED_AT = "occurredAt";
-    static final String STUDENT = "student";
+    public static final String OCCURRED_AT = "occurredAt";
+    public static final String STUDENT = "student";
     static final String BEHAVIOR_EVENT = "behaviorEvent";
     static final String SCHOOL_CLASS = "schoolClass";
 

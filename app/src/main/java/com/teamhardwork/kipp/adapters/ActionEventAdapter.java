@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.teamhardwork.kipp.R;
-import com.teamhardwork.kipp.models.BehaviorEvent;
+import com.teamhardwork.kipp.models.Action;
 import com.teamhardwork.kipp.utilities.DateUtilities;
 
 import java.util.List;
@@ -16,15 +16,15 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class BehaviorEventAdapter extends ArrayAdapter<BehaviorEvent> {
-    List<BehaviorEvent> eventList;
+public class ActionEventAdapter extends ArrayAdapter<Action>{
+    List<Action> eventList;
 
-    public BehaviorEventAdapter(Context context, List<BehaviorEvent> eventList) {
-        super(context, R.layout.item_behavior_event, eventList);
-        this.eventList = eventList;
+    public ActionEventAdapter(Context context, List<Action> events) {
+        super(context, R.layout.item_action_event, events);
+        this.eventList = events;
     }
 
-    public List<BehaviorEvent> getEventList() {
+    public List<Action> getEventList() {
         return eventList;
     }
 
@@ -32,37 +32,37 @@ public class BehaviorEventAdapter extends ArrayAdapter<BehaviorEvent> {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
 
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_behavior_event, parent, false);
-
+        if(convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_action_event, parent, false);
             holder = new ViewHolder(convertView);
-
             convertView.setTag(holder);
-        } else {
+        }
+        else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        final BehaviorEvent event = getItem(position);
-        holder.tvBehaviorName.setText(event.getBehavior().getTitle());
-        holder.tvStudentName.setText(event.getStudent().getFirstName() + " " + event.getStudent().getLastName());
-        holder.tvEventTimestamp.setText(age(event));
+        Action action = getItem(position);
+
+        holder.tvStudentName.setText(action.getStudent().getFullName());
+        holder.tvEventTimeStamp.setText(age(action));
+        holder.tvActionTypeName.setText(action.getType().getDisplayName());
 
         return convertView;
     }
 
-    String age(BehaviorEvent event) {
+    String age(Action event) {
         return DateUtilities.timestampAge(event.getOccurredAt()) + " " + getContext().getResources().getString(R.string.past_label);
     }
 
     class ViewHolder {
-        @InjectView(R.id.tvBehaviorName)
-        TextView tvBehaviorName;
+        @InjectView(R.id.tvActionTypeName)
+        TextView tvActionTypeName;
+
+        @InjectView(R.id.tvEventTimestamp)
+        TextView tvEventTimeStamp;
 
         @InjectView(R.id.tvStudentName)
         TextView tvStudentName;
-
-        @InjectView(R.id.tvEventTimestamp)
-        TextView tvEventTimestamp;
 
         public ViewHolder(View view) {
             ButterKnife.inject(this, view);
