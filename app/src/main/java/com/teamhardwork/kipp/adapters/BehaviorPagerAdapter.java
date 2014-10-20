@@ -62,6 +62,13 @@ public class BehaviorPagerAdapter extends FragmentPagerAdapter {
     // Returns the page title for the top indicator
     @Override
     public CharSequence getPageTitle(int position) {
-        return "Page " + position;
+        switch (position) {
+            case 0:
+                return "Positive";
+            case 1:
+                return "Negative";
+            default:
+                return "New Page";
+        }
     }
 }

@@ -1,1 +1,2 @@
 include ':app', ':HoloGraphLibrary', ':swipelistview'
+include ':viewpagerindicator'
