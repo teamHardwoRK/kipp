@@ -26,13 +26,8 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        if (NetworkUtils.isNetworkAvailable(this) == false) {
-            Toast.makeText(this, "network not available, try again later", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        Parse.initialize(this, KippApplication.PARSE_APPLICATION_ID, KippApplication.PARSE_CLIENT_KEY);
-
         setupViews();
+        Parse.initialize(this, KippApplication.PARSE_APPLICATION_ID, KippApplication.PARSE_CLIENT_KEY);
     }
 
     private void setupViews() {
@@ -47,6 +42,10 @@ public class LoginActivity extends Activity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (NetworkUtils.isNetworkAvailable(LoginActivity.this) == false) {
+                    Toast.makeText(LoginActivity.this, "network not available, try again later", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 ParseUser.logInInBackground(etUsername.getText().toString(), etPassword.getText().toString(), new LogInCallback() {
                     public void done(ParseUser user, ParseException e) {
                         if (user != null) {
