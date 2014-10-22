@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.teamhardwork.kipp"
     android:versionCode="1"
-    android:versionName="1.0">
+    android:versionName="1.0" >
 
     <supports-screens
         android:largeScreens="true"
@@ -23,7 +23,10 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
-    <permission android:name="com.teamhardwork.kipp.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+    <permission
+        android:name="com.teamhardwork.kipp.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
     <uses-permission android:name="com.teamhardwork.kipp.permission.C2D_MESSAGE" />
 
     <application
@@ -32,11 +35,11 @@
         android:hardwareAccelerated="true"
         android:icon="@drawable/ic_logo"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".activities.LoginActivity"
             android:label="@string/app_name"
-            android:noHistory="true">
+            android:noHistory="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -49,27 +52,45 @@
             android:screenOrientation="landscape" />
 
         <service android:name="com.parse.PushService" />
-        <receiver android:name="com.parse.ParseBroadcastReceiver">
+
+        <receiver android:name="com.parse.ParseBroadcastReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.parse.GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND">
+        <receiver
+            android:name="com.parse.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
                 <category android:name="com.teamhardwork.kipp" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.teamhardwork.kipp.receivers.KippPushBroadcastReceiver" android:exported="false">
+        <receiver
+            android:name=".receivers.KippPushBroadcastReceiver"
+            android:exported="false" >
             <intent-filter>
                 <action android:name="com.parse.push.intent.RECEIVE" />
                 <action android:name="com.parse.push.intent.DELETE" />
                 <action android:name="com.parse.push.intent.OPEN" />
             </intent-filter>
         </receiver>
-        <meta-data android:name="com.parse.push.notification_icon" android:resource="@drawable/ic_logo"/>
+
+        <meta-data
+            android:name="com.parse.push.notification_icon"
+            android:resource="@drawable/ic_logo" />
+
+        <activity
+            android:name=".activities.RosterActivity"
+            android:label="@string/title_activity_roster" >
+        </activity>
+        <activity
+            android:name=".activities.InfoActivity"
+            android:label="@string/title_activity_info" >
+        </activity>
     </application>
+
 </manifest>

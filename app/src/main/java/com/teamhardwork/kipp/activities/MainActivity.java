@@ -39,7 +39,6 @@ public class MainActivity extends Activity implements
         StudentArrayAdapter.StudentAdapterListener {
     private final String FEED_FRAGMENT_TAG = "FeedFragment";
     private final String ROSTER_FRAGMENT_TAG = "RosterFragment";
-    private final String STATS_FRAGMENT_TAG = "StatsFragment";
     private final String BEHAVIOR_PAGER_FRAGMENT_TAG = "BehaviorPagerFragment";
 
     private SchoolClass schoolClass;

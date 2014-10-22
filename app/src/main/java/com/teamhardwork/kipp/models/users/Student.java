@@ -1,5 +1,7 @@
 package com.teamhardwork.kipp.models.users;
 
+import android.util.Log;
+
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseClassName;
@@ -9,11 +11,12 @@ import com.parse.ParseUser;
 import com.teamhardwork.kipp.enums.Gender;
 import com.teamhardwork.kipp.models.SchoolClass;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @ParseClassName(KippUser.STUDENT_CLASS_NAME)
-public class Student extends KippUser {
+public class Student extends KippUser implements Serializable {
     private static final String POINTS = "points";
     List<Parent> parentList;
     List<SchoolClass> classList;
@@ -37,6 +40,18 @@ public class Student extends KippUser {
         query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
         // Execute the query to find the object with ID
         query.getInBackground(studentId, callback);
+    }
+
+    // parse doesn't implement serializable
+    public static Student getStudent(String studentId) {
+        ParseQuery<Student> query = ParseQuery.getQuery(Student.class);
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
+        try {
+            return query.get(studentId);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public List<SchoolClass> getClassList() {

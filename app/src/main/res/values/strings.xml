@@ -19,5 +19,7 @@
     <string name="default_timestamp">5h 33m 7s</string>
     <string name="behavior_feed_title">Behavior Feed</string>
     <string name="action_feed_title">Action Log</string>
+    <string name="title_activity_roster">RosterActivity</string>
+    <string name="title_activity_info">InfoActivity</string>
 
 </resources>
