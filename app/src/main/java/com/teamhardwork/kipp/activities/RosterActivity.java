@@ -2,6 +2,7 @@ package com.teamhardwork.kipp.activities;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +11,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.teamhardwork.kipp.R;
+import com.teamhardwork.kipp.fragments.BehaviorFragment;
+import com.teamhardwork.kipp.fragments.BehaviorPagerFragment;
 import com.teamhardwork.kipp.fragments.RosterFragment;
 import com.teamhardwork.kipp.models.users.Student;
 
@@ -17,11 +20,14 @@ import java.util.ArrayList;
 
 public class RosterActivity extends Activity implements
         RosterFragment.OnStudentSelectedListener,
-        RosterFragment.RosterSwipeListener {
+        RosterFragment.RosterSwipeListener,
+        BehaviorFragment.BehaviorListener {
 
     private final String ROSTER_FRAGMENT_TAG = "RosterFragment";
+    private final String BEHAVIOR_PAGER_FRAGMENT_TAG = "BehaviorPagerFragment";
 
     private RosterFragment rosterFragment;
+    private Fragment pagerFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,9 +83,50 @@ public class RosterActivity extends Activity implements
         startActivity(i);
     }
 
-    @Override
-    public void toggleBehaviorFragment(boolean open, ArrayList<String> studentIds,
-                                       String schoolClassId, boolean isPositive) {
+    public void toggleBehaviorFragment(boolean open, ArrayList<String> studentIds, String schoolClassId, boolean isPositive) {
+        if (open == true) {
+            showBehaviorPagerFragment(studentIds, schoolClassId, isPositive);
+        } else {
+            closeBehaviorPagerFragment();
+        }
+    }
 
+    public void showBehaviorPagerFragment(ArrayList<String> studentIds, String schoolClassId, boolean isPositive) {
+        FragmentManager fm = getFragmentManager();
+        pagerFragment = fm.findFragmentByTag(BEHAVIOR_PAGER_FRAGMENT_TAG);
+
+        // show behavior Fragment
+        if (pagerFragment == null) {
+            pagerFragment = BehaviorPagerFragment.newInstance(studentIds, schoolClassId, isPositive);
+        } else {
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.detach(pagerFragment);
+
+            ((BehaviorPagerFragment) pagerFragment).reset(studentIds, schoolClassId, isPositive);
+
+            ft.attach(pagerFragment);
+            ft.commit();
+        }
+
+        ((BehaviorPagerFragment) pagerFragment).show(fm, BEHAVIOR_PAGER_FRAGMENT_TAG);
+    }
+
+    public void closeBehaviorPagerFragment() {
+        FragmentManager fm = getFragmentManager();
+        Fragment rosterFragment = fm.findFragmentByTag(ROSTER_FRAGMENT_TAG);
+        Fragment pagerFragment = fm.findFragmentByTag(BEHAVIOR_PAGER_FRAGMENT_TAG);
+
+        // close behavior fragment and show feed Fragment
+        FragmentTransaction ft = fm.beginTransaction();
+
+        if (pagerFragment != null) {
+            ft.detach(pagerFragment);
+        }
+
+        if (rosterFragment != null) {
+            ((RosterFragment) rosterFragment).reset();
+        }
+
+        ft.commit();
     }
 }
