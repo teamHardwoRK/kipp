@@ -3,13 +3,13 @@ package com.teamhardwork.kipp.fragments;
 
 import android.app.DialogFragment;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.adapters.BehaviorPagerAdapter;
-import com.teamhardwork.kipp.utilities.LazyLoadViewPager;
 import com.viewpagerindicator.TitlePageIndicator;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class BehaviorPagerFragment extends DialogFragment {
     private boolean isPositive;
 
     private BehaviorPagerAdapter behaviorPagerAdapter;
-    private LazyLoadViewPager vpPager;
+    private ViewPager vpPager;
     private TitlePageIndicator titleIndicator;
 
     public BehaviorPagerFragment() {
@@ -61,7 +61,7 @@ public class BehaviorPagerFragment extends DialogFragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_behavior_pager, container, false);
 
-        vpPager = (LazyLoadViewPager) v.findViewById(R.id.vpPager);
+        vpPager = (ViewPager) v.findViewById(R.id.vpPager);
         titleIndicator = (TitlePageIndicator) v.findViewById(R.id.titleIndicator);
         setupPager();
 
@@ -69,9 +69,13 @@ public class BehaviorPagerFragment extends DialogFragment {
     }
 
     public void setupPager() {
-        if (vpPager != null && titleIndicator != null) {
+        if (vpPager != null) {
             behaviorPagerAdapter = new BehaviorPagerAdapter(this, getChildFragmentManager(), studentIds, schoolClassId, isPositive);
-            vpPager.storeAdapter(behaviorPagerAdapter, titleIndicator);
+            vpPager.setAdapter(behaviorPagerAdapter);
+
+            if (titleIndicator != null) {
+                titleIndicator.setViewPager(vpPager);
+            }
         }
     }
 

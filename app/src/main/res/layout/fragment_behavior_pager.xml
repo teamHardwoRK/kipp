@@ -21,7 +21,7 @@
         app:selectedBold="true"
         />
 
-    <com.teamhardwork.kipp.utilities.LazyLoadViewPager
+    <android.support.v4.view.ViewPager
         android:id="@+id/vpPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
