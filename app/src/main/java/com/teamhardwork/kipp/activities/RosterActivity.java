@@ -113,25 +113,6 @@ public class RosterActivity extends Activity implements
         ((BehaviorPagerFragment) pagerFragment).show(fm, BEHAVIOR_PAGER_FRAGMENT_TAG);
     }
 
-    public void showBehaviorPagerFragment(boolean isPositive) {
-        FragmentManager fm = getFragmentManager();
-        pagerFragment = fm.findFragmentByTag(BEHAVIOR_PAGER_FRAGMENT_TAG);
-
-        // show behavior Fragment
-        if (pagerFragment == null) {
-            pagerFragment = BehaviorPagerFragment.newInstance(isPositive);
-        } else {
-//            ((BehaviorPagerFragment) pagerFragment).reset(isPositive);
-//
-//            FragmentTransaction ft = fm.beginTransaction();
-//            ft.detach(pagerFragment);
-//            ft.attach(pagerFragment);
-//            ft.commit();
-        }
-
-        ((BehaviorPagerFragment) pagerFragment).show(fm, BEHAVIOR_PAGER_FRAGMENT_TAG);
-    }
-
     public void closeBehaviorPagerFragment(Behavior behavior) {
         FragmentManager fm = getFragmentManager();
         pagerFragment = fm.findFragmentByTag(BEHAVIOR_PAGER_FRAGMENT_TAG);
@@ -140,6 +121,7 @@ public class RosterActivity extends Activity implements
             ((BehaviorPagerFragment) pagerFragment).dismiss();
         }
 
+        if (behavior == null) return;
         for (Student curStudent: selectedStudents) {
             BehaviorEvent behaviorEvent = new BehaviorEvent();
             behaviorEvent.setBehavior(behavior);

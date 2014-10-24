@@ -265,7 +265,7 @@ public class RosterFragment extends Fragment {
     }
 
     public interface OnStudentSelectedListener {
-        void onStudentSelected(Student student);
+        public void onStudentSelected(Student student);
     }
 
     public interface RosterSwipeListener {

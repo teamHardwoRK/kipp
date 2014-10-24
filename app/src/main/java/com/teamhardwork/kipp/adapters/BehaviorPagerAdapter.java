@@ -60,11 +60,11 @@ public class BehaviorPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "Positive";
+                return "+";
             case 1:
-                return "Negative";
+                return "-";
             default:
-                return "New Page";
+                return "";
         }
     }
 }

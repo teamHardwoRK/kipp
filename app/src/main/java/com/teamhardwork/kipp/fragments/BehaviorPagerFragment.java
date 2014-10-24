@@ -1,9 +1,9 @@
 package com.teamhardwork.kipp.fragments;
 
-
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +11,6 @@ import android.view.ViewGroup;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.adapters.BehaviorPagerAdapter;
 import com.viewpagerindicator.TitlePageIndicator;
-
-import java.util.ArrayList;
 
 public class BehaviorPagerFragment extends DialogFragment {
     private static final String ARG_PARAM1 = "isPositive";
@@ -48,38 +46,18 @@ public class BehaviorPagerFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.e("ERROR", "BehaviorPagerFragment onCreateView() called");
+
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_behavior_pager, container, false);
 
         vpPager = (ViewPager) v.findViewById(R.id.vpPager);
         titleIndicator = (TitlePageIndicator) v.findViewById(R.id.titleIndicator);
-        setupPager();
+        behaviorPagerAdapter = new BehaviorPagerAdapter(this, getChildFragmentManager(), isPositive);
+        vpPager.setAdapter(behaviorPagerAdapter);
+        titleIndicator.setViewPager(vpPager);
 
         return v;
-    }
-
-    public void setupPager() {
-        if (vpPager != null) {
-            behaviorPagerAdapter = new BehaviorPagerAdapter(this, getChildFragmentManager(), isPositive);
-            vpPager.setAdapter(behaviorPagerAdapter);
-
-            if (titleIndicator != null) {
-                titleIndicator.setViewPager(vpPager);
-            }
-        }
-    }
-
-    public void reset(ArrayList<String> studentIds, String schoolClassId, boolean isPositive) {
-        this.isPositive = isPositive;
-        if (behaviorPagerAdapter != null) {
-            behaviorPagerAdapter.clearAll();
-        }
-        if (vpPager != null) {
-            vpPager.removeAllViews();
-            vpPager.setAdapter(null);
-        }
-        behaviorPagerAdapter = null;
-        setupPager();
     }
 
     @Override

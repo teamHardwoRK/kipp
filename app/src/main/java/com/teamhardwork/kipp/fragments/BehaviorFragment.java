@@ -80,28 +80,6 @@ public class BehaviorFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long mylng) {
                 // pass behavior back to listener
                 listener.closeBehaviorPagerFragment(behaviors.get(position));
-//                for (Student curStudent: students) {
-//                    BehaviorEvent behaviorEvent = new BehaviorEvent();
-//                    behaviorEvent.setBehavior(behaviors.get(position));
-//                    behaviorEvent.setSchoolClass(schoolClass);
-//                    behaviorEvent.setStudent(curStudent);
-//                    behaviorEvent.setOccurredAt(new Date());
-//                    behaviorEvent.setNotes("");
-//                    behaviorEvent.saveInBackground();
-//                    Toast.makeText(getActivity(), "behaviorEvent saved for " + curStudent.getFirstName(), Toast.LENGTH_SHORT).show();
-//
-//                    int behaviorPoints = behaviorEvent.getBehavior().getPoints();
-//                    curStudent.addPoints(behaviorPoints);
-//                    curStudent.saveInBackground();
-//                    /*try {
-//                        behaviorEvent.save();
-//                        Toast.makeText(getActivity(), "behaviorEvent saved", Toast.LENGTH_SHORT).show();
-//                    } catch (ParseException e) {
-//                        e.printStackTrace();
-//                    }*/
-//                }
-//
-//                listener.closeBehaviorPagerFragment();
             }
         });
 
