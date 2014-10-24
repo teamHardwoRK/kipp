@@ -16,58 +16,63 @@ import com.parse.ParseException;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.enums.Behavior;
 import com.teamhardwork.kipp.models.BehaviorEvent;
-import com.teamhardwork.kipp.models.users.Student;
 import com.teamhardwork.kipp.queries.FeedQueries;
 import com.teamhardwork.kipp.utilities.behavior_event.BehaviorEventListFilterer;
 
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-// TODO: Code is doing way too much need to segment out class vs student charts. And totals vs line items charts
+// Stats for class
 public class StatsFragment extends BaseKippFragment {
-    private static final int GOOD_COLOR_ID = Color.parseColor("#33CC00");
-    private static final int BAD_COLOR_ID = Color.parseColor("#FF3333");
+    private static final int GOOD_COLOR_ID = Color.parseColor("#C7F464");
+    private static final int BAD_COLOR_ID = Color.parseColor("#FF6B6B");
+    private static final int EXTRA_COLOR_ONE = Color.parseColor("#C44D58");
+    private static final int EXTRA_COLOR_TWO = Color.parseColor("#4ECDC4");
+    private static final int EXTRA_COLOR_THREE = Color.parseColor("#556270");
 
-    private static final int GOOD_SLICE = 0;
-    private static final int BAD_SLICE = 1;
+    private static final List<Behavior> badBehaviors = Arrays.asList(Behavior.DRESS_CODE_VIOLATION,
+            Behavior.LACK_OF_INTEGRITY, Behavior.LATE, Behavior.TALKING, Behavior.TALKING_BACK);
+    private static final List<Behavior> goodBehaviors = Arrays.asList(Behavior.CLEANING_UP,
+            Behavior.ON_TASK, Behavior.RESPECTING_EVERYONE, Behavior.SHOWING_GRATITUDE);
+
+    protected static String statForString = "Class";
 
 
-    private List<BehaviorEvent> currentBehaviorEvents;
-    private FeedFragment.FeedType currentChartType = FeedFragment.FeedType.CLASS;
-    private Student currentStudent;
-
-    @InjectView(R.id.pgGoodBad)
-    PieGraph pgGoodBad;
-    @InjectView(R.id.pgBadDetail)
-    PieGraph pgBadDetail;
+    @InjectView(R.id.pieGraph)
+    PieGraph pieGraph;
     @InjectView(R.id.tvLegendDescription)
     TextView tvLegendDescription;
     @InjectView(R.id.tvGood)
     TextView tvGood;
     @InjectView(R.id.tvBad)
     TextView tvBad;
+    @InjectView(R.id.tvExtraOne)
+    TextView tvExtraOne;
+    @InjectView(R.id.tvExtraTwo)
+    TextView tvExtraTwo;
+    @InjectView(R.id.tvExtraThree)
+    TextView tvExtraThree;
+    @InjectView(R.id.llLegend)
+    LinearLayout llLegend;
 
-    @InjectView(R.id.llGoodBadContainer)
-    LinearLayout llGoodBadContainer;
-
-    @InjectView(R.id.tvBadDetailDescription)
-    TextView tvBadDetailDescription;
-    @InjectView(R.id.llBadDetailContainer)
-    LinearLayout llBadDetailContainer;
-    @InjectView(R.id.tvDressCodeViolation)
-    TextView tvDressCodeViolation;
-    @InjectView(R.id.tvLackOfIntegrity)
-    TextView tvLackOfIntegrity;
-    @InjectView(R.id.tvLate)
-    TextView tvLate;
-    @InjectView(R.id.tvTalking)
-    TextView tvTalking;
-    @InjectView(R.id.tvTalkingBack)
-    TextView tvTalkingBack;
+    private ChartMode chartMode = ChartMode.OVERALL;
+    private List<TextView> legendItems;
+    private Map<Behavior, Integer> behaviorCounts;
+    private List<BehaviorEvent> curBehaviorEvents;
+    protected FindCallback<BehaviorEvent> overallResponseCallback =
+            new FindCallback<BehaviorEvent>() {
+                @Override
+                public void done(List<BehaviorEvent> behaviorEvents, ParseException e) {
+                    curBehaviorEvents = behaviorEvents;
+                    behaviorCounts = BehaviorEventListFilterer.getGroupedCount(behaviorEvents);
+                    activateOverallChart(behaviorEvents);
+                }
+            };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,171 +80,139 @@ public class StatsFragment extends BaseKippFragment {
         View rtnView = inflater.inflate(R.layout.fragment_stats, container, false);
         ButterKnife.inject(this, rtnView);
 
-        setupGoodBadChart();
-        updateChartForClass();
+        legendItems = Arrays.asList(tvGood, tvBad, tvExtraOne, tvExtraTwo, tvExtraThree);
 
-        setupBadDetailChart();
-        updateBadDetailChartForClass();
+        setupChart();
+        fillChartWithOverallData();
 
-        llBadDetailContainer.setOnClickListener(new View.OnClickListener() {
+        llLegend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                llGoodBadContainer.setVisibility(View.VISIBLE);
-                llBadDetailContainer.setVisibility(View.GONE);
+                if (chartMode != ChartMode.OVERALL) {
+                    activateOverallChart(curBehaviorEvents);
+                    chartMode = ChartMode.OVERALL;
+                }
+            }
+        });
 
-                pgBadDetail.setVisibility(View.GONE);
-                pgGoodBad.setVisibility(View.VISIBLE);
+        pieGraph.setOnSliceClickedListener(new PieGraph.OnSliceClickedListener() {
+            @Override
+            public void onClick(int index) {
+                if (chartMode == ChartMode.OVERALL) {
+                    switch (index) {
+                        case 0:
+                            chartMode = ChartMode.GOOD_DETAIL;
+                            activateChartForBehaviors(behaviorCounts, goodBehaviors);
+                            break;
+                        case 1: // Bad behaviors detail
+                            chartMode = ChartMode.BAD_DETAIL;
+                            activateChartForBehaviors(behaviorCounts, badBehaviors);
+                    }
+                }
             }
         });
 
         return rtnView;
     }
 
-    public void updateChartForClass() {
-        FeedQueries.getClassFeed(currentClass, new FindCallback<BehaviorEvent>() {
-            @Override
-            public void done(List<BehaviorEvent> behaviorEvents, com.parse.ParseException e) {
-                currentBehaviorEvents = behaviorEvents;
-                currentChartType = FeedFragment.FeedType.CLASS;
-                updateChart(currentBehaviorEvents);
-                tvLegendDescription.setText("Class behavior history");
-            }
-        });
-
+    protected void fillChartWithOverallData() {
+        FeedQueries.getClassFeed(currentClass, overallResponseCallback);
     }
 
-    public void updateBadDetailChartForClass() {
-        FeedQueries.getClassFeed(currentClass, new FindCallback<BehaviorEvent>() {
-            @Override
-            public void done(List<BehaviorEvent> behaviorEvents, ParseException e) {
-                currentBehaviorEvents = behaviorEvents;
-                currentChartType = FeedFragment.FeedType.CLASS;
-                Map<Behavior, Integer> groupedBadCounts = BehaviorEventListFilterer
-                        .getGroupedCount(behaviorEvents);
-                updateBadDetailChart(groupedBadCounts);
-                tvBadDetailDescription.setText("Class bad behaviors");
-
-            }
-        });
-    }
-
-    public void updateChartForStudent(final Student currentStudent) {
-        this.currentStudent = currentStudent;
-        FeedQueries.getStudentFeed(currentStudent, new FindCallback<BehaviorEvent>() {
-            @Override
-            public void done(List<BehaviorEvent> behaviorEvents, com.parse.ParseException e) {
-                currentBehaviorEvents = behaviorEvents;
-                currentChartType = FeedFragment.FeedType.STUDENT;
-                updateChart(currentBehaviorEvents);
-                tvLegendDescription.setText("Student behavior history");
-            }
-        });
-    }
-
-    private void setupGoodBadChart() {
-        pgGoodBad.setInnerCircleRatio(200);
-
-        addSlice(pgGoodBad,GOOD_COLOR_ID, 0, "Good");
-        addSlice(pgGoodBad, BAD_COLOR_ID, 0, "Bad");
-
-        tvGood.setTextColor(GOOD_COLOR_ID);
-        tvBad.setTextColor(BAD_COLOR_ID);
-
-        pgGoodBad.setOnSliceClickedListener(new PieGraph.OnSliceClickedListener() {
-            @Override
-            public void onClick(int index) {
-                llGoodBadContainer.setVisibility(View.GONE);
-                switch (index) {
-                    case GOOD_SLICE:
-                        break;
-                    case BAD_SLICE:
-                        pgGoodBad.setVisibility(View.GONE);
-                        pgBadDetail.setVisibility(View.VISIBLE);
-                        llBadDetailContainer.setVisibility(View.VISIBLE);
-                        break;
-                }
-            }
-        });
-    }
-
-    private void setupBadDetailChart() {
-        pgBadDetail.setInnerCircleRatio(200);
-
-        addSlice(pgBadDetail, getResources().getColor(R.color.BlueDiamond), 0, Behavior.DRESS_CODE_VIOLATION.getTitle());
-        addSlice(pgBadDetail, getResources().getColor(R.color.DollarBillGreen), 0, Behavior.LACK_OF_INTEGRITY.getTitle());
-        addSlice(pgBadDetail, getResources().getColor(R.color.FlamingoPink), 0, Behavior.LATE.getTitle());
-        addSlice(pgBadDetail, getResources().getColor(R.color.VampireGray), 0, Behavior.TALKING.getTitle());
-        addSlice(pgBadDetail, getResources().getColor(R.color.Gold), 0, Behavior.TALKING_BACK.getTitle());
-
-        tvDressCodeViolation.setTextColor(getResources().getColor(R.color.BlueDiamond));
-        tvLackOfIntegrity.setTextColor(getResources().getColor(R.color.DollarBillGreen));
-        tvLate.setTextColor(getResources().getColor(R.color.FlamingoPink));
-        tvTalking.setTextColor(getResources().getColor(R.color.VampireGray));
-        tvTalkingBack.setTextColor(getResources().getColor(R.color.Gold));
-
-
-    }
-
-    private void updateChart(List<BehaviorEvent> behaviorEvents) {
+    private void activateOverallChart(List<BehaviorEvent> behaviorEvents) {
+        unsetChartValues();
         List<BehaviorEvent> good = BehaviorEventListFilterer.keepGood(behaviorEvents);
         List<BehaviorEvent> bad = BehaviorEventListFilterer.keepBad(behaviorEvents);
-
-        updateLegend(good, bad);
-        updateSlices(good, bad);
+        pieGraph.getSlice(OverallSlices.GOOD.ordinal()).setGoalValue(good.size());
+        pieGraph.getSlice(OverallSlices.BAD.ordinal()).setGoalValue(bad.size());
+        pieGraph.animateToGoalValues();
+        activateOverallLegend(good.size(), bad.size());
     }
 
-    private void updateSlices(List<BehaviorEvent> good, List<BehaviorEvent> bad) {
-        pgGoodBad.getSlice(0).setGoalValue(good.size());
-        pgGoodBad.getSlice(1).setGoalValue(bad.size());
-        pgGoodBad.animateToGoalValues();
-    }
-
-    private void updateLegend(List<BehaviorEvent> good, List<BehaviorEvent> bad) {
-        int totalSize = good.size() + bad.size();
-        String goodPercentage = MessageFormat.format("{0,number,#.##%}", ((double) good.size()) / totalSize);
-        String badPercentage = MessageFormat.format("{0,number,#.##%}", ((double) bad.size()) / totalSize);
-        tvGood.setText("Good: " + goodPercentage);
-        tvBad.setText("Bad: " + badPercentage);
-    }
-
-    private void updateBadDetailLegend(Map<Behavior, Integer> badGroupedCounts) {
-        int totalSize = 0;
-        for (Integer i : badGroupedCounts.values()) {
-            totalSize += i;
+    private void activateChartForBehaviors(Map<Behavior, Integer> groupedCounts,
+                                           List<Behavior> selectedBehaviors) {
+        unsetChartValues();
+        for (int i = 0; i < selectedBehaviors.size(); i++) {
+            pieGraph.getSlice(i).setGoalValue(groupedCounts.get(selectedBehaviors.get(i)));
         }
-        double dressCodeSize = badGroupedCounts.get(Behavior.DRESS_CODE_VIOLATION);
-        String dressCodePercentage = MessageFormat.format("{0,number,#.##%}", dressCodeSize / totalSize);
-        tvDressCodeViolation.setText("DressCodeViolation: " + dressCodePercentage);
+        pieGraph.animateToGoalValues();
 
-        double lackOfIntegritySize = badGroupedCounts.get(Behavior.LACK_OF_INTEGRITY);
-        String lackOfIntegrityPercentage = MessageFormat.format("{0,number,#.##%}", lackOfIntegritySize / totalSize);
-        tvLackOfIntegrity.setText("LackOfIntegrity: " + lackOfIntegrityPercentage);
-
-        double lateSize = badGroupedCounts.get(Behavior.LATE);
-        String latePercentage = MessageFormat.format("{0,number,#.##%}", lateSize / totalSize);
-        tvLate.setText("Late: " + latePercentage);
-
-        double talkingSize = badGroupedCounts.get(Behavior.TALKING);
-        String talkingPercentage = MessageFormat.format("{0,number,#.##%}", talkingSize / totalSize);
-        tvTalking.setText("Talking: " + talkingPercentage);
-
-        double talkingBackSize = badGroupedCounts.get(Behavior.TALKING_BACK);
-        String talkingBackPercentage = MessageFormat.format("{0,number,#.##%}", talkingBackSize / totalSize);
-        tvTalkingBack.setText("TalkingBack: " + talkingBackPercentage);
+        activateLegendForBehaviors(behaviorCounts, selectedBehaviors);
     }
 
-    private void updateBadDetailSlices(Map<Behavior, Integer> badGroupedCounts) {
-        pgBadDetail.getSlice(0).setGoalValue(badGroupedCounts.get(Behavior.DRESS_CODE_VIOLATION));
-        pgBadDetail.getSlice(1).setGoalValue(badGroupedCounts.get(Behavior.LACK_OF_INTEGRITY));
-        pgBadDetail.getSlice(2).setGoalValue(badGroupedCounts.get(Behavior.LATE));
-        pgBadDetail.getSlice(3).setGoalValue(badGroupedCounts.get(Behavior.TALKING));
-        pgBadDetail.getSlice(4).setGoalValue(badGroupedCounts.get(Behavior.TALKING_BACK));
-        pgBadDetail.animateToGoalValues();
+    private void unsetChartValues() {
+        for (PieSlice slice : pieGraph.getSlices()) {
+            slice.setGoalValue(0);
+        }
     }
 
-    private void updateBadDetailChart(Map<Behavior, Integer> badGroupedCounts) {
-        updateBadDetailLegend(badGroupedCounts);
-        updateBadDetailSlices(badGroupedCounts);
+    private void setupChart() {
+        pieGraph.setInnerCircleRatio(200);
+        addSlice(pieGraph, GOOD_COLOR_ID, 0, "Good");
+        addSlice(pieGraph, BAD_COLOR_ID, 0, "Bad");
+        addSlice(pieGraph, EXTRA_COLOR_ONE, 0, "Extra One");
+        addSlice(pieGraph, EXTRA_COLOR_TWO, 0, "Extra TWO");
+        addSlice(pieGraph, EXTRA_COLOR_THREE, 0, "Extra THREE");
+
+        setupLegend();
+    }
+
+    private void setupLegend() {
+        tvGood.setTextColor(GOOD_COLOR_ID);
+        tvBad.setTextColor(BAD_COLOR_ID);
+        tvExtraOne.setTextColor(EXTRA_COLOR_ONE);
+        tvExtraTwo.setTextColor(EXTRA_COLOR_TWO);
+        tvExtraThree.setTextColor(EXTRA_COLOR_THREE);
+    }
+
+    private void activateOverallLegend(int numGood, int numBad) {
+        int total = numGood + numBad;
+        tvLegendDescription.setText("Behavior for " + statForString);
+        tvGood.setText("Good: " + getPercentString((double) numGood / total));
+        tvBad.setText("Bad: " + getPercentString((double) numBad / total));
+        turnOffExtraLegendItems();
+    }
+
+    private void activateLegendForBehaviors(Map<Behavior, Integer> groupedCounts,
+                                            List<Behavior> behaviors) {
+        tvLegendDescription.setText("Bad Behaviors for " + statForString);
+        turnOffExtraLegendItems();
+        int total = 0;
+        for (Behavior behavior : behaviors) {
+            total += groupedCounts.get(behavior);
+        }
+
+        for (int i = 0; i < behaviors.size(); i++) {
+            Behavior behavior = behaviors.get(i);
+            TextView legendItem = legendItems.get(i);
+            String percentage = getPercentString((double) groupedCounts.get(behavior) / total);
+            legendItem.setText(behavior.getTitle() + ": " + percentage);
+            legendItem.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void turnOffExtraLegendItems() {
+        tvExtraOne.setVisibility(View.GONE);
+        tvExtraTwo.setVisibility(View.GONE);
+        tvExtraThree.setVisibility(View.GONE);
+    }
+
+//    public void updateChartForStudent(final Student currentStudent) {
+//        this.currentStudent = currentStudent;
+//        FeedQueries.getStudentFeed(currentStudent, new FindCallback<BehaviorEvent>() {
+//            @Override
+//            public void done(List<BehaviorEvent> behaviorEvents, com.parse.ParseException e) {
+//                currentBehaviorEvents = behaviorEvents;
+//                currentChartType = FeedFragment.FeedType.STUDENT;
+//                updateChart(currentBehaviorEvents);
+//                tvLegendDescription.setText("Student behavior history");
+//            }
+//        });
+//    }
+
+
+    private String getPercentString(double fraction) {
+        return MessageFormat.format("{0,number,#.##%}", fraction);
     }
 
     private void addSlice(PieGraph pieGraph, int colorId, int value, String title) {
@@ -250,22 +223,31 @@ public class StatsFragment extends BaseKippFragment {
         pieGraph.addSlice(slice);
     }
 
+    // TODO: Real time updates are useful if we get this on chromecast
     public void updateData() {
-        FindCallback<BehaviorEvent> callback = new FindCallback<BehaviorEvent>() {
-            @Override
-            public void done(List<BehaviorEvent> eventList, ParseException e) {
-                currentBehaviorEvents.addAll(eventList);
-                updateChart(currentBehaviorEvents);
-            }
-        };
+//        FindCallback<BehaviorEvent> callback = new FindCallback<BehaviorEvent>() {
+//            @Override
+//            public void done(List<BehaviorEvent> eventList, ParseException e) {
+//                currentBehaviorEvents.addAll(eventList);
+//                updateChart(currentBehaviorEvents);
+//            }
+//        };
+//
+//        switch (currentChartType) {
+//            case STUDENT:
+//                FeedQueries.getLatestStudentEvents(currentStudent, currentBehaviorEvents, callback);
+//                break;
+//            case CLASS:
+//                FeedQueries.getLatestClassEvents(currentClass, currentBehaviorEvents, callback);
+//                break;
+//        }
+    }
 
-        switch (currentChartType) {
-            case STUDENT:
-                FeedQueries.getLatestStudentEvents(currentStudent, currentBehaviorEvents, callback);
-                break;
-            case CLASS:
-                FeedQueries.getLatestClassEvents(currentClass, currentBehaviorEvents, callback);
-                break;
-        }
+    public enum ChartMode {
+        OVERALL, BAD_DETAIL, GOOD_DETAIL
+    }
+
+    private enum OverallSlices {
+        GOOD, BAD
     }
 }

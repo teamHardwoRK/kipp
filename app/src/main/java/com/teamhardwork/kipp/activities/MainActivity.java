@@ -164,7 +164,7 @@ public class MainActivity extends Activity implements
     public void onStudentSelected(Student student) {
         getActionBar().setTitle("Detail view for " + student.getFullName());
         feedFragment.changeToStudentFeed(student);
-        statsFragment.updateChartForStudent(student);
+        //statsFragment.updateChartForStudent(student);
         leaderboardFragment.setSelectedRowForStudent(student);
         Fragment rosterFragment = getFragmentManager().findFragmentByTag(ROSTER_FRAGMENT_TAG);
 
@@ -178,7 +178,7 @@ public class MainActivity extends Activity implements
     private void onClassSelected() {
         getActionBar().setTitle(schoolClass.getName());
         feedFragment.changeToClassFeed(schoolClass);
-        statsFragment.updateChartForClass();
+        //statsFragment.updateChartForClass();
         leaderboardFragment.resetSelectedRow();
     }
 

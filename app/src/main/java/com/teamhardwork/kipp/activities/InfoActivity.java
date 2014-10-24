@@ -8,13 +8,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.dialogfragments.AddActionDialogFragment;
 import com.teamhardwork.kipp.fragments.FeedFragment;
 import com.teamhardwork.kipp.fragments.LeaderboardFragment;
 import com.teamhardwork.kipp.fragments.StatsFragment;
+import com.teamhardwork.kipp.fragments.StudentStatsFragment;
 import com.teamhardwork.kipp.models.BehaviorEvent;
+import com.teamhardwork.kipp.models.SchoolClass;
 import com.teamhardwork.kipp.models.users.Student;
+import com.teamhardwork.kipp.models.users.Teacher;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -103,16 +107,15 @@ public class InfoActivity extends Activity implements  FeedFragment.FeedListener
 
     private void selectStatsModule() {
         if (statsFragment == null) {
-            statsFragment = new StatsFragment();
+            // TODO: Sorry for the hackiness this needs a detail Info activity subclass
+            statsFragment = (selected != null) ?
+                    StudentStatsFragment.newInstance(selected.getObjectId()) :
+                    new StatsFragment();
         }
 
         getFragmentManager().beginTransaction()
                 .replace(R.id.flInfoFragmentContainer, statsFragment)
                 .commit();
-
-        if (selected != null) {
-            statsFragment.updateChartForStudent(selected);
-        }
     }
 
     private void selectFeed() {
