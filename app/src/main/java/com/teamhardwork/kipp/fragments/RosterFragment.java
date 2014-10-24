@@ -1,6 +1,7 @@
 package com.teamhardwork.kipp.fragments;
 
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.Color;
@@ -25,10 +26,12 @@ import com.parse.ParseException;
 import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.adapters.StudentArrayAdapter;
+import com.teamhardwork.kipp.listeners.RosterTabListener;
 import com.teamhardwork.kipp.models.SchoolClass;
 import com.teamhardwork.kipp.models.users.Student;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class RosterFragment extends Fragment {
@@ -79,6 +82,7 @@ public class RosterFragment extends Fragment {
                 @Override
                 public void done(List<Student> foundStudents, ParseException e) {
                     students = foundStudents;
+                    Collections.sort(students);
                     aStudents.addAll(students);
                 }
             });
@@ -91,9 +95,39 @@ public class RosterFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_roster, container, false);
         setupViews(v);
+        setupTabs();
+
         return v;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        getActivity().getActionBar().removeAllTabs();
+    }
+
+    private void setupTabs() {
+        ActionBar actionBar = getActivity().getActionBar();
+
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.setDisplayShowTitleEnabled(true);
+
+        ActionBar.Tab tab1 = actionBar
+                .newTab()
+                .setText("First")
+                .setTabListener(new RosterTabListener(R.id.flRoster,
+                        "first", lvStudents, 0));
+
+        actionBar.addTab(tab1);
+        actionBar.selectTab(tab1);
+
+        ActionBar.Tab tab2 = actionBar
+                .newTab()
+                .setText("Third")
+                .setTabListener(new RosterTabListener(R.id.flRoster,
+                        "third", lvStudents, 3));
+        actionBar.addTab(tab2);
+    }
 
     private void setupViews(View v) {
         lvStudents = (SwipeListView) v.findViewById(R.id.lvStudents);
