@@ -110,11 +110,11 @@ public class RosterFragment extends Fragment {
                     case R.id.action_eval:
                         // go show behavior Fragment
                         List<Integer> positions = lvStudents.getPositionsSelected();
-                        ArrayList<String> studentIds = new ArrayList<String>();
+                        ArrayList<Student> selectedStudents = new ArrayList<Student>();
                         for (int i = 0; i < positions.size(); i++) {
-                            studentIds.add(aStudents.getItem(positions.get(i)).getObjectId());
+                            selectedStudents.add(aStudents.getItem(positions.get(i)));
                         }
-                        listener.toggleBehaviorFragment(true, studentIds, schoolClass.getObjectId(), true);
+                        listener.showBehaviorPagerFragment(selectedStudents, schoolClass, true);
                         mode.finish();
                         return true;
                     case R.id.action_note:
@@ -153,20 +153,20 @@ public class RosterFragment extends Fragment {
             public void onOpened(int position, boolean toRight) {
                 if (toRight == true) {
                     Toast.makeText(getActivity(), "toRight of " + String.valueOf(position), Toast.LENGTH_SHORT).show();
-                    ArrayList<String> studentIds = new ArrayList<String>();
-                    studentIds.add(aStudents.getItem(position).getObjectId());
-                    listener.toggleBehaviorFragment(true, studentIds, schoolClass.getObjectId(), true);
+                    ArrayList<Student> selectedStudents = new ArrayList<Student>();
+                    selectedStudents.add(aStudents.getItem(position));
+                    listener.showBehaviorPagerFragment(selectedStudents, schoolClass, true);
                 } else {
                     Toast.makeText(getActivity(), "toLeft of " + String.valueOf(position), Toast.LENGTH_SHORT).show();
-                    ArrayList<String> studentIds = new ArrayList<String>();
-                    studentIds.add(aStudents.getItem(position).getObjectId());
-                    listener.toggleBehaviorFragment(true, studentIds, schoolClass.getObjectId(), false);
+                    ArrayList<Student> selectedStudents = new ArrayList<Student>();
+                    selectedStudents.add(aStudents.getItem(position));
+                    listener.showBehaviorPagerFragment(selectedStudents, schoolClass, false);
                 }
             }
 
             @Override
             public void onClosed(int position, boolean toRight) {
-                listener.toggleBehaviorFragment(false, null, null, true);
+                // TODO
             }
 
             @Override
@@ -269,6 +269,6 @@ public class RosterFragment extends Fragment {
     }
 
     public interface RosterSwipeListener {
-        public void toggleBehaviorFragment(boolean open, ArrayList<String> studentIds, String schoolClassId, boolean positive);
+        public void showBehaviorPagerFragment(ArrayList<Student> students, SchoolClass schoolClass, boolean isPositive);
     }
 }

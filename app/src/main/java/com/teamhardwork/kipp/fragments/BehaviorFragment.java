@@ -10,33 +10,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.parse.GetCallback;
-import com.parse.ParseException;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.enums.Behavior;
 import com.teamhardwork.kipp.enums.BehaviorCategory;
-import com.teamhardwork.kipp.models.BehaviorEvent;
-import com.teamhardwork.kipp.models.SchoolClass;
-import com.teamhardwork.kipp.models.users.Student;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class BehaviorFragment extends Fragment {
-    private static final String ARG_PARAM1 = "student_ids";
-    private static final String ARG_PARAM2 = "school_class";
-    private static final String ARG_PARAM3 = "isPositive";
+    private static final String ARG_PARAM1 = "isPositive";
 
-    private ArrayList<String> studentIds;
-    private String schoolClassId;
-    private List<Student> students;
-    private SchoolClass schoolClass;
-    private String notes;
-    private String behavior;
-    private String occurredAt;
     private List<Behavior> behaviors;
     private boolean isPositive;
     private ArrayAdapter<Behavior> behaviorsAdapter;
@@ -48,12 +32,10 @@ public class BehaviorFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static BehaviorFragment newInstance(ArrayList<String> studentIds, String schoolClassId, boolean isPositive) {
+    public static BehaviorFragment newInstance(boolean isPositive) {
         BehaviorFragment fragment = new BehaviorFragment();
         Bundle args = new Bundle();
-        args.putStringArrayList(ARG_PARAM1, studentIds);
-        args.putString(ARG_PARAM2, schoolClassId);
-        args.putBoolean(ARG_PARAM3, isPositive);
+        args.putBoolean(ARG_PARAM1, isPositive);
         fragment.setArguments(args);
         return fragment;
     }
@@ -61,40 +43,10 @@ public class BehaviorFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.studentIds = null;
-        this.schoolClassId = null;
         this.isPositive = true;
-        this.students = new ArrayList<Student>();
 
         if (getArguments() != null) {
-            this.studentIds = getArguments().getStringArrayList(ARG_PARAM1);
-            this.schoolClassId = getArguments().getString(ARG_PARAM2);
-            isPositive = getArguments().getBoolean(ARG_PARAM3);
-        }
-
-        if (this.studentIds == null || this.schoolClassId == null) {
-            Toast.makeText(getActivity(), "cannot get studentIds or schoolClassId", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        SchoolClass.getSchoolClassAsync(schoolClassId, new GetCallback<SchoolClass>() {
-            @Override
-            public void done(SchoolClass foundSchoolClass, ParseException e) {
-                if (e == null && foundSchoolClass != null) {
-                    schoolClass = foundSchoolClass;
-                }
-            }
-        });
-
-        for (int i = 0; i < studentIds.size(); i++) {
-            Student.getStudentAsync(studentIds.get(i), new GetCallback<Student>() {
-                @Override
-                public void done(Student foundStudent, ParseException e) {
-                    if (e == null && foundStudent != null) {
-                        students.add(foundStudent);
-                    }
-                }
-            });
+            isPositive = getArguments().getBoolean(ARG_PARAM1);
         }
     }
 
@@ -126,28 +78,30 @@ public class BehaviorFragment extends Fragment {
         lvBehaviors.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long mylng) {
-                for (Student curStudent: students) {
-                    BehaviorEvent behaviorEvent = new BehaviorEvent();
-                    behaviorEvent.setBehavior(behaviors.get(position));
-                    behaviorEvent.setSchoolClass(schoolClass);
-                    behaviorEvent.setStudent(curStudent);
-                    behaviorEvent.setOccurredAt(new Date());
-                    behaviorEvent.setNotes("");
-                    behaviorEvent.saveInBackground();
-                    Toast.makeText(getActivity(), "behaviorEvent saved for " + curStudent.getFirstName(), Toast.LENGTH_SHORT).show();
-
-                    int behaviorPoints = behaviorEvent.getBehavior().getPoints();
-                    curStudent.addPoints(behaviorPoints);
-                    curStudent.saveInBackground();
-                    /*try {
-                        behaviorEvent.save();
-                        Toast.makeText(getActivity(), "behaviorEvent saved", Toast.LENGTH_SHORT).show();
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }*/
-                }
-
-                listener.closeBehaviorPagerFragment();
+                // pass behavior back to listener
+                listener.closeBehaviorPagerFragment(behaviors.get(position));
+//                for (Student curStudent: students) {
+//                    BehaviorEvent behaviorEvent = new BehaviorEvent();
+//                    behaviorEvent.setBehavior(behaviors.get(position));
+//                    behaviorEvent.setSchoolClass(schoolClass);
+//                    behaviorEvent.setStudent(curStudent);
+//                    behaviorEvent.setOccurredAt(new Date());
+//                    behaviorEvent.setNotes("");
+//                    behaviorEvent.saveInBackground();
+//                    Toast.makeText(getActivity(), "behaviorEvent saved for " + curStudent.getFirstName(), Toast.LENGTH_SHORT).show();
+//
+//                    int behaviorPoints = behaviorEvent.getBehavior().getPoints();
+//                    curStudent.addPoints(behaviorPoints);
+//                    curStudent.saveInBackground();
+//                    /*try {
+//                        behaviorEvent.save();
+//                        Toast.makeText(getActivity(), "behaviorEvent saved", Toast.LENGTH_SHORT).show();
+//                    } catch (ParseException e) {
+//                        e.printStackTrace();
+//                    }*/
+//                }
+//
+//                listener.closeBehaviorPagerFragment();
             }
         });
 
@@ -167,6 +121,6 @@ public class BehaviorFragment extends Fragment {
     }
 
     public interface BehaviorListener {
-        public void closeBehaviorPagerFragment();
+        public void closeBehaviorPagerFragment(Behavior behavior);
     }
 }

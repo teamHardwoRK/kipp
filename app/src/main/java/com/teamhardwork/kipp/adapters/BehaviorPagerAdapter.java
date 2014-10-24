@@ -11,19 +11,15 @@ import java.util.ArrayList;
 
 public class BehaviorPagerAdapter extends FragmentPagerAdapter {
     private static int NUM_ITEMS = 2;
-    private ArrayList<String> studentIds;
-    private String schoolClassId;
     private boolean isPositive;
     private BehaviorPagerFragment pagerFragment;
     private FragmentManager fm;
     private ArrayList<Fragment> pagerFragments = new ArrayList<Fragment>();
 
-    public BehaviorPagerAdapter(BehaviorPagerFragment pagerFragment, FragmentManager fragmentManager, ArrayList<String> studentIds, String schoolClassId, boolean isPositive) {
+    public BehaviorPagerAdapter(BehaviorPagerFragment pagerFragment, FragmentManager fragmentManager, boolean isPositive) {
         super(fragmentManager);
         this.pagerFragment = pagerFragment;
         this.fm = fragmentManager;
-        this.studentIds = new ArrayList<String>(studentIds);
-        this.schoolClassId = schoolClassId;
         this.isPositive = isPositive;
     }
 
@@ -47,11 +43,11 @@ public class BehaviorPagerAdapter extends FragmentPagerAdapter {
         Fragment fragment;
         switch (position) {
             case 0: // page # 0 - This will show positive list of behaviors
-                fragment = (Fragment) BehaviorFragment.newInstance(studentIds, schoolClassId, true);
+                fragment = (Fragment) BehaviorFragment.newInstance(true);
                 pagerFragments.add(fragment);
                 return fragment;
             case 1: // page # 1 - This will show negative list of behaviors
-                fragment = (Fragment) BehaviorFragment.newInstance(studentIds, schoolClassId, false);
+                fragment = (Fragment) BehaviorFragment.newInstance(false);
                 pagerFragments.add(fragment);
                 return fragment;
             default:

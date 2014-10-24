@@ -12,13 +12,16 @@ import android.widget.Toast;
 
 import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
+import com.teamhardwork.kipp.enums.Behavior;
 import com.teamhardwork.kipp.fragments.BehaviorFragment;
 import com.teamhardwork.kipp.fragments.BehaviorPagerFragment;
 import com.teamhardwork.kipp.fragments.RosterFragment;
+import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.SchoolClass;
 import com.teamhardwork.kipp.models.users.Student;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class RosterActivity extends Activity implements
         RosterFragment.OnStudentSelectedListener,
@@ -30,6 +33,10 @@ public class RosterActivity extends Activity implements
 
     private RosterFragment rosterFragment;
     private Fragment pagerFragment;
+
+    private ArrayList<Student> selectedStudents;
+    private SchoolClass schoolClass;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,50 +98,61 @@ public class RosterActivity extends Activity implements
         startActivity(i);
     }
 
-    public void toggleBehaviorFragment(boolean open, ArrayList<String> studentIds, String schoolClassId, boolean isPositive) {
-        if (open == true) {
-            showBehaviorPagerFragment(studentIds, schoolClassId, isPositive);
-        } else {
-            closeBehaviorPagerFragment();
-        }
-    }
+    public void showBehaviorPagerFragment(ArrayList<Student> students, SchoolClass schoolClass, boolean isPositive) {
+        this.selectedStudents = students;
+        this.schoolClass = schoolClass;
 
-    public void showBehaviorPagerFragment(ArrayList<String> studentIds, String schoolClassId, boolean isPositive) {
         FragmentManager fm = getFragmentManager();
         pagerFragment = fm.findFragmentByTag(BEHAVIOR_PAGER_FRAGMENT_TAG);
 
         // show behavior Fragment
         if (pagerFragment == null) {
-            pagerFragment = BehaviorPagerFragment.newInstance(studentIds, schoolClassId, isPositive);
-        } else {
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.detach(pagerFragment);
-
-            ((BehaviorPagerFragment) pagerFragment).reset(studentIds, schoolClassId, isPositive);
-
-            ft.attach(pagerFragment);
-            ft.commit();
+            pagerFragment = BehaviorPagerFragment.newInstance(isPositive);
         }
 
         ((BehaviorPagerFragment) pagerFragment).show(fm, BEHAVIOR_PAGER_FRAGMENT_TAG);
     }
 
-    public void closeBehaviorPagerFragment() {
+    public void showBehaviorPagerFragment(boolean isPositive) {
         FragmentManager fm = getFragmentManager();
-        Fragment rosterFragment = fm.findFragmentByTag(ROSTER_FRAGMENT_TAG);
-        Fragment pagerFragment = fm.findFragmentByTag(BEHAVIOR_PAGER_FRAGMENT_TAG);
+        pagerFragment = fm.findFragmentByTag(BEHAVIOR_PAGER_FRAGMENT_TAG);
 
-        // close behavior fragment and show feed Fragment
-        FragmentTransaction ft = fm.beginTransaction();
+        // show behavior Fragment
+        if (pagerFragment == null) {
+            pagerFragment = BehaviorPagerFragment.newInstance(isPositive);
+        } else {
+//            ((BehaviorPagerFragment) pagerFragment).reset(isPositive);
+//
+//            FragmentTransaction ft = fm.beginTransaction();
+//            ft.detach(pagerFragment);
+//            ft.attach(pagerFragment);
+//            ft.commit();
+        }
+
+        ((BehaviorPagerFragment) pagerFragment).show(fm, BEHAVIOR_PAGER_FRAGMENT_TAG);
+    }
+
+    public void closeBehaviorPagerFragment(Behavior behavior) {
+        FragmentManager fm = getFragmentManager();
+        pagerFragment = fm.findFragmentByTag(BEHAVIOR_PAGER_FRAGMENT_TAG);
 
         if (pagerFragment != null) {
-            ft.detach(pagerFragment);
+            ((BehaviorPagerFragment) pagerFragment).dismiss();
         }
 
-        if (rosterFragment != null) {
-            ((RosterFragment) rosterFragment).reset();
-        }
+        for (Student curStudent: selectedStudents) {
+            BehaviorEvent behaviorEvent = new BehaviorEvent();
+            behaviorEvent.setBehavior(behavior);
+            behaviorEvent.setSchoolClass(schoolClass);
+            behaviorEvent.setStudent(curStudent);
+            behaviorEvent.setOccurredAt(new Date());
+            behaviorEvent.setNotes("");
+            behaviorEvent.saveInBackground();
+            Toast.makeText(RosterActivity.this, "behaviorEvent saved for " + curStudent.getFirstName(), Toast.LENGTH_SHORT).show();
 
-        ft.commit();
+            int behaviorPoints = behaviorEvent.getBehavior().getPoints();
+            curStudent.addPoints(behaviorPoints);
+            curStudent.saveInBackground();
+        }
     }
 }

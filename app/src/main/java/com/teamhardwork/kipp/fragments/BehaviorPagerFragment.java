@@ -15,12 +15,8 @@ import com.viewpagerindicator.TitlePageIndicator;
 import java.util.ArrayList;
 
 public class BehaviorPagerFragment extends DialogFragment {
-    private static final String ARG_PARAM1 = "student_ids";
-    private static final String ARG_PARAM2 = "school_class";
-    private static final String ARG_PARAM3 = "isPositive";
+    private static final String ARG_PARAM1 = "isPositive";
 
-    private ArrayList<String> studentIds;
-    private String schoolClassId;
     private boolean isPositive;
 
     private BehaviorPagerAdapter behaviorPagerAdapter;
@@ -31,12 +27,10 @@ public class BehaviorPagerFragment extends DialogFragment {
         // Required empty public constructor
     }
 
-    public static BehaviorPagerFragment newInstance(ArrayList<String> studentIds, String schoolClassId, boolean isPositive) {
+    public static BehaviorPagerFragment newInstance(boolean isPositive) {
         BehaviorPagerFragment fragment = new BehaviorPagerFragment();
         Bundle args = new Bundle();
-        args.putStringArrayList(ARG_PARAM1, studentIds);
-        args.putString(ARG_PARAM2, schoolClassId);
-        args.putBoolean(ARG_PARAM3, isPositive);
+        args.putBoolean(ARG_PARAM1, isPositive);
         fragment.setArguments(args);
         return fragment;
     }
@@ -44,14 +38,10 @@ public class BehaviorPagerFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.studentIds = null;
-        this.schoolClassId = null;
         this.isPositive = true;
 
         if (getArguments() != null) {
-            this.studentIds = getArguments().getStringArrayList(ARG_PARAM1);
-            this.schoolClassId = getArguments().getString(ARG_PARAM2);
-            this.isPositive = getArguments().getBoolean(ARG_PARAM3);
+            this.isPositive = getArguments().getBoolean(ARG_PARAM1);
         }
     }
 
@@ -70,7 +60,7 @@ public class BehaviorPagerFragment extends DialogFragment {
 
     public void setupPager() {
         if (vpPager != null) {
-            behaviorPagerAdapter = new BehaviorPagerAdapter(this, getChildFragmentManager(), studentIds, schoolClassId, isPositive);
+            behaviorPagerAdapter = new BehaviorPagerAdapter(this, getChildFragmentManager(), isPositive);
             vpPager.setAdapter(behaviorPagerAdapter);
 
             if (titleIndicator != null) {
@@ -80,11 +70,6 @@ public class BehaviorPagerFragment extends DialogFragment {
     }
 
     public void reset(ArrayList<String> studentIds, String schoolClassId, boolean isPositive) {
-        this.studentIds.clear();
-        this.studentIds = null;
-        this.studentIds = new ArrayList<String>(studentIds);
-
-        this.schoolClassId = schoolClassId;
         this.isPositive = isPositive;
         if (behaviorPagerAdapter != null) {
             behaviorPagerAdapter.clearAll();
