@@ -8,14 +8,6 @@
         style="@style/ListBackContent"
         android:tag="back">
 
-        <Button
-            android:id="@+id/btnContact"
-            style="@style/ListButtonAction"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#98FF98"
-            android:text="Contact" />
-
     </LinearLayout>
 
     <RelativeLayout

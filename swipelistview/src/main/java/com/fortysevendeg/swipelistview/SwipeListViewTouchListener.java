@@ -758,6 +758,14 @@ public class SwipeListViewTouchListener implements View.OnTouchListener {
 
     }
 
+    public int getFrontViewId() {
+        return swipeFrontView;
+    }
+
+    public int getBackViewId() {
+        return swipeBackView;
+    }
+
     /**
      * @see View.OnTouchListener#onTouch(android.view.View, android.view.MotionEvent)
      */

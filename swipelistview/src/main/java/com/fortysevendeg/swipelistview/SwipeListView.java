@@ -137,6 +137,9 @@ public class SwipeListView extends ListView {
      */
     private SwipeListViewTouchListener touchListener;
 
+    public SwipeListViewTouchListener getTouchListener() {
+        return this.touchListener;
+    }
 
     /**
      * If you create a View programmatically you need send back and front identifier

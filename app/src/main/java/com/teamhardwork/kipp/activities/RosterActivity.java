@@ -118,6 +118,7 @@ public class RosterActivity extends Activity implements
         pagerFragment = fm.findFragmentByTag(BEHAVIOR_PAGER_FRAGMENT_TAG);
 
         if (pagerFragment != null) {
+            // this will by default remove the fragment instance
             ((BehaviorPagerFragment) pagerFragment).dismiss();
         }
 

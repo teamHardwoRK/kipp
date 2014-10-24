@@ -3,6 +3,7 @@ package com.teamhardwork.kipp.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -31,6 +32,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RosterFragment extends Fragment {
+    private static final int GOOD_COLOR_ID = Color.parseColor("#C7F464");
+    private static final int BAD_COLOR_ID = Color.parseColor("#FF6B6B");
+
     SchoolClass schoolClass;
     List<Student> students;
     StudentArrayAdapter aStudents;
@@ -117,14 +121,14 @@ public class RosterFragment extends Fragment {
                         listener.showBehaviorPagerFragment(selectedStudents, schoolClass, true);
                         mode.finish();
                         return true;
-                    case R.id.action_note:
-                        // TODO: go show note dialog
-                        mode.finish();
-                        return true;
-                    case R.id.action_filter:
-                        // TODO: go do filter
-                        mode.finish();
-                        return true;
+//                    case R.id.action_note:
+//                        // TODO: go show note dialog
+//                        mode.finish();
+//                        return true;
+//                    case R.id.action_filter:
+//                        // TODO: go do filter
+//                        mode.finish();
+//                        return true;
                     default:
                         return false;
                 }
@@ -152,15 +156,15 @@ public class RosterFragment extends Fragment {
             @Override
             public void onOpened(int position, boolean toRight) {
                 if (toRight == true) {
-                    Toast.makeText(getActivity(), "toRight of " + String.valueOf(position), Toast.LENGTH_SHORT).show();
                     ArrayList<Student> selectedStudents = new ArrayList<Student>();
                     selectedStudents.add(aStudents.getItem(position));
                     listener.showBehaviorPagerFragment(selectedStudents, schoolClass, true);
+                    lvStudents.closeOpenedItems();
                 } else {
-                    Toast.makeText(getActivity(), "toLeft of " + String.valueOf(position), Toast.LENGTH_SHORT).show();
                     ArrayList<Student> selectedStudents = new ArrayList<Student>();
                     selectedStudents.add(aStudents.getItem(position));
                     listener.showBehaviorPagerFragment(selectedStudents, schoolClass, false);
+                    lvStudents.closeOpenedItems();
                 }
             }
 
@@ -179,8 +183,19 @@ public class RosterFragment extends Fragment {
             }
 
             @Override
-            public void onStartOpen(int position, int action, boolean b) {
-                Log.d("swipe", String.format("onStartOpen %d - action %d", position, action));
+            public void onStartOpen(int position, int action, boolean toRight) {
+                View v = lvStudents.getChildAt(position);
+                View backView = null;
+                if (v == null) return;
+
+                backView = v.findViewById(lvStudents.getTouchListener().getBackViewId());
+                if (backView == null) return;
+
+                if (toRight == true) {
+                    backView.setBackgroundColor(GOOD_COLOR_ID);
+                } else {
+                    backView.setBackgroundColor(BAD_COLOR_ID);
+                }
             }
 
             @Override

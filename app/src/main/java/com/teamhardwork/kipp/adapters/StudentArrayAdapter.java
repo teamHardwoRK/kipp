@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -41,7 +40,6 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
             v.ivProfilePic = (ImageView) convertView.findViewById(R.id.ivProfilePic);
             v.tvName = (TextView) convertView.findViewById(R.id.tvName);
             v.tvDescription = (TextView) convertView.findViewById(R.id.tvDescription);
-            v.btnContact = (Button) convertView.findViewById(R.id.btnContact);
             convertView.setTag(v);
         } else {
             v = (ViewHolder) convertView.getTag();
@@ -53,12 +51,6 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
         v.tvName.setText(Html.fromHtml("<b>" + student.getFirstName() + " " + student.getLastName() + "</b>"));
         v.tvDescription.setText(Html.fromHtml("<i>" + student.getGender().toString() + "</i>"));
 
-        v.btnContact.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((StudentAdapterListener) getContext()).addAction(student);
-            }
-        });
         return convertView;
     }
 
@@ -66,7 +58,6 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
         ImageView ivProfilePic;
         TextView tvName;
         TextView tvDescription;
-        Button btnContact;
     }
 
     public interface StudentAdapterListener {
