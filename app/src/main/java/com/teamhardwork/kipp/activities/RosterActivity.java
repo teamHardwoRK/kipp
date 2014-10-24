@@ -10,10 +10,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.fragments.BehaviorFragment;
 import com.teamhardwork.kipp.fragments.BehaviorPagerFragment;
 import com.teamhardwork.kipp.fragments.RosterFragment;
+import com.teamhardwork.kipp.models.SchoolClass;
 import com.teamhardwork.kipp.models.users.Student;
 
 import java.util.ArrayList;
@@ -34,6 +36,11 @@ public class RosterActivity extends Activity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_roster);
 
+        SchoolClass schoolClass = ((KippApplication) getApplication()).getSchoolClass();
+
+        getActionBar().setHomeButtonEnabled(true);
+        getActionBar().setTitle(schoolClass.getName());
+
         setupRoster();
     }
 
@@ -49,10 +56,11 @@ public class RosterActivity extends Activity implements
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                startActivity(new Intent(this, InfoActivity.class));
         }
+
         return super.onOptionsItemSelected(item);
     }
 

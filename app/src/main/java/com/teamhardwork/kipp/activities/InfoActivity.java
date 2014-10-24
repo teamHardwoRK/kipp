@@ -46,6 +46,8 @@ public class InfoActivity extends Activity implements  FeedFragment.FeedListener
 
         if (selected != null) {
             getActionBar().setTitle("Detail view for " + selected.getFullName());
+        } else {
+            getActionBar().setTitle("Info for class");
         }
 
         selectStatsModule();
