@@ -19,4 +19,6 @@
 
     <dimen name="font_size_new_tag">11sp</dimen>
     <dimen name="padding_new_tag">3dp</dimen>
+
+    <dimen name="bg_login_right_offset">-400dp</dimen>
 </resources>

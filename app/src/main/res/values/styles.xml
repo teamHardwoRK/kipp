@@ -5,8 +5,14 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <!-- List -->
+    <!-- Buttons -->
+    <style name="LoginButton" parent="android:Widget.Button">
+        <item name="android:textColor">@color/LightJade</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:background">@drawable/states_btn_green</item>
+    </style>
 
+    <!-- List -->
     <style name="ListBackContent">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/height_list</item>

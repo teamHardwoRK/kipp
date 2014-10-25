@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/bg_forest" />
+
+    <item>
+        <shape>
+            <gradient
+                android:startColor="#80254117"
+                android:endColor="@android:color/transparent"
+                android:angle="270"
+                />
+        </shape>
+    </item>
+
+</layer-list>

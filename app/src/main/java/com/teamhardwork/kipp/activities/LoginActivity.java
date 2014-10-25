@@ -2,6 +2,7 @@ package com.teamhardwork.kipp.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +28,7 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_login);
 
         setupViews();
+        setupFonts();
         Parse.initialize(this, KippApplication.PARSE_APPLICATION_ID, KippApplication.PARSE_CLIENT_KEY);
     }
 
@@ -57,6 +59,15 @@ public class LoginActivity extends Activity {
                 });
             }
         });
+    }
+
+    void setupFonts() {
+        Typeface varelaTypeFace = Typeface.createFromAsset(getAssets(), "fonts/VarelaRound-Regular.otf");
+        Typeface actionManTypeFace = Typeface.createFromAsset(getAssets(), "fonts/Action_Man_Bold.ttf");
+
+        btnLogin.setTypeface(actionManTypeFace);
+        etUsername.setTypeface(varelaTypeFace);
+        etPassword.setTypeface(varelaTypeFace);
     }
 
     void onLoginSuccess() {
