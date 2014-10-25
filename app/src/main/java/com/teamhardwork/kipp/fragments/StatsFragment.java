@@ -4,14 +4,19 @@ package com.teamhardwork.kipp.fragments;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.echo.holographlibrary.PieGraph;
 import com.echo.holographlibrary.PieSlice;
+import com.facebook.rebound.SimpleSpringListener;
+import com.facebook.rebound.Spring;
+import com.facebook.rebound.SpringSystem;
+import com.facebook.rebound.SpringUtil;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.teamhardwork.kipp.R;
@@ -43,6 +48,8 @@ public class StatsFragment extends BaseKippFragment {
 
     protected static String statForString = "Class";
 
+    @InjectView(R.id.rlStatsContainer)
+    RelativeLayout rlStatsContainer;
     @InjectView(R.id.pieGraph)
     PieGraph pieGraph;
     @InjectView(R.id.tvLegendDescription)
@@ -74,6 +81,7 @@ public class StatsFragment extends BaseKippFragment {
                     progressBar.setVisibility(View.GONE);
                 }
             };
+    private Spring mScaleSpring;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,6 +93,36 @@ public class StatsFragment extends BaseKippFragment {
 
         setupChart();
         fillChartWithOverallData();
+
+        mScaleSpring = SpringSystem.create().createSpring();
+
+        mScaleSpring.addListener(new SimpleSpringListener() {
+            @Override
+            public void onSpringUpdate(Spring spring) {
+                // You can observe the updates in the spring
+                // state by asking its current value in onSpringUpdate.
+                float mappedValue = (float) SpringUtil.mapValueFromRangeToRange(
+                        spring.getCurrentValue(), 0, 1, 1, 0.5);
+                pieGraph.setScaleX(mappedValue);
+                pieGraph.setScaleY(mappedValue);
+            }
+        });
+
+        llLegend.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (chartMode != ChartMode.OVERALL) {
+                    switch (motionEvent.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            mScaleSpring.setEndValue(1);
+                            break;
+                        default:
+                            mScaleSpring.setEndValue(0);
+                    }
+                }
+                return false;
+            }
+        });
 
         llLegend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -201,20 +239,6 @@ public class StatsFragment extends BaseKippFragment {
         tvExtraTwo.setVisibility(View.GONE);
         tvExtraThree.setVisibility(View.GONE);
     }
-
-//    public void updateChartForStudent(final Student currentStudent) {
-//        this.currentStudent = currentStudent;
-//        FeedQueries.getStudentFeed(currentStudent, new FindCallback<BehaviorEvent>() {
-//            @Override
-//            public void done(List<BehaviorEvent> behaviorEvents, com.parse.ParseException e) {
-//                currentBehaviorEvents = behaviorEvents;
-//                currentChartType = FeedFragment.FeedType.STUDENT;
-//                updateChart(currentBehaviorEvents);
-//                tvLegendDescription.setText("Student behavior history");
-//            }
-//        });
-//    }
-
 
     private String getPercentString(double fraction) {
         return MessageFormat.format("{0,number,#.##%}", fraction);

@@ -1,43 +1,31 @@
 package com.teamhardwork.kipp.activities;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
 import com.astuetz.PagerSlidingTabStrip;
-import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.adapters.InfoPagerAdapter;
 import com.teamhardwork.kipp.dialogfragments.AddActionDialogFragment;
 import com.teamhardwork.kipp.fragments.FeedFragment;
-import com.teamhardwork.kipp.fragments.LeaderboardFragment;
-import com.teamhardwork.kipp.fragments.RosterFragment;
 import com.teamhardwork.kipp.fragments.StatsFragment;
-import com.teamhardwork.kipp.fragments.StudentStatsFragment;
-import com.teamhardwork.kipp.listeners.FragmentTabListener;
 import com.teamhardwork.kipp.models.BehaviorEvent;
-import com.teamhardwork.kipp.models.SchoolClass;
 import com.teamhardwork.kipp.models.users.Student;
-import com.teamhardwork.kipp.models.users.Teacher;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class InfoActivity extends Activity implements  FeedFragment.FeedListener {
-    private StatsFragment statsFragment;
-    private Student selected;
-
+public class InfoActivity extends Activity implements FeedFragment.FeedListener {
     @InjectView(R.id.vpPager)
     ViewPager vpPager;
     @InjectView(R.id.tabs)
     PagerSlidingTabStrip tabs;
+    private StatsFragment statsFragment;
+    private Student selected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
