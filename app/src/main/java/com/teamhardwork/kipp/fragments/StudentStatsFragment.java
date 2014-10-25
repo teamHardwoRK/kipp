@@ -10,6 +10,14 @@ public class StudentStatsFragment extends StatsFragment {
 
     private Student student;
 
+    public static StudentStatsFragment newInstance(String studentId) {
+        Bundle args = new Bundle();
+        args.putString(STUDENT_ID, studentId);
+        StudentStatsFragment studentStatsFragment = new StudentStatsFragment();
+        studentStatsFragment.setArguments(args);
+        return studentStatsFragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

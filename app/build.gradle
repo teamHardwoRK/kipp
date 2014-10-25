@@ -23,6 +23,7 @@ dependencies {
     compile project(':HoloGraphLibrary')
     compile project(':swipelistview')
     compile project(':viewpagerindicator')
+    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile group:'joda-time', name:'joda-time', version:'2.4'
     compile group:'com.jakewharton', name:'butterknife', version:'5.1.2'
     compile fileTree(dir: 'libs', include: ['*.jar'])

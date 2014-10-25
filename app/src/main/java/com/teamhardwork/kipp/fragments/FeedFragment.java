@@ -29,7 +29,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class FeedFragment extends Fragment {
+public class FeedFragment extends BaseKippFragment {
     FeedType feedType;
     SchoolClass schoolClass;
     Student student;
@@ -37,7 +37,7 @@ public class FeedFragment extends Fragment {
     @InjectView(R.id.lvBehaviorFeed)
     ListView lvBehaviorFeed;
 
-    @InjectView(R.id.pbBehaviorFeed)
+    @InjectView(R.id.progressBar)
     ProgressBar pbBehaviorFeed;
 
     @InjectView(R.id.lvActionFeed)
@@ -198,5 +198,10 @@ public class FeedFragment extends Fragment {
     public enum FeedType {
         STUDENT,
         CLASS;
+    }
+
+    @Override
+    public String getTitle() {
+        return "Feed";
     }
 }

@@ -68,4 +68,9 @@ public class LeaderboardFragment extends BaseKippFragment {
     public void resetSelectedRow() {
         lvLeaderboard.setSelection(0);
     }
+
+    @Override
+    public String getTitle() {
+        return "Leaderboard";
+    }
 }

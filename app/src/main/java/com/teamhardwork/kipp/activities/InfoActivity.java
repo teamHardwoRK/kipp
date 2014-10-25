@@ -4,13 +4,17 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Parcel;
+import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
+import com.teamhardwork.kipp.adapters.InfoPagerAdapter;
 import com.teamhardwork.kipp.dialogfragments.AddActionDialogFragment;
 import com.teamhardwork.kipp.fragments.FeedFragment;
 import com.teamhardwork.kipp.fragments.LeaderboardFragment;
@@ -30,64 +34,33 @@ public class InfoActivity extends Activity implements  FeedFragment.FeedListener
     private StatsFragment statsFragment;
     private Student selected;
 
+    @InjectView(R.id.vpPager)
+    ViewPager vpPager;
+    @InjectView(R.id.tabs)
+    PagerSlidingTabStrip tabs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
+        ButterKnife.inject(this);
+        setActionBarTitle();
 
+        String selectedId = (selected != null) ? selected.getObjectId() : null;
+
+        FragmentPagerAdapter pagerAdapter = new InfoPagerAdapter(getFragmentManager(), selectedId);
+        vpPager.setAdapter(pagerAdapter);
+        tabs.setViewPager(vpPager);
+    }
+
+    private void setActionBarTitle() {
         selected = getSelectedStudent();
-
         if (selected != null) {
             getActionBar().setTitle("Detail view for " + selected.getFullName());
         } else {
             getActionBar().setTitle("Info for class");
         }
-
-        setupTabs();
     }
-
-    private void setupTabs() {
-        ActionBar actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        actionBar.setDisplayShowTitleEnabled(true);
-
-        Bundle statBundle = new Bundle();
-        Class statFragmentClass = StatsFragment.class;
-        if (selected != null) {
-            statBundle.putString(StudentStatsFragment.STUDENT_ID, selected.getObjectId());
-            statFragmentClass = StudentStatsFragment.class;
-        }
-
-        ActionBar.Tab tab1 = actionBar
-                .newTab()
-                .setText("First")
-                .setIcon(R.drawable.ic_kipp)
-                .setTabListener(
-                        new FragmentTabListener<StatsFragment>(R.id.flInfoFragmentContainer, this,
-                                "first", statFragmentClass, statBundle));
-        actionBar.addTab(tab1);
-        actionBar.selectTab(tab1);
-
-        ActionBar.Tab tab2 = actionBar
-                .newTab()
-                .setText("Second")
-                .setIcon(R.drawable.ic_kipp)
-                .setTabListener(
-                        new FragmentTabListener<FeedFragment>(R.id.flInfoFragmentContainer, this,
-                                "second",
-                                FeedFragment.class));
-        actionBar.addTab(tab2);
-
-        ActionBar.Tab tab3 = actionBar
-                .newTab()
-                .setText("Third")
-                .setIcon(R.drawable.ic_kipp)
-                .setTabListener(
-                        new FragmentTabListener<LeaderboardFragment>(R.id.flInfoFragmentContainer,
-                                this, "second", LeaderboardFragment.class));
-        actionBar.addTab(tab3);
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

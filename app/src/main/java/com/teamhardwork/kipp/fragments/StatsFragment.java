@@ -248,6 +248,11 @@ public class StatsFragment extends BaseKippFragment {
 //        }
     }
 
+    @Override
+    public String getTitle() {
+        return "Stats";
+    }
+
     public enum ChartMode {
         OVERALL, BAD_DETAIL, GOOD_DETAIL
     }

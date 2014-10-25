@@ -35,4 +35,8 @@ public class BaseKippFragment extends Fragment {
         ButterKnife.inject(this, rtnView);
         return rtnView;
     }
+
+    public String getTitle() {
+        return "Default";
+    }
 }
