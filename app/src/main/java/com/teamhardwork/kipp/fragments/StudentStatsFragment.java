@@ -6,21 +6,14 @@ import com.teamhardwork.kipp.models.users.Student;
 import com.teamhardwork.kipp.queries.FeedQueries;
 
 public class StudentStatsFragment extends StatsFragment {
+    public static final String STUDENT_ID = "studentId";
 
     private Student student;
-
-    public static StudentStatsFragment newInstance(String studentId) {
-        StudentStatsFragment studentStatsFragment = new StudentStatsFragment();
-        Bundle args = new Bundle();
-        args.putString("studentId", studentId);
-        studentStatsFragment.setArguments(args);
-        return studentStatsFragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String studentId = getArguments().getString("studentId");
+        String studentId = getArguments().getString(STUDENT_ID);
         student = Student.getStudent(studentId);
         statForString = student.getFullName();
     }

@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.adapters.LeaderboardAdapter;
 import com.teamhardwork.kipp.models.users.Student;
@@ -46,10 +48,16 @@ public class LeaderboardFragment extends BaseKippFragment {
 
     public void updateLeaderboard() {
         leaderboardAdapter.clear();
-        List<Student> leaderboard = currentClass.getRoster();
-        Collections.sort(leaderboard, StudentListFilterer.pointsComparator);
-        Collections.reverse(leaderboard);
-        leaderboardAdapter.addAll(leaderboard);
+        currentClass.getClassRosterAsync(new FindCallback<Student>() {
+            @Override
+            public void done(List<Student> students, ParseException e) {
+                leaderboard = students;
+                Collections.sort(leaderboard, StudentListFilterer.pointsComparator);
+                Collections.reverse(leaderboard);
+                leaderboardAdapter.addAll(leaderboard);
+                progressBar.setVisibility(View.GONE);
+            }
+        });
     }
 
     public void setSelectedRowForStudent(Student student) {

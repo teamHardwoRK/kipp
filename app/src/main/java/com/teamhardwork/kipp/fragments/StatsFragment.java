@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.echo.holographlibrary.PieGraph;
@@ -42,7 +43,6 @@ public class StatsFragment extends BaseKippFragment {
 
     protected static String statForString = "Class";
 
-
     @InjectView(R.id.pieGraph)
     PieGraph pieGraph;
     @InjectView(R.id.tvLegendDescription)
@@ -71,6 +71,7 @@ public class StatsFragment extends BaseKippFragment {
                     curBehaviorEvents = behaviorEvents;
                     behaviorCounts = BehaviorEventListFilterer.getGroupedCount(behaviorEvents);
                     activateOverallChart(behaviorEvents);
+                    progressBar.setVisibility(View.GONE);
                 }
             };
 
@@ -175,7 +176,11 @@ public class StatsFragment extends BaseKippFragment {
 
     private void activateLegendForBehaviors(Map<Behavior, Integer> groupedCounts,
                                             List<Behavior> behaviors) {
-        tvLegendDescription.setText("Bad Behaviors for " + statForString);
+        String behaviorType = "Good Behaviors";
+        if (chartMode.equals(ChartMode.BAD_DETAIL)) {
+            behaviorType = "Bad Behaviors";
+        }
+        tvLegendDescription.setText(behaviorType + " for " + statForString);
         turnOffExtraLegendItems();
         int total = 0;
         for (Behavior behavior : behaviors) {

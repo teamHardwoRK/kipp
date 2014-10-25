@@ -1,5 +1,6 @@
 package com.teamhardwork.kipp.activities;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Parcel;
@@ -13,8 +14,10 @@ import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.dialogfragments.AddActionDialogFragment;
 import com.teamhardwork.kipp.fragments.FeedFragment;
 import com.teamhardwork.kipp.fragments.LeaderboardFragment;
+import com.teamhardwork.kipp.fragments.RosterFragment;
 import com.teamhardwork.kipp.fragments.StatsFragment;
 import com.teamhardwork.kipp.fragments.StudentStatsFragment;
+import com.teamhardwork.kipp.listeners.FragmentTabListener;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.SchoolClass;
 import com.teamhardwork.kipp.models.users.Student;
@@ -25,22 +28,12 @@ import butterknife.InjectView;
 
 public class InfoActivity extends Activity implements  FeedFragment.FeedListener {
     private StatsFragment statsFragment;
-    private FeedFragment feedFragment;
-    private LeaderboardFragment leaderboardFragment;
     private Student selected;
-
-    @InjectView(R.id.btnStats)
-    Button btnStats;
-    @InjectView(R.id.btnFeed)
-    Button btnFeed;
-    @InjectView(R.id.btnLeaderboard)
-    Button btnLeaderboard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
-        ButterKnife.inject(this);
 
         selected = getSelectedStudent();
 
@@ -50,9 +43,49 @@ public class InfoActivity extends Activity implements  FeedFragment.FeedListener
             getActionBar().setTitle("Info for class");
         }
 
-        selectStatsModule();
+        setupTabs();
+    }
 
-        setupTabClickListeners();
+    private void setupTabs() {
+        ActionBar actionBar = getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.setDisplayShowTitleEnabled(true);
+
+        Bundle statBundle = new Bundle();
+        Class statFragmentClass = StatsFragment.class;
+        if (selected != null) {
+            statBundle.putString(StudentStatsFragment.STUDENT_ID, selected.getObjectId());
+            statFragmentClass = StudentStatsFragment.class;
+        }
+
+        ActionBar.Tab tab1 = actionBar
+                .newTab()
+                .setText("First")
+                .setIcon(R.drawable.ic_kipp)
+                .setTabListener(
+                        new FragmentTabListener<StatsFragment>(R.id.flInfoFragmentContainer, this,
+                                "first", statFragmentClass, statBundle));
+        actionBar.addTab(tab1);
+        actionBar.selectTab(tab1);
+
+        ActionBar.Tab tab2 = actionBar
+                .newTab()
+                .setText("Second")
+                .setIcon(R.drawable.ic_kipp)
+                .setTabListener(
+                        new FragmentTabListener<FeedFragment>(R.id.flInfoFragmentContainer, this,
+                                "second",
+                                FeedFragment.class));
+        actionBar.addTab(tab2);
+
+        ActionBar.Tab tab3 = actionBar
+                .newTab()
+                .setText("Third")
+                .setIcon(R.drawable.ic_kipp)
+                .setTabListener(
+                        new FragmentTabListener<LeaderboardFragment>(R.id.flInfoFragmentContainer,
+                                this, "second", LeaderboardFragment.class));
+        actionBar.addTab(tab3);
     }
 
 
@@ -75,29 +108,6 @@ public class InfoActivity extends Activity implements  FeedFragment.FeedListener
         return super.onOptionsItemSelected(item);
     }
 
-    private void setupTabClickListeners() {
-        btnStats.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectStatsModule();
-            }
-        });
-
-        btnFeed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectFeed();
-            }
-        });
-
-        btnLeaderboard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectLeaderboard();
-            }
-        });
-    }
-
     private Student getSelectedStudent() {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -105,43 +115,6 @@ public class InfoActivity extends Activity implements  FeedFragment.FeedListener
         } else {
             return null;
         }
-    }
-
-    private void selectStatsModule() {
-        if (statsFragment == null) {
-            // TODO: Sorry for the hackiness this needs a detail Info activity subclass
-            statsFragment = (selected != null) ?
-                    StudentStatsFragment.newInstance(selected.getObjectId()) :
-                    new StatsFragment();
-        }
-
-        getFragmentManager().beginTransaction()
-                .replace(R.id.flInfoFragmentContainer, statsFragment)
-                .commit();
-    }
-
-    private void selectFeed() {
-        if (feedFragment == null) {
-            feedFragment = FeedFragment.getInstance();
-        }
-
-        getFragmentManager().beginTransaction()
-                .replace(R.id.flInfoFragmentContainer, feedFragment)
-                .commit();
-
-        if (selected != null) {
-            //feedFragment.changeToStudentFeed(selected);
-        }
-    }
-
-    private void selectLeaderboard() {
-        if (leaderboardFragment == null) {
-            leaderboardFragment = new LeaderboardFragment();
-        }
-
-        getFragmentManager().beginTransaction()
-                .replace(R.id.flInfoFragmentContainer, leaderboardFragment)
-                .commit();
     }
 
     @Override
