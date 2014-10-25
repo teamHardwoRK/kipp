@@ -62,12 +62,12 @@ public class LoginActivity extends Activity {
     }
 
     void setupFonts() {
-        Typeface varelaTypeFace = Typeface.createFromAsset(getAssets(), "fonts/VarelaRound-Regular.otf");
-        Typeface actionManTypeFace = Typeface.createFromAsset(getAssets(), "fonts/Action_Man_Bold.ttf");
+        Typeface editTextTypeFace = Typeface.createFromAsset(getAssets(), "fonts/VarelaRound-Regular.otf");
+        Typeface buttonTypeFace = Typeface.createFromAsset(getAssets(), "fonts/AndBasR.ttf");
 
-        btnLogin.setTypeface(actionManTypeFace);
-        etUsername.setTypeface(varelaTypeFace);
-        etPassword.setTypeface(varelaTypeFace);
+        btnLogin.setTypeface(buttonTypeFace);
+        etUsername.setTypeface(editTextTypeFace);
+        etPassword.setTypeface(editTextTypeFace);
     }
 
     void onLoginSuccess() {
