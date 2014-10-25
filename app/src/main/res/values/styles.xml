@@ -5,6 +5,24 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="KippTheme" parent="AppTheme">
+        <item name="android:actionBarStyle">@style/KippTheme.ActionBar</item>
+        <item name="android:actionBarTabTextStyle">@style/KippTheme.ActionBar.TabBarTextStyle</item>
+    </style>
+
+    <style name="KippTheme.ActionBar" parent="android:Widget.Holo.ActionBar">
+        <item name="android:background">@color/MediumSeaGreen</item>
+        <item name="android:titleTextStyle">@style/KippTheme.ActionBar.TitleTextStyle</item>
+    </style>
+
+    <style name="KippTheme.ActionBar.TitleTextStyle" parent="android:TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/White</item>
+    </style>
+
+    <style name="KippTheme.ActionBar.TabBarTextStyle" parent="android:Widget.Holo.ActionBar.TabText">
+        <item name="android:textColor">@color/Black</item>
+    </style>
+
     <!-- Buttons -->
     <style name="LoginButton" parent="android:Widget.Button">
         <item name="android:textColor">@color/LightJade</item>
