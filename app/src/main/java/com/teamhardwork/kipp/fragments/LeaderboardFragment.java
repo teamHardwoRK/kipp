@@ -4,12 +4,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.nhaarman.listviewanimations.appearance.AnimationAdapter;
 import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
-import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.teamhardwork.kipp.R;
@@ -45,7 +43,7 @@ public class LeaderboardFragment extends BaseKippFragment {
 
     private void setupLeaderboard() {
         leaderboardAdapter = new LeaderboardAdapter(getActivity(), new ArrayList<Student>());
-        mAnimAdapter  = new AlphaInAnimationAdapter(leaderboardAdapter);
+        mAnimAdapter = new AlphaInAnimationAdapter(leaderboardAdapter);
         mAnimAdapter.setAbsListView(lvLeaderboard);
 
         lvLeaderboard.setAdapter(mAnimAdapter);

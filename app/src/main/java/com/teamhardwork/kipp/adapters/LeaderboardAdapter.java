@@ -5,8 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.models.users.Student;
 
@@ -40,21 +42,30 @@ public class LeaderboardAdapter extends ArrayAdapter<Student> {
         return convertView;
     }
 
+    private static int cacheBusterId = 0;
     private void populateViewHolder(ViewHolder holder, Student student, int position) {
         holder.tvRank.setText(Integer.toString(position));
         holder.tvName.setText(student.getFirstName() + " " + student.getLastName());
         holder.tvPoints.setText(Integer.toString(student.getPoints()) + " points");
+        Picasso.with(getContext())
+                .load("http://thecatapi.com/api/images/get?format=src&type=jpg&cachebuster="
+                        + cacheBusterId)
+                .placeholder(R.drawable.ic_profile_placeholder)
+                .resize(150, 150)
+                .centerCrop()
+                .into(holder.ivProfilePic);
+        cacheBusterId++;
     }
 
     static class ViewHolder {
         @InjectView(R.id.tvRank)
         TextView tvRank;
-
         @InjectView(R.id.tvName)
         TextView tvName;
-
         @InjectView(R.id.tvPoints)
         TextView tvPoints;
+        @InjectView(R.id.ivProfilePic)
+        ImageView ivProfilePic;
 
         public ViewHolder(View view) {
             ButterKnife.inject(this, view);
