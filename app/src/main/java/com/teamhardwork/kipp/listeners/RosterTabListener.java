@@ -64,7 +64,7 @@ public class RosterTabListener implements ActionBar.TabListener {
         new Handler().post(new Runnable() {
             @Override
             public void run() {
-                view.smoothScrollToPositionFromTop(position, 0);
+                view.smoothScrollToPositionFromTop(position, 0, 400);
             }
         });
     }
