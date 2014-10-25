@@ -37,6 +37,8 @@ import java.util.List;
 public class RosterFragment extends Fragment {
     private static final int GOOD_COLOR_ID = Color.parseColor("#C7F464");
     private static final int BAD_COLOR_ID = Color.parseColor("#FF6B6B");
+    private static int maxNumTabs = 3;
+    private static int minStudentRange = 5;
 
     SchoolClass schoolClass;
     List<Student> students;
@@ -44,6 +46,22 @@ public class RosterFragment extends Fragment {
     SwipeListView lvStudents;
     private RosterSwipeListener listener;
     private OnStudentSelectedListener onStudentSelectedListener;
+    private ArrayList<TabRange> tabsRanges;
+
+    private class TabRange
+    {
+        private Character beginChar;
+        private Integer jumpPosition;
+
+        public TabRange(Character beginChar, Integer jumpPosition)
+        {
+            this.beginChar   = beginChar;
+            this.jumpPosition = jumpPosition;
+        }
+
+        public Character getBeginChar()   { return beginChar; }
+        public Integer getJumpPosition() { return jumpPosition; }
+    }
 
     public static RosterFragment newInstance() {
         RosterFragment fragment = new RosterFragment();
@@ -77,6 +95,8 @@ public class RosterFragment extends Fragment {
         aStudents = new StudentArrayAdapter(getActivity(), R.layout.student_row, new ArrayList<Student>());
 
         schoolClass = ((KippApplication) getActivity().getApplication()).getSchoolClass();
+
+        tabsRanges = new ArrayList<TabRange>();
         if (schoolClass != null) {
             schoolClass.getClassRosterAsync(new FindCallback<Student>() {
                 @Override
@@ -84,6 +104,22 @@ public class RosterFragment extends Fragment {
                     students = foundStudents;
                     Collections.sort(students);
                     aStudents.addAll(students);
+
+                    // calculate tabs' ranges based on names on the roster
+                    if (!students.isEmpty() && students.size() > minStudentRange) {
+                        int jumpPos = 0;
+                        int rangeSize = (students.size() + 1) / maxNumTabs;
+                        char beginChar = 'a';
+                        tabsRanges.add(new TabRange(beginChar, jumpPos));
+
+                        while (jumpPos < (students.size() - rangeSize)) {
+                            jumpPos = jumpPos + rangeSize;
+                            beginChar = Character.toLowerCase(students.get(jumpPos).getFirstName().charAt(0));
+                            tabsRanges.add(new TabRange(beginChar, jumpPos));
+                        }
+
+                        setupTabs();
+                    }
                 }
             });
         }
@@ -109,24 +145,32 @@ public class RosterFragment extends Fragment {
     private void setupTabs() {
         ActionBar actionBar = getActivity().getActionBar();
 
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        actionBar.setDisplayShowTitleEnabled(true);
+        if (actionBar.getTabCount() == 0) {
+            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+            actionBar.setDisplayShowTitleEnabled(true);
 
-        ActionBar.Tab tab1 = actionBar
-                .newTab()
-                .setText("First")
-                .setTabListener(new RosterTabListener(R.id.flRoster,
-                        "first", lvStudents, 0));
+            char beginChar;
+            char endChar;
 
-        actionBar.addTab(tab1);
-        actionBar.selectTab(tab1);
+            for (int i = 0; i < tabsRanges.size(); i++) {
+                beginChar = tabsRanges.get(i).getBeginChar();
+                if (i == (tabsRanges.size() - 1)) {
+                    endChar = 'z';
+                } else {
+                    endChar = (char) (tabsRanges.get(i).getBeginChar() - 1);
+                }
+                ActionBar.Tab tab = actionBar
+                        .newTab()
+                        .setText(beginChar + "-" + endChar)
+                        .setTabListener(new RosterTabListener(R.id.flRoster,
+                                "", lvStudents, tabsRanges.get(i).getJumpPosition()));
+                actionBar.addTab(tab);
+            }
 
-        ActionBar.Tab tab2 = actionBar
-                .newTab()
-                .setText("Third")
-                .setTabListener(new RosterTabListener(R.id.flRoster,
-                        "third", lvStudents, 3));
-        actionBar.addTab(tab2);
+            if (actionBar.getTabCount() > 0) {
+                actionBar.selectTab(actionBar.getTabAt(0));
+            }
+        }
     }
 
     private void setupViews(View v) {
