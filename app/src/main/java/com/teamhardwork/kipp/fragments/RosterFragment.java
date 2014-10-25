@@ -37,7 +37,7 @@ import java.util.List;
 public class RosterFragment extends Fragment {
     private static final int GOOD_COLOR_ID = Color.parseColor("#C7F464");
     private static final int BAD_COLOR_ID = Color.parseColor("#FF6B6B");
-    private static int maxNumTabs = 3;
+    private static int maxNumTabs = 4;
     private static int minStudentRange = 5;
 
     SchoolClass schoolClass;
