@@ -152,8 +152,6 @@ public class MainActivity extends Activity implements
     public void onStudentSelected(Student student) {
         getActionBar().setTitle("Detail view for " + student.getFullName());
         feedFragment.changeToStudentFeed(student);
-        //statsFragment.updateChartForStudent(student);
-        leaderboardFragment.setSelectedRowForStudent(student);
         Fragment rosterFragment = getFragmentManager().findFragmentByTag(ROSTER_FRAGMENT_TAG);
 
         // HACK: reset roster Fragment to get around swiping issue

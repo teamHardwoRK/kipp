@@ -4,8 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 
+import com.nhaarman.listviewanimations.appearance.AnimationAdapter;
+import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
+import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.teamhardwork.kipp.R;
@@ -24,12 +28,12 @@ public class LeaderboardFragment extends BaseKippFragment {
     @InjectView(R.id.lvLeaderboard)
     ListView lvLeaderboard;
     private LeaderboardAdapter leaderboardAdapter;
-    private List<Student> leaderboard;
+
+    private AnimationAdapter mAnimAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View rtnView = inflater.inflate(R.layout.fragment_leaderboard, container, false);
         ButterKnife.inject(this, rtnView);
 
@@ -40,10 +44,11 @@ public class LeaderboardFragment extends BaseKippFragment {
     }
 
     private void setupLeaderboard() {
-        leaderboard = new ArrayList<Student>();
-        leaderboardAdapter = new LeaderboardAdapter(getActivity(), leaderboard);
+        leaderboardAdapter = new LeaderboardAdapter(getActivity(), new ArrayList<Student>());
+        mAnimAdapter  = new AlphaInAnimationAdapter(leaderboardAdapter);
+        mAnimAdapter.setAbsListView(lvLeaderboard);
 
-        lvLeaderboard.setAdapter(leaderboardAdapter);
+        lvLeaderboard.setAdapter(mAnimAdapter);
     }
 
     public void updateLeaderboard() {
@@ -51,19 +56,18 @@ public class LeaderboardFragment extends BaseKippFragment {
         currentClass.getClassRosterAsync(new FindCallback<Student>() {
             @Override
             public void done(List<Student> students, ParseException e) {
-                leaderboard = students;
-                Collections.sort(leaderboard, StudentListFilterer.pointsComparator);
-                Collections.reverse(leaderboard);
-                leaderboardAdapter.addAll(leaderboard);
+                Collections.sort(students, StudentListFilterer.pointsComparator);
+                Collections.reverse(students);
+                leaderboardAdapter.addAll(students);
                 progressBar.setVisibility(View.GONE);
             }
         });
     }
 
-    public void setSelectedRowForStudent(Student student) {
-        int currentI = leaderboard.indexOf(student);
-        lvLeaderboard.setSelection(currentI);
-    }
+//    public void setSelectedRowForStudent(Student student) {
+//        int currentI = leaderboard.indexOf(student);
+//        lvLeaderboard.setSelection(currentI);
+//    }
 
     public void resetSelectedRow() {
         lvLeaderboard.setSelection(0);
