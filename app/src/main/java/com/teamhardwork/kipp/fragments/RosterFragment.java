@@ -108,9 +108,11 @@ public class RosterFragment extends Fragment {
                     // calculate tabs' ranges based on names on the roster
                     if (!students.isEmpty() && students.size() > minStudentRange) {
                         int jumpPos = 0;
-                        int rangeSize = (students.size() + 1) / maxNumTabs;
                         char beginChar = 'a';
                         tabsRanges.add(new TabRange(beginChar, jumpPos));
+
+                        int rangeSize = (int) ((students.size() / maxNumTabs) + 0.5);
+                        if (rangeSize < minStudentRange) rangeSize = minStudentRange;
 
                         while (jumpPos < (students.size() - rangeSize)) {
                             jumpPos = jumpPos + rangeSize;
@@ -157,7 +159,7 @@ public class RosterFragment extends Fragment {
                 if (i == (tabsRanges.size() - 1)) {
                     endChar = 'z';
                 } else {
-                    endChar = (char) (tabsRanges.get(i).getBeginChar() - 1);
+                    endChar = (char) (tabsRanges.get(i + 1).getBeginChar() - 1);
                 }
                 ActionBar.Tab tab = actionBar
                         .newTab()
