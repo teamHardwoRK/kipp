@@ -47,6 +47,7 @@ public class RosterFragment extends Fragment {
     private RosterSwipeListener listener;
     private OnStudentSelectedListener onStudentSelectedListener;
     private ArrayList<TabRange> tabsRanges;
+    private int rangeSize;
 
     private class TabRange
     {
@@ -111,7 +112,7 @@ public class RosterFragment extends Fragment {
                         char beginChar = 'a';
                         tabsRanges.add(new TabRange(beginChar, jumpPos));
 
-                        int rangeSize = (int) ((students.size() / maxNumTabs) + 0.5);
+                        rangeSize = (int) ((students.size() / maxNumTabs) + 0.5);
                         if (rangeSize < minStudentRange) rangeSize = minStudentRange;
 
                         while (jumpPos < (students.size() - rangeSize)) {
@@ -159,7 +160,11 @@ public class RosterFragment extends Fragment {
                 if (i == (tabsRanges.size() - 1)) {
                     endChar = 'z';
                 } else {
+                    // first character of the last name in the current range
+                    char endChar2 = (char) (students.get(tabsRanges.get(i).getJumpPosition() + rangeSize - 1).getFirstName().charAt(0));
+                    // the character before the beginning character of the next range
                     endChar = (char) (tabsRanges.get(i + 1).getBeginChar() - 1);
+                    if (endChar2 > endChar) endChar = endChar2;
                 }
                 ActionBar.Tab tab = actionBar
                         .newTab()
