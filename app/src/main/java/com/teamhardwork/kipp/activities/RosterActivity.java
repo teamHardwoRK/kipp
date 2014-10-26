@@ -62,6 +62,9 @@ public class RosterActivity extends Activity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                startActivity(new Intent(this, InfoActivity.class));
+                break;
             case R.id.action_logout:
                 ParseUser.logOut();
                 Intent intent = new Intent(this, LoginActivity.class);
