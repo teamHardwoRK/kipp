@@ -40,11 +40,14 @@ public class StatsFragment extends BaseKippFragment {
     private static final int EXTRA_COLOR_ONE = Color.parseColor("#C44D58");
     private static final int EXTRA_COLOR_TWO = Color.parseColor("#4ECDC4");
     private static final int EXTRA_COLOR_THREE = Color.parseColor("#556270");
+    private static final int EXTRA_COLOR_FOUR = Color.parseColor("#0066FF");
 
     private static final List<Behavior> badBehaviors = Arrays.asList(Behavior.DRESS_CODE_VIOLATION,
-            Behavior.LACK_OF_INTEGRITY, Behavior.LATE, Behavior.TALKING, Behavior.HORSEPLAY, Behavior.FIGHTING);
+            Behavior.LACK_OF_INTEGRITY, Behavior.LATE, Behavior.TALKING, Behavior.HORSEPLAY,
+            Behavior.FIGHTING);
     private static final List<Behavior> goodBehaviors = Arrays.asList(Behavior.CLEANING_UP,
-            Behavior.ON_TASK, Behavior.RESPECTING_EVERYONE, Behavior.SHOWING_GRATITUDE, Behavior.SILENT_REMINDERS, Behavior.VOLUNTEERING);
+            Behavior.ON_TASK, Behavior.RESPECTING_EVERYONE, Behavior.SHOWING_GRATITUDE,
+            Behavior.SILENT_REMINDERS, Behavior.VOLUNTEERING);
 
     protected static String statForString = "Class";
 
@@ -64,6 +67,8 @@ public class StatsFragment extends BaseKippFragment {
     TextView tvExtraTwo;
     @InjectView(R.id.tvExtraThree)
     TextView tvExtraThree;
+    @InjectView(R.id.tvExtraFour)
+    TextView tvExtraFour;
     @InjectView(R.id.llLegend)
     LinearLayout llLegend;
 
@@ -89,7 +94,8 @@ public class StatsFragment extends BaseKippFragment {
         View rtnView = inflater.inflate(R.layout.fragment_stats, container, false);
         ButterKnife.inject(this, rtnView);
 
-        legendItems = Arrays.asList(tvGood, tvBad, tvExtraOne, tvExtraTwo, tvExtraThree);
+        legendItems = Arrays.asList(tvGood, tvBad, tvExtraOne, tvExtraTwo, tvExtraThree,
+                tvExtraFour);
 
         setupChart();
         fillChartWithOverallData();
@@ -192,6 +198,7 @@ public class StatsFragment extends BaseKippFragment {
         addSlice(pieGraph, EXTRA_COLOR_ONE, 0, "Extra One");
         addSlice(pieGraph, EXTRA_COLOR_TWO, 0, "Extra TWO");
         addSlice(pieGraph, EXTRA_COLOR_THREE, 0, "Extra THREE");
+        addSlice(pieGraph, EXTRA_COLOR_FOUR, 0, "Extra FOUR");
 
         setupLegend();
     }
@@ -202,6 +209,7 @@ public class StatsFragment extends BaseKippFragment {
         tvExtraOne.setTextColor(EXTRA_COLOR_ONE);
         tvExtraTwo.setTextColor(EXTRA_COLOR_TWO);
         tvExtraThree.setTextColor(EXTRA_COLOR_THREE);
+        tvExtraFour.setTextColor(EXTRA_COLOR_FOUR);
     }
 
     private void activateOverallLegend(int numGood, int numBad) {
@@ -238,6 +246,7 @@ public class StatsFragment extends BaseKippFragment {
         tvExtraOne.setVisibility(View.GONE);
         tvExtraTwo.setVisibility(View.GONE);
         tvExtraThree.setVisibility(View.GONE);
+        tvExtraFour.setVisibility(View.GONE);
     }
 
     private String getPercentString(double fraction) {
