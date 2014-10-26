@@ -20,4 +20,6 @@
     <string name="action_feed_title">Action Log</string>
     <string name="title_activity_roster">RosterActivity</string>
     <string name="title_activity_info">InfoActivity</string>
+    <string name="good_behaviors_label">GOOD</string>
+    <string name="poor_behaviors_label">POOR</string>
 </resources>

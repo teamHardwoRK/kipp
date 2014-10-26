@@ -102,5 +102,4 @@
         <item name="android:background">#dddaaa</item>
         <item name="android:padding">@dimen/padding_new_tag</item>
     </style>
-
 </resources>

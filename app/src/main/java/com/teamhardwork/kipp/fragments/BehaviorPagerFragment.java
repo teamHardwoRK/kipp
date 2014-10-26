@@ -2,6 +2,7 @@ package com.teamhardwork.kipp.fragments;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -57,9 +58,44 @@ public class BehaviorPagerFragment extends DialogFragment {
         behaviorPagerAdapter = new BehaviorPagerAdapter(this, getChildFragmentManager(), isPositive);
         vpPager.setAdapter(behaviorPagerAdapter);
         titleIndicator.setViewPager(vpPager);
+        setTitleIndicatorListener();
 
         return v;
     }
+
+    void setTitleIndicatorListener() {
+        titleIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i2) {
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                boolean isPositive = i == 0;
+                setTitleIndicatorTheme(isPositive);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+            }
+        });
+    }
+
+    void setTitleIndicatorTheme(boolean isPositive) {
+        Resources resources = getActivity().getResources();
+        int redColor = resources.getColor(R.color.PaleVioletRed);
+        int greenColor = resources.getColor(R.color.AlgaeGreen);
+
+        if(isPositive) {
+            titleIndicator.setSelectedColor(greenColor);
+            titleIndicator.setFooterColor(greenColor);
+        }
+        else {
+            titleIndicator.setSelectedColor(redColor);
+            titleIndicator.setFooterColor(redColor);
+        }
+    }
+
 
     @Override
     public void onStart() {

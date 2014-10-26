@@ -2,8 +2,10 @@ package com.teamhardwork.kipp.adapters;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.res.Resources;
 import android.support.v13.app.FragmentPagerAdapter;
 
+import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.fragments.BehaviorFragment;
 import com.teamhardwork.kipp.fragments.BehaviorPagerFragment;
 
@@ -43,11 +45,11 @@ public class BehaviorPagerAdapter extends FragmentPagerAdapter {
         Fragment fragment;
         switch (position) {
             case 0: // page # 0 - This will show positive list of behaviors
-                fragment = (Fragment) BehaviorFragment.newInstance(true);
+                fragment = BehaviorFragment.newInstance(true);
                 pagerFragments.add(fragment);
                 return fragment;
             case 1: // page # 1 - This will show negative list of behaviors
-                fragment = (Fragment) BehaviorFragment.newInstance(false);
+                fragment = BehaviorFragment.newInstance(false);
                 pagerFragments.add(fragment);
                 return fragment;
             default:
@@ -58,11 +60,13 @@ public class BehaviorPagerAdapter extends FragmentPagerAdapter {
     // Returns the page title for the top indicator
     @Override
     public CharSequence getPageTitle(int position) {
+        Resources resources = pagerFragment.getActivity().getResources();
+
         switch (position) {
             case 0:
-                return "+";
+                return resources.getString(R.string.good_behaviors_label);
             case 1:
-                return "-";
+                return resources.getString(R.string.poor_behaviors_label);
             default:
                 return "";
         }
