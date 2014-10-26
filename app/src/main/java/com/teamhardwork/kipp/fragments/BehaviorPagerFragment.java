@@ -59,6 +59,7 @@ public class BehaviorPagerFragment extends DialogFragment {
         vpPager.setAdapter(behaviorPagerAdapter);
         titleIndicator.setViewPager(vpPager);
         setTitleIndicatorListener();
+        setTitleIndicatorTheme(isPositive);
 
         return v;
     }
