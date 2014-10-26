@@ -1,33 +1,32 @@
 package com.teamhardwork.kipp.graphics;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
-import android.graphics.drawable.Drawable;
+import android.widget.ImageView;
 
 import java.util.List;
 
-public class StarDrawable extends Drawable {
+public class StarImageView extends ImageView {
     private Paint.Style paintStyle = Paint.Style.STROKE;
-    private int fillColor = Color.BLACK;
-    private int strokeColor = Color.BLACK;
-    private float strokeWidth = 0;
+    private int fillColor = Color.RED;
+    private int strokeColor = Color.RED;
+    private float strokeWidth = 5;
     private int longLength;
     private int shortLength;
 
-    public StarDrawable(int longLength, int shortLength) {
-
-        this.longLength = longLength;
-        this.shortLength = shortLength;
+    public StarImageView(Context context) {
+        super(context);
     }
 
     @Override
     public void draw(Canvas canvas) {
-        int y = getBounds().height() / 2;
-        int x = getBounds().width() / 2;
+        int y = getHeight() / 2;
+        int x = getWidth() / 2;
+
         Point center = new Point(x, y);
         Paint paint;
 
@@ -54,6 +53,7 @@ public class StarDrawable extends Drawable {
                 drawStar(canvas, paint, center);
                 break;
         }
+        invalidate();
     }
 
     private void drawStar(Canvas canvas, Paint paint, Point center) {
@@ -76,19 +76,6 @@ public class StarDrawable extends Drawable {
         canvas.drawPath(path, paint);
     }
 
-    @Override
-    public void setAlpha(int alpha) {
-    }
-
-    @Override
-    public void setColorFilter(ColorFilter cf) {
-    }
-
-    @Override
-    public int getOpacity() {
-        return 0;
-    }
-
     public void setPaintStyle(Paint.Style paintStyle) {
         this.paintStyle = paintStyle;
     }
@@ -103,5 +90,13 @@ public class StarDrawable extends Drawable {
 
     public void setStrokeWidth(float strokeWidth) {
         this.strokeWidth = strokeWidth;
+    }
+
+    public void setLongLength(int longLength) {
+        this.longLength = longLength;
+    }
+
+    public void setShortLength(int shortLength) {
+        this.shortLength = shortLength;
     }
 }

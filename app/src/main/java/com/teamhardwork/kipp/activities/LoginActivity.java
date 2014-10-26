@@ -2,11 +2,23 @@ package com.teamhardwork.kipp.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PixelFormat;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.SurfaceView;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.RotateAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.parse.LogInCallback;
@@ -15,6 +27,9 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
+import com.teamhardwork.kipp.graphics.StarDrawable;
+import com.teamhardwork.kipp.graphics.StarImageView;
+import com.teamhardwork.kipp.graphics.StarSurfaceView;
 import com.teamhardwork.kipp.utilities.NetworkUtils;
 
 public class LoginActivity extends Activity {
@@ -43,7 +58,7 @@ public class LoginActivity extends Activity {
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 if (NetworkUtils.isNetworkAvailable(LoginActivity.this) == false) {
                     Toast.makeText(LoginActivity.this, "network not available, try again later", Toast.LENGTH_SHORT).show();
                     return;

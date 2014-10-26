@@ -1,33 +1,57 @@
 package com.teamhardwork.kipp.graphics;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PixelFormat;
 import android.graphics.Point;
-import android.graphics.drawable.Drawable;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 
 import java.util.List;
 
-public class StarDrawable extends Drawable {
+public class StarSurfaceView extends SurfaceView implements SurfaceHolder.Callback{
     private Paint.Style paintStyle = Paint.Style.STROKE;
-    private int fillColor = Color.BLACK;
-    private int strokeColor = Color.BLACK;
-    private float strokeWidth = 0;
+    private int fillColor = Color.RED;
+    private int strokeColor = Color.RED;
+    private float strokeWidth = 5;
     private int longLength;
     private int shortLength;
 
-    public StarDrawable(int longLength, int shortLength) {
+    public StarSurfaceView(Context context, int longLength, int shortLength) {
+        super(context);
+        getHolder().addCallback(this);
+        getHolder().setFormat(PixelFormat.TRANSLUCENT);
+        setZOrderOnTop(true);
 
         this.longLength = longLength;
         this.shortLength = shortLength;
     }
 
     @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+        Canvas canvas = holder.lockCanvas(null);
+        draw(canvas);
+        holder.unlockCanvasAndPost(canvas);
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+
+    }
+
+    @Override
     public void draw(Canvas canvas) {
-        int y = getBounds().height() / 2;
-        int x = getBounds().width() / 2;
+        int y = getHeight() / 2;
+        int x = getWidth() / 2;
+
         Point center = new Point(x, y);
         Paint paint;
 
@@ -54,6 +78,7 @@ public class StarDrawable extends Drawable {
                 drawStar(canvas, paint, center);
                 break;
         }
+        invalidate();
     }
 
     private void drawStar(Canvas canvas, Paint paint, Point center) {
@@ -74,19 +99,6 @@ public class StarDrawable extends Drawable {
             path.lineTo(point.x, point.y);
         }
         canvas.drawPath(path, paint);
-    }
-
-    @Override
-    public void setAlpha(int alpha) {
-    }
-
-    @Override
-    public void setColorFilter(ColorFilter cf) {
-    }
-
-    @Override
-    public int getOpacity() {
-        return 0;
     }
 
     public void setPaintStyle(Paint.Style paintStyle) {
