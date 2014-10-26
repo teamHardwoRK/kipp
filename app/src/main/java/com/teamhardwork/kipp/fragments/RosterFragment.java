@@ -49,21 +49,6 @@ public class RosterFragment extends Fragment {
     private ArrayList<TabRange> tabsRanges;
     private int rangeSize;
 
-    private class TabRange
-    {
-        private Character beginChar;
-        private Integer jumpPosition;
-
-        public TabRange(Character beginChar, Integer jumpPosition)
-        {
-            this.beginChar   = beginChar;
-            this.jumpPosition = jumpPosition;
-        }
-
-        public Character getBeginChar()   { return beginChar; }
-        public Integer getJumpPosition() { return jumpPosition; }
-    }
-
     public static RosterFragment newInstance() {
         RosterFragment fragment = new RosterFragment();
         Bundle args = new Bundle();
@@ -370,5 +355,23 @@ public class RosterFragment extends Fragment {
 
     public interface RosterSwipeListener {
         public void showBehaviorPagerFragment(ArrayList<Student> students, SchoolClass schoolClass, boolean isPositive);
+    }
+
+    private class TabRange {
+        private Character beginChar;
+        private Integer jumpPosition;
+
+        public TabRange(Character beginChar, Integer jumpPosition) {
+            this.beginChar = beginChar;
+            this.jumpPosition = jumpPosition;
+        }
+
+        public Character getBeginChar() {
+            return beginChar;
+        }
+
+        public Integer getJumpPosition() {
+            return jumpPosition;
+        }
     }
 }

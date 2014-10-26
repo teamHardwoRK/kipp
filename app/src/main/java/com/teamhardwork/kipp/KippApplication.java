@@ -30,14 +30,6 @@ public class KippApplication extends Application {
     Teacher teacher;
     SchoolClass schoolClass;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        Parse.initialize(this, PARSE_APPLICATION_ID, PARSE_CLIENT_KEY);
-        registerParseSubclasses();
-        registerPushNotifications();
-    }
-
     // All models saved to Parse must be registered.
     static void registerParseSubclasses() {
         List<Class> classes = new ArrayList<Class>();
@@ -54,14 +46,21 @@ public class KippApplication extends Application {
         }
     }
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Parse.initialize(this, PARSE_APPLICATION_ID, PARSE_CLIENT_KEY);
+        registerParseSubclasses();
+        registerPushNotifications();
+    }
+
     public void registerPushNotifications() {
         ParsePush.subscribeInBackground("", new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
                     Log.d(TAG, "Successfully subcribed to broadcast channel.");
-                }
-                else {
+                } else {
                     Log.d(TAG, "Failed to subscribe to push notifications.");
                 }
             }

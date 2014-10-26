@@ -26,7 +26,7 @@ public class FeedQueries {
     }
 
     public static void getLatestStudentEvents(Student student, List<BehaviorEvent> eventList,
-                                            FindCallback<BehaviorEvent> callback) {
+                                              FindCallback<BehaviorEvent> callback) {
         ParseQuery<BehaviorEvent> query = ParseQuery.getQuery(BehaviorEvent.class);
         query.whereEqualTo(BehaviorEvent.STUDENT, student);
         query.whereGreaterThan(BehaviorEvent.OCCURRED_AT, eventList.get(0).getOccurredAt());
@@ -71,7 +71,7 @@ public class FeedQueries {
     static List<String> extractObjectIds(List<? extends ParseObject> parseObjectsList) {
         List<String> objectIds = new ArrayList<String>();
 
-        for(ParseObject parseObject : parseObjectsList) {
+        for (ParseObject parseObject : parseObjectsList) {
             objectIds.add(parseObject.getObjectId());
         }
         return objectIds;

@@ -12,10 +12,10 @@ import android.widget.AdapterView;
 import com.fortysevendeg.swipelistview.SwipeListView;
 
 public class RosterTabListener implements ActionBar.TabListener {
-    private Fragment mFragment;
     private final String mTag;
     private final int mfragmentContainerId;
     private final Bundle mfragmentArgs;
+    private Fragment mFragment;
     private FragmentManager fm;
     private SwipeListView lv;
     private int jumpPos;
@@ -30,25 +30,6 @@ public class RosterTabListener implements ActionBar.TabListener {
     }
 
     /* The following are each of the ActionBar.TabListener callbacks */
-
-    public void onTabSelected(ActionBar.Tab tab, android.app.FragmentTransaction ft) {
-        if (lv == null) return;
-//        lv.setSelection(jumpPos);
-//        lv.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                lv.smoothScrollToPosition(jumpPos);
-//            }
-//        });
-        smoothScrollToPositionFromTop(lv, jumpPos);
-    }
-
-    public void onTabUnselected(ActionBar.Tab tab, android.app.FragmentTransaction ft) {
-    }
-
-    public void onTabReselected(ActionBar.Tab tab, android.app.FragmentTransaction ft) {
-        // User selected the already selected tab. Usually do nothing.
-    }
 
     public static void smoothScrollToPositionFromTop(final AbsListView view, final int position) {
         View child = getChildAtPosition(view, position);
@@ -75,7 +56,8 @@ public class RosterTabListener implements ActionBar.TabListener {
 
             @Override
             public void onScroll(final AbsListView view, final int firstVisibleItem, final int visibleItemCount,
-                                 final int totalItemCount) { }
+                                 final int totalItemCount) {
+            }
         });
 
         // Perform scrolling to position
@@ -94,5 +76,24 @@ public class RosterTabListener implements ActionBar.TabListener {
         } else {
             return null;
         }
+    }
+
+    public void onTabSelected(ActionBar.Tab tab, android.app.FragmentTransaction ft) {
+        if (lv == null) return;
+//        lv.setSelection(jumpPos);
+//        lv.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                lv.smoothScrollToPosition(jumpPos);
+//            }
+//        });
+        smoothScrollToPositionFromTop(lv, jumpPos);
+    }
+
+    public void onTabUnselected(ActionBar.Tab tab, android.app.FragmentTransaction ft) {
+    }
+
+    public void onTabReselected(ActionBar.Tab tab, android.app.FragmentTransaction ft) {
+        // User selected the already selected tab. Usually do nothing.
     }
 }

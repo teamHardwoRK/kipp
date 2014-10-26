@@ -22,13 +22,6 @@ public class Student extends KippUser implements Serializable, Comparable<Studen
     public Student() {
     }
 
-    @Override
-    public int compareTo(Student other) {
-
-        int first = this.getFirstName().compareTo(other.getFirstName());
-        return first == 0 ? this.getLastName().compareTo(other.getLastName()) : first;
-    }
-
     public Student(ParseUser user, String email, String firstName, String lastName, Gender gender, Date dateOfBirth, String telephoneNumber) {
         super(user, email, firstName, lastName, gender, dateOfBirth, telephoneNumber);
     }
@@ -57,6 +50,13 @@ public class Student extends KippUser implements Serializable, Comparable<Studen
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public int compareTo(Student other) {
+
+        int first = this.getFirstName().compareTo(other.getFirstName());
+        return first == 0 ? this.getLastName().compareTo(other.getLastName()) : first;
     }
 
     public List<SchoolClass> getClassList() {

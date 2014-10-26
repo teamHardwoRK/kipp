@@ -20,7 +20,6 @@ import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.adapters.AddActionAdapter;
 import com.teamhardwork.kipp.enums.ActionType;
-import com.teamhardwork.kipp.enums.Behavior;
 import com.teamhardwork.kipp.enums.Role;
 import com.teamhardwork.kipp.models.Action;
 import com.teamhardwork.kipp.models.BehaviorEvent;
@@ -96,8 +95,7 @@ public class AddActionDialogFragment extends DialogFragment {
                     hideProgressBar();
                 }
             });
-        }
-        else {
+        } else {
             ParseQuery<Student> query = ParseQuery.getQuery(Student.class);
             query.getInBackground(studentId, new GetCallback<Student>() {
                 @Override

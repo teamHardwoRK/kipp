@@ -11,6 +11,14 @@ public class LazyLoadViewPager extends ViewPager {
     PagerAdapter mPagerAdapter;
     TitlePageIndicator mPageIndicator;
 
+    public LazyLoadViewPager(Context context) {
+        super(context);
+    }
+
+    public LazyLoadViewPager(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -27,14 +35,6 @@ public class LazyLoadViewPager extends ViewPager {
     public void storeAdapter(PagerAdapter pagerAdapter, TitlePageIndicator pageIndicator) {
         mPagerAdapter = pagerAdapter;
         mPageIndicator = pageIndicator;
-    }
-
-    public LazyLoadViewPager(Context context) {
-        super(context);
-    }
-
-    public LazyLoadViewPager(Context context, AttributeSet attrs) {
-        super(context, attrs);
     }
 
 }

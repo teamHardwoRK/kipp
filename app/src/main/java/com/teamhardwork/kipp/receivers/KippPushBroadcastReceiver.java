@@ -12,11 +12,12 @@ public class KippPushBroadcastReceiver extends ParsePushBroadcastReceiver {
         this.callback = callback;
     }
 
-    public KippPushBroadcastReceiver(){}
+    public KippPushBroadcastReceiver() {
+    }
 
     @Override
     protected void onPushReceive(Context context, Intent intent) {
-        if(callback != null) {
+        if (callback != null) {
             callback.onPushReceive();
         }
     }

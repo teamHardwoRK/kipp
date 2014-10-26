@@ -86,11 +86,10 @@ public class BehaviorPagerFragment extends DialogFragment {
         int redColor = resources.getColor(R.color.PaleVioletRed);
         int greenColor = resources.getColor(R.color.AlgaeGreen);
 
-        if(isPositive) {
+        if (isPositive) {
             titleIndicator.setSelectedColor(greenColor);
             titleIndicator.setFooterColor(greenColor);
-        }
-        else {
+        } else {
             titleIndicator.setSelectedColor(redColor);
             titleIndicator.setFooterColor(redColor);
         }
@@ -102,7 +101,7 @@ public class BehaviorPagerFragment extends DialogFragment {
         super.onStart();
         Dialog dialog = getDialog();
 
-        if(dialog != null) {
+        if (dialog != null) {
             dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         }
     }

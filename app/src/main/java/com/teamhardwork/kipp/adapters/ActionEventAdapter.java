@@ -16,7 +16,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class ActionEventAdapter extends ArrayAdapter<Action>{
+public class ActionEventAdapter extends ArrayAdapter<Action> {
     List<Action> eventList;
 
     public ActionEventAdapter(Context context, List<Action> events) {
@@ -32,12 +32,11 @@ public class ActionEventAdapter extends ArrayAdapter<Action>{
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
 
-        if(convertView == null) {
+        if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_action_event, parent, false);
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
-        }
-        else {
+        } else {
             holder = (ViewHolder) convertView.getTag();
         }
 

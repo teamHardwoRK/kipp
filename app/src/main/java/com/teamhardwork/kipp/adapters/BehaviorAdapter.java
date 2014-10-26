@@ -13,7 +13,7 @@ import com.teamhardwork.kipp.enums.Behavior;
 
 import java.util.List;
 
-public class BehaviorAdapter extends ArrayAdapter<Behavior>{
+public class BehaviorAdapter extends ArrayAdapter<Behavior> {
 
     public BehaviorAdapter(Context context, List<Behavior> objects) {
         super(context, R.layout.item_behavior, objects);
@@ -23,7 +23,7 @@ public class BehaviorAdapter extends ArrayAdapter<Behavior>{
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
 
-        if(convertView == null) {
+        if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_behavior, parent, false);
 
             holder = new ViewHolder();
@@ -31,8 +31,7 @@ public class BehaviorAdapter extends ArrayAdapter<Behavior>{
             holder.ivBehaviorIcon = (ImageView) convertView.findViewById(R.id.ivBehaviorIcon);
 
             convertView.setTag(holder);
-        }
-        else {
+        } else {
             holder = (ViewHolder) convertView.getTag();
         }
 

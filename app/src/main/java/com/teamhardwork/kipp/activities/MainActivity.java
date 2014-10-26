@@ -22,7 +22,6 @@ import com.teamhardwork.kipp.fragments.StatsFragment;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.SchoolClass;
 import com.teamhardwork.kipp.models.users.Student;
-import com.teamhardwork.kipp.models.users.Teacher;
 import com.teamhardwork.kipp.receivers.KippPushBroadcastReceiver;
 
 // TODO: currently being deconstructed. Will be killed soon. There might be useful code to copy from here in the mean time

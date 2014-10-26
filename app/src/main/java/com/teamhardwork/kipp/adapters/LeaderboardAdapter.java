@@ -19,6 +19,8 @@ import butterknife.InjectView;
 
 public class LeaderboardAdapter extends ArrayAdapter<Student> {
 
+    private static int cacheBusterId = 0;
+
     public LeaderboardAdapter(Context context, List<Student> objects) {
         super(context, 0, objects);
     }
@@ -42,7 +44,6 @@ public class LeaderboardAdapter extends ArrayAdapter<Student> {
         return convertView;
     }
 
-    private static int cacheBusterId = 0;
     private void populateViewHolder(ViewHolder holder, Student student, int position) {
         holder.tvRank.setText(Integer.toString(position));
         holder.tvName.setText(student.getFirstName() + " " + student.getLastName());

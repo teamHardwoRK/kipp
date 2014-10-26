@@ -124,7 +124,7 @@ public class RosterActivity extends Activity implements
         }
 
         if (behavior == null) return;
-        for (Student curStudent: selectedStudents) {
+        for (Student curStudent : selectedStudents) {
             BehaviorEvent behaviorEvent = new BehaviorEvent();
             behaviorEvent.setBehavior(behavior);
             behaviorEvent.setSchoolClass(schoolClass);

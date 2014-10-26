@@ -9,10 +9,10 @@ import java.util.Date;
 
 @ParseClassName("Action")
 public class Action extends ParseObject {
-    static final String TYPE = "type";
-    static final String NOTES = "notes";
     public static final String OCCURRED_AT = "occurredAt";
     public static final String STUDENT = "student";
+    static final String TYPE = "type";
+    static final String NOTES = "notes";
     static final String BEHAVIOR_EVENT = "behaviorEvent";
     static final String SCHOOL_CLASS = "schoolClass";
 
