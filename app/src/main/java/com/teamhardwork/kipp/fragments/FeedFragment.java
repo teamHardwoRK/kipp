@@ -1,7 +1,6 @@
 package com.teamhardwork.kipp.fragments;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +12,11 @@ import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.adapters.ActionEventAdapter;
 import com.teamhardwork.kipp.adapters.BehaviorEventAdapter;
 import com.teamhardwork.kipp.models.Action;
 import com.teamhardwork.kipp.models.BehaviorEvent;
-import com.teamhardwork.kipp.models.SchoolClass;
 import com.teamhardwork.kipp.models.users.Student;
 import com.teamhardwork.kipp.queries.FeedQueries;
 
@@ -30,22 +27,19 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class FeedFragment extends BaseKippFragment {
+    private static final String CURRENT_STUDENT_ID_KEY = "student_id";
+
     FeedType feedType;
-    SchoolClass schoolClass;
     Student student;
 
     @InjectView(R.id.lvBehaviorFeed)
     ListView lvBehaviorFeed;
-
     @InjectView(R.id.progressBar)
     ProgressBar pbBehaviorFeed;
-
     @InjectView(R.id.lvActionFeed)
     ListView lvActionFeed;
-
     @InjectView(R.id.tvBehaviorFeedTitle)
     TextView tvBehaviorFeedTitle;
-
     @InjectView(R.id.tvActionFeedTitle)
     TextView tvActionFeedTitle;
 
@@ -53,8 +47,11 @@ public class FeedFragment extends BaseKippFragment {
     BehaviorEventAdapter behaviorAdapter;
     FeedListener listener;
 
-    public static FeedFragment getInstance() {
+    public static FeedFragment newInstance(String currentStudentId) {
+        Bundle args = new Bundle();
+        args.putString(CURRENT_STUDENT_ID_KEY, currentStudentId);
         FeedFragment fragment = new FeedFragment();
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -69,22 +66,23 @@ public class FeedFragment extends BaseKippFragment {
         View view = inflater.inflate(R.layout.fragment_feed, container, false);
         ButterKnife.inject(this, view);
 
-        schoolClass = ((KippApplication) getActivity().getApplication()).getSchoolClass();
+        if (getArguments() != null && getArguments().containsKey(CURRENT_STUDENT_ID_KEY)) {
+            String currentStudentId = getArguments().getString(CURRENT_STUDENT_ID_KEY);
+            student = Student.getStudent(currentStudentId);
+        }
 
-        FeedQueries.getClassFeed(schoolClass, new FindCallback<BehaviorEvent>() {
-            @Override
-            public void done(List<BehaviorEvent> events, ParseException e) {
-                behaviorAdapter = new BehaviorEventAdapter(getActivity(), events);
-                lvBehaviorFeed.setAdapter(behaviorAdapter);
-                feedType = FeedType.CLASS;
-
-                showBehaviorFeed();
-                setupListeners();
-            }
-        });
-
+        behaviorAdapter = new BehaviorEventAdapter(getActivity(), new ArrayList<BehaviorEvent>());
+        lvBehaviorFeed.setAdapter(behaviorAdapter);
         actionAdapter = new ActionEventAdapter(getActivity(), new ArrayList<Action>());
+
         lvActionFeed.setAdapter(actionAdapter);
+        setupListeners();
+
+        if (student != null) {
+            changeToStudentFeed();
+        } else {
+            changeToClassFeed();
+        }
 
         return view;
     }
@@ -123,7 +121,7 @@ public class FeedFragment extends BaseKippFragment {
         FindCallback<BehaviorEvent> callback = new FindCallback<BehaviorEvent>() {
             @Override
             public void done(List<BehaviorEvent> eventList, ParseException e) {
-                for(BehaviorEvent event : eventList) {
+                for (BehaviorEvent event : eventList) {
                     behaviorAdapter.insert(event, 0);
                 }
             }
@@ -132,26 +130,25 @@ public class FeedFragment extends BaseKippFragment {
         FindCallback<Action> actionLogCallback = new FindCallback<Action>() {
             @Override
             public void done(List<Action> actionList, ParseException e) {
-                for(Action action : actionList) {
+                for (Action action : actionList) {
                     actionAdapter.insert(action, 0);
                 }
             }
         };
 
-        switch(feedType) {
-           case STUDENT:
-               FeedQueries.getLatestStudentEvents(student, behaviorAdapter.getEventList(), callback);
-               FeedQueries.getLatestActionLog(student, actionAdapter.getEventList(), actionLogCallback);
-               break;
-           case CLASS:
-               FeedQueries.getLatestClassEvents(schoolClass, behaviorAdapter.getEventList(), callback);
-               break;
-       }
+        switch (feedType) {
+            case STUDENT:
+                FeedQueries.getLatestStudentEvents(student, behaviorAdapter.getEventList(), callback);
+                FeedQueries.getLatestActionLog(student, actionAdapter.getEventList(), actionLogCallback);
+                break;
+            case CLASS:
+                FeedQueries.getLatestClassEvents(currentClass, behaviorAdapter.getEventList(), callback);
+                break;
+        }
     }
 
-    public void changeToStudentFeed(Student student) {
+    public void changeToStudentFeed() {
         showProgressBar();
-        this.student = student;
 
         FeedQueries.getStudentFeed(student, new FindCallback<BehaviorEvent>() {
             @Override
@@ -174,13 +171,12 @@ public class FeedFragment extends BaseKippFragment {
         });
     }
 
-    public void changeToClassFeed(SchoolClass schoolClass) {
+    public void changeToClassFeed() {
         showProgressBar();
-        this.schoolClass = schoolClass;
 
         lvActionFeed.setVisibility(View.GONE);
 
-        FeedQueries.getClassFeed(schoolClass, new FindCallback<BehaviorEvent>() {
+        FeedQueries.getClassFeed(currentClass, new FindCallback<BehaviorEvent>() {
             @Override
             public void done(List<BehaviorEvent> behaviorEvents, ParseException e) {
                 behaviorAdapter.clear();
@@ -191,8 +187,9 @@ public class FeedFragment extends BaseKippFragment {
         });
     }
 
-    public interface FeedListener {
-        public void addAction(BehaviorEvent event);
+    @Override
+    public String getTitle() {
+        return "Feed";
     }
 
     public enum FeedType {
@@ -200,8 +197,7 @@ public class FeedFragment extends BaseKippFragment {
         CLASS;
     }
 
-    @Override
-    public String getTitle() {
-        return "Feed";
+    public interface FeedListener {
+        public void addAction(BehaviorEvent event);
     }
 }

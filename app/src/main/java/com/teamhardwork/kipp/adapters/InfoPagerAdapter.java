@@ -37,7 +37,13 @@ public class InfoPagerAdapter extends FragmentPagerAdapter {
                 }
                 return statsFragment;
             case 1:
-                return new FeedFragment();
+                FeedFragment feedFragment;
+                if (currentStudentId == null) {
+                    feedFragment = new FeedFragment();
+                } else {
+                    feedFragment = FeedFragment.newInstance(currentStudentId);
+                }
+                return feedFragment;
             case 2:
                 return new LeaderboardFragment();
             default:

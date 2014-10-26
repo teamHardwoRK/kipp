@@ -25,15 +25,13 @@ import com.teamhardwork.kipp.models.users.Student;
 import com.teamhardwork.kipp.models.users.Teacher;
 import com.teamhardwork.kipp.receivers.KippPushBroadcastReceiver;
 
+// TODO: currently being deconstructed. Will be killed soon. There might be useful code to copy from here in the mean time
 public class MainActivity extends Activity implements
         FeedFragment.FeedListener {
     private final String FEED_FRAGMENT_TAG = "FeedFragment";
     private final String ROSTER_FRAGMENT_TAG = "RosterFragment";
-    private final String BEHAVIOR_PAGER_FRAGMENT_TAG = "BehaviorPagerFragment";
 
     private SchoolClass schoolClass;
-    private Teacher teacher;
-    private FeedFragment feedFragment;
     private RosterFragment rosterFragment;
     private StatsFragment statsFragment;
     private LeaderboardFragment leaderboardFragment;
@@ -45,7 +43,6 @@ public class MainActivity extends Activity implements
         setContentView(R.layout.activity_main);
 
         KippApplication application = (KippApplication) getApplication();
-        teacher = application.getTeacher();
         schoolClass = application.getSchoolClass();
 
         getActionBar().setHomeButtonEnabled(true);
@@ -59,8 +56,6 @@ public class MainActivity extends Activity implements
     private void createFragments() {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
 
-        feedFragment = FeedFragment.getInstance();
-        ft.add(R.id.flClassFeed, feedFragment, FEED_FRAGMENT_TAG);
 
         rosterFragment = RosterFragment.newInstance();
         ft.replace(R.id.flRoster, rosterFragment, ROSTER_FRAGMENT_TAG);
@@ -89,7 +84,6 @@ public class MainActivity extends Activity implements
         pushReceiver = new KippPushBroadcastReceiver(new KippPushBroadcastReceiver.Callback() {
             @Override
             public void onPushReceive() {
-                feedFragment.updateData();
                 statsFragment.updateData();
                 leaderboardFragment.updateLeaderboard();
 
@@ -151,7 +145,6 @@ public class MainActivity extends Activity implements
 
     public void onStudentSelected(Student student) {
         getActionBar().setTitle("Detail view for " + student.getFullName());
-        feedFragment.changeToStudentFeed(student);
         Fragment rosterFragment = getFragmentManager().findFragmentByTag(ROSTER_FRAGMENT_TAG);
 
         // HACK: reset roster Fragment to get around swiping issue
@@ -163,7 +156,6 @@ public class MainActivity extends Activity implements
 
     private void onClassSelected() {
         getActionBar().setTitle(schoolClass.getName());
-        feedFragment.changeToClassFeed(schoolClass);
         //statsFragment.updateChartForClass();
         leaderboardFragment.resetSelectedRow();
     }
