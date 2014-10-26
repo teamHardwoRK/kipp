@@ -1,13 +1,11 @@
 package com.teamhardwork.kipp.fragments;
 
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,7 +24,6 @@ import com.parse.ParseException;
 import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.adapters.StudentArrayAdapter;
-import com.teamhardwork.kipp.listeners.RosterTabListener;
 import com.teamhardwork.kipp.models.SchoolClass;
 import com.teamhardwork.kipp.models.users.Student;
 
@@ -37,8 +34,6 @@ import java.util.List;
 public class RosterFragment extends Fragment {
     private static final int GOOD_COLOR_ID = Color.parseColor("#C7F464");
     private static final int BAD_COLOR_ID = Color.parseColor("#FF6B6B");
-    private static int maxNumTabs = 4;
-    private static int minStudentRange = 5;
 
     SchoolClass schoolClass;
     List<Student> students;
@@ -46,8 +41,6 @@ public class RosterFragment extends Fragment {
     SwipeListView lvStudents;
     private RosterSwipeListener listener;
     private OnStudentSelectedListener onStudentSelectedListener;
-    private ArrayList<TabRange> tabsRanges;
-    private int rangeSize;
 
     public static RosterFragment newInstance() {
         RosterFragment fragment = new RosterFragment();
@@ -82,7 +75,6 @@ public class RosterFragment extends Fragment {
 
         schoolClass = ((KippApplication) getActivity().getApplication()).getSchoolClass();
 
-        tabsRanges = new ArrayList<TabRange>();
         if (schoolClass != null) {
             schoolClass.getClassRosterAsync(new FindCallback<Student>() {
                 @Override
@@ -91,23 +83,6 @@ public class RosterFragment extends Fragment {
                     Collections.sort(students);
                     aStudents.addAll(students);
 
-                    // calculate tabs' ranges based on names on the roster
-                    if (!students.isEmpty() && students.size() > minStudentRange) {
-                        int jumpPos = 0;
-                        char beginChar = 'a';
-                        tabsRanges.add(new TabRange(beginChar, jumpPos));
-
-                        rangeSize = (int) ((students.size() / maxNumTabs) + 0.5);
-                        if (rangeSize < minStudentRange) rangeSize = minStudentRange;
-
-                        while (jumpPos < (students.size() - rangeSize)) {
-                            jumpPos = jumpPos + rangeSize;
-                            beginChar = Character.toLowerCase(students.get(jumpPos).getFirstName().charAt(0));
-                            tabsRanges.add(new TabRange(beginChar, jumpPos));
-                        }
-
-                        setupTabs();
-                    }
                 }
             });
         }
@@ -119,50 +94,7 @@ public class RosterFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_roster, container, false);
         setupViews(v);
-        setupTabs();
-
         return v;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        getActivity().getActionBar().removeAllTabs();
-    }
-
-    private void setupTabs() {
-        ActionBar actionBar = getActivity().getActionBar();
-
-        if (actionBar.getTabCount() == 0) {
-            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-            actionBar.setDisplayShowTitleEnabled(true);
-
-            char beginChar;
-            char endChar;
-
-            for (int i = 0; i < tabsRanges.size(); i++) {
-                beginChar = tabsRanges.get(i).getBeginChar();
-                if (i == (tabsRanges.size() - 1)) {
-                    endChar = 'z';
-                } else {
-                    // first character of the last name in the current range
-                    char endChar2 = (char) (students.get(tabsRanges.get(i).getJumpPosition() + rangeSize - 1).getFirstName().charAt(0));
-                    // the character before the beginning character of the next range
-                    endChar = (char) (tabsRanges.get(i + 1).getBeginChar() - 1);
-                    if (endChar2 > endChar) endChar = endChar2;
-                }
-                ActionBar.Tab tab = actionBar
-                        .newTab()
-                        .setText(beginChar + "-" + endChar)
-                        .setTabListener(new RosterTabListener(R.id.flRoster,
-                                "", lvStudents, tabsRanges.get(i).getJumpPosition()));
-                actionBar.addTab(tab);
-            }
-
-            if (actionBar.getTabCount() > 0) {
-                actionBar.selectTab(actionBar.getTabAt(0));
-            }
-        }
     }
 
     private void setupViews(View v) {
@@ -192,14 +124,6 @@ public class RosterFragment extends Fragment {
                         listener.showBehaviorPagerFragment(selectedStudents, schoolClass, true);
                         mode.finish();
                         return true;
-//                    case R.id.action_note:
-//                        // TODO: go show note dialog
-//                        mode.finish();
-//                        return true;
-//                    case R.id.action_filter:
-//                        // TODO: go do filter
-//                        mode.finish();
-//                        return true;
                     default:
                         return false;
                 }
@@ -240,20 +164,6 @@ public class RosterFragment extends Fragment {
             }
 
             @Override
-            public void onClosed(int position, boolean toRight) {
-                // TODO
-            }
-
-            @Override
-            public void onListChanged() {
-
-            }
-
-            @Override
-            public void onMove(int position, float v) {
-            }
-
-            @Override
             public void onStartOpen(int position, int action, boolean toRight) {
                 View v = lvStudents.getChildAt(position);
                 View backView = null;
@@ -270,28 +180,10 @@ public class RosterFragment extends Fragment {
             }
 
             @Override
-            public void onStartClose(int position, boolean right) {
-                Log.d("swipe", String.format("onStartClose %d", position));
-            }
-
-            @Override
             public void onClickFrontView(int position) {
                 Student clicked = aStudents.getItem(position);
                 onStudentSelectedListener.onStudentSelected(clicked);
                 Toast.makeText(getActivity(), clicked.getFirstName() + " selected", Toast.LENGTH_SHORT).show();
-            }
-
-
-            @Override
-            public void onClickBackView(int position) {
-            }
-
-            @Override
-            public void onDismiss(int[] reverseSortedPositions) {
-                for (int position : reverseSortedPositions) {
-                    aStudents.remove(aStudents.getItem(position));
-                }
-                aStudents.notifyDataSetChanged();
             }
 
             @Override
@@ -300,30 +192,6 @@ public class RosterFragment extends Fragment {
                 return SwipeListView.SWIPE_MODE_DEFAULT;
             }
 
-            @Override
-            public void onChoiceChanged(int i, boolean b) {
-
-            }
-
-            @Override
-            public void onChoiceStarted() {
-
-            }
-
-            @Override
-            public void onChoiceEnded() {
-
-            }
-
-            @Override
-            public void onFirstListItem() {
-
-            }
-
-            @Override
-            public void onLastListItem() {
-
-            }
         });
 
         reloadListView();
@@ -346,33 +214,11 @@ public class RosterFragment extends Fragment {
         return (int) px;
     }
 
-    public void reset() {
-        lvStudents.closeOpenedItems();
-    }
-
     public interface OnStudentSelectedListener {
         public void onStudentSelected(Student student);
     }
 
     public interface RosterSwipeListener {
         public void showBehaviorPagerFragment(ArrayList<Student> students, SchoolClass schoolClass, boolean isPositive);
-    }
-
-    private class TabRange {
-        private Character beginChar;
-        private Integer jumpPosition;
-
-        public TabRange(Character beginChar, Integer jumpPosition) {
-            this.beginChar = beginChar;
-            this.jumpPosition = jumpPosition;
-        }
-
-        public Character getBeginChar() {
-            return beginChar;
-        }
-
-        public Integer getJumpPosition() {
-            return jumpPosition;
-        }
     }
 }

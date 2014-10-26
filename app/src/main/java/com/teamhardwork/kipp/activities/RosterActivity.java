@@ -1,5 +1,6 @@
 package com.teamhardwork.kipp.activities;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -17,6 +18,8 @@ import com.teamhardwork.kipp.enums.Behavior;
 import com.teamhardwork.kipp.fragments.BehaviorFragment;
 import com.teamhardwork.kipp.fragments.BehaviorPagerFragment;
 import com.teamhardwork.kipp.fragments.RosterFragment;
+import com.teamhardwork.kipp.fragments.StatsFragment;
+import com.teamhardwork.kipp.listeners.FragmentTabListener;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.SchoolClass;
 import com.teamhardwork.kipp.models.users.Student;
@@ -48,8 +51,42 @@ public class RosterActivity extends Activity implements
 
         getActionBar().setHomeButtonEnabled(true);
         getActionBar().setTitle(schoolClass.getName());
+        setupTabs();
 
         setupRoster();
+    }
+
+    private void setupTabs() {
+        ActionBar actionBar = getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.setDisplayShowTitleEnabled(true);
+
+        ActionBar.Tab tab1 = actionBar
+                .newTab()
+                .setText("Roster")
+                .setIcon(R.drawable.ic_kipp)
+                .setTabListener(
+                        new FragmentTabListener<RosterFragment>(R.id.flRoster, this, "roster",
+                                RosterFragment.class));
+
+        actionBar.addTab(tab1);
+        actionBar.selectTab(tab1);
+
+        ActionBar.Tab tab2 = actionBar
+                .newTab()
+                .setText("LB")
+                .setIcon(R.drawable.ic_kipp)
+                .setTabListener(new FragmentTabListener<RosterFragment>(R.id.flRoster, this, "leaderboard",
+                        RosterFragment.class));
+        actionBar.addTab(tab2);
+
+        ActionBar.Tab tab3 = actionBar
+                .newTab()
+                .setText("Stats")
+                .setIcon(R.drawable.ic_kipp)
+                .setTabListener(new FragmentTabListener<StatsFragment>(R.id.flRoster, this, "stats",
+                        StatsFragment.class));
+        actionBar.addTab(tab3);
     }
 
     @Override

@@ -8,12 +8,12 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 
 public class FragmentTabListener<T extends Fragment> implements TabListener {
+    private Fragment mFragment;
     private final Activity mActivity;
     private final String mTag;
     private final Class<T> mClass;
     private final int mfragmentContainerId;
     private final Bundle mfragmentArgs;
-    private Fragment mFragment;
 
     // This version defaults to replacing the entire activity content area
     // new FragmentTabListener<SomeFragment>(this, "first", SomeFragment.class))
