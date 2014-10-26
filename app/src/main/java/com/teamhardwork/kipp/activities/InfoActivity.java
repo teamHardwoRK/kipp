@@ -1,8 +1,10 @@
 package com.teamhardwork.kipp.activities;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,6 +36,10 @@ public class InfoActivity extends Activity implements FeedFragment.FeedListener 
         ButterKnife.inject(this);
         setActionBarTitle();
 
+        // Back action bar navigation
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         String selectedId = (selected != null) ? selected.getObjectId() : null;
 
         FragmentPagerAdapter pagerAdapter = new InfoPagerAdapter(getFragmentManager(), selectedId);
@@ -64,6 +70,11 @@ public class InfoActivity extends Activity implements FeedFragment.FeedListener 
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+            return true;
+        }
+
+        if (id == android.R.id.home) {
+            NavUtils.navigateUpFromSameTask(this);
             return true;
         }
         return super.onOptionsItemSelected(item);
