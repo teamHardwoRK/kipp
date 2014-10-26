@@ -117,7 +117,8 @@ public class FeedFragment extends BaseKippFragment {
         pbBehaviorFeed.setVisibility(View.GONE);
     }
 
-    public void updateData() {
+    @Override
+    protected void updateData() {
         FindCallback<BehaviorEvent> callback = new FindCallback<BehaviorEvent>() {
             @Override
             public void done(List<BehaviorEvent> eventList, ParseException e) {

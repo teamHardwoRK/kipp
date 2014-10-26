@@ -36,6 +36,7 @@
         android:icon="@drawable/ic_kipp"
         android:label="@string/app_name"
         android:theme="@style/KippTheme">
+
         <activity
             android:name=".activities.LoginActivity"
             android:label="@string/app_name"
@@ -47,10 +48,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activities.MainActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait" />
 
         <service android:name="com.parse.PushService" />
 

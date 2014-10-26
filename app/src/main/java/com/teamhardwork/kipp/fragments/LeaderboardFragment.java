@@ -62,13 +62,9 @@ public class LeaderboardFragment extends BaseKippFragment {
         });
     }
 
-//    public void setSelectedRowForStudent(Student student) {
-//        int currentI = leaderboard.indexOf(student);
-//        lvLeaderboard.setSelection(currentI);
-//    }
-
-    public void resetSelectedRow() {
-        lvLeaderboard.setSelection(0);
+    @Override
+    protected void updateData() {
+        updateLeaderboard();
     }
 
     @Override

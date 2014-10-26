@@ -261,24 +261,9 @@ public class StatsFragment extends BaseKippFragment {
         pieGraph.addSlice(slice);
     }
 
-    // TODO: Real time updates are useful if we get this on chromecast
-    public void updateData() {
-//        FindCallback<BehaviorEvent> callback = new FindCallback<BehaviorEvent>() {
-//            @Override
-//            public void done(List<BehaviorEvent> eventList, ParseException e) {
-//                currentBehaviorEvents.addAll(eventList);
-//                updateChart(currentBehaviorEvents);
-//            }
-//        };
-//
-//        switch (currentChartType) {
-//            case STUDENT:
-//                FeedQueries.getLatestStudentEvents(currentStudent, currentBehaviorEvents, callback);
-//                break;
-//            case CLASS:
-//                FeedQueries.getLatestClassEvents(currentClass, currentBehaviorEvents, callback);
-//                break;
-//        }
+    @Override
+    protected void updateData() {
+        fillChartWithOverallData();
     }
 
     @Override
