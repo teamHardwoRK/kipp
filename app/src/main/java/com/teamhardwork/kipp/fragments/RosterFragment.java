@@ -170,6 +170,7 @@ public class RosterFragment extends Fragment {
         lvStudents.setAdapter(aStudents);
 
         lvStudents.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        lvStudents.setFastScrollEnabled(true);
         lvStudents.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
 
             @Override
