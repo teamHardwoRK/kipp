@@ -1,11 +1,13 @@
 package com.teamhardwork.kipp.fragments;
 
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.adapters.BehaviorPagerAdapter;
@@ -45,6 +47,8 @@ public class BehaviorPagerFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_behavior_pager, container, false);
 
@@ -55,6 +59,16 @@ public class BehaviorPagerFragment extends DialogFragment {
         titleIndicator.setViewPager(vpPager);
 
         return v;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Dialog dialog = getDialog();
+
+        if(dialog != null) {
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        }
     }
 
     @Override

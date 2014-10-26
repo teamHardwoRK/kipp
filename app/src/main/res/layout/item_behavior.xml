@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="100dp"
+    android:layout_height="match_parent"
+    >
+    <ImageView
+        android:id="@+id/ivBehaviorIcon"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:scaleType="centerInside"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/wh_barn_owl"
+        android:adjustViewBounds="true"
+        android:alpha="0.7"
+        />
+    <TextView
+        android:id="@+id/tvBehaviorName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivBehaviorIcon"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/White"
+        android:gravity="center_horizontal"
+        android:text="@string/default_behavior_name"
+        android:alpha="0.7"
+        />
+</RelativeLayout>

@@ -42,9 +42,9 @@ public class StatsFragment extends BaseKippFragment {
     private static final int EXTRA_COLOR_THREE = Color.parseColor("#556270");
 
     private static final List<Behavior> badBehaviors = Arrays.asList(Behavior.DRESS_CODE_VIOLATION,
-            Behavior.LACK_OF_INTEGRITY, Behavior.LATE, Behavior.TALKING, Behavior.TALKING_BACK);
+            Behavior.LACK_OF_INTEGRITY, Behavior.LATE, Behavior.TALKING, Behavior.HORSEPLAY, Behavior.FIGHTING);
     private static final List<Behavior> goodBehaviors = Arrays.asList(Behavior.CLEANING_UP,
-            Behavior.ON_TASK, Behavior.RESPECTING_EVERYONE, Behavior.SHOWING_GRATITUDE);
+            Behavior.ON_TASK, Behavior.RESPECTING_EVERYONE, Behavior.SHOWING_GRATITUDE, Behavior.SILENT_REMINDERS, Behavior.VOLUNTEERING);
 
     protected static String statForString = "Class";
 

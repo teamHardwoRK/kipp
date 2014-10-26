@@ -1,6 +1,5 @@
 package com.teamhardwork.kipp.fragments;
 
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -9,9 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.GridView;
 
 import com.teamhardwork.kipp.R;
+import com.teamhardwork.kipp.adapters.BehaviorAdapter;
 import com.teamhardwork.kipp.enums.Behavior;
 import com.teamhardwork.kipp.enums.BehaviorCategory;
 
@@ -24,7 +24,7 @@ public class BehaviorFragment extends Fragment {
     private List<Behavior> behaviors;
     private boolean isPositive;
     private ArrayAdapter<Behavior> behaviorsAdapter;
-    private ListView lvBehaviors;
+    private GridView gvBehaviors;
     private BehaviorListener listener;
 
 
@@ -56,7 +56,7 @@ public class BehaviorFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_behavior, container, false);
 
-        lvBehaviors = (ListView) v.findViewById(R.id.lvBehaviors);
+        gvBehaviors = (GridView) v.findViewById(R.id.gvBehaviors);
 
         behaviors = new ArrayList<Behavior>();
         for (Behavior b : Behavior.values()) {
@@ -71,11 +71,10 @@ public class BehaviorFragment extends Fragment {
             }
         }
 
-        behaviorsAdapter =
-                new ArrayAdapter<Behavior>(getActivity(), android.R.layout.simple_list_item_1, behaviors);
+        behaviorsAdapter = new BehaviorAdapter(getActivity(), behaviors);
 
-        lvBehaviors.setAdapter(behaviorsAdapter);
-        lvBehaviors.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gvBehaviors.setAdapter(behaviorsAdapter);
+        gvBehaviors.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long mylng) {
                 // pass behavior back to listener
