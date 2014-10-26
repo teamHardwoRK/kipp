@@ -12,7 +12,7 @@ import android.view.SurfaceView;
 
 import java.util.List;
 
-public class StarSurfaceView extends SurfaceView implements SurfaceHolder.Callback{
+public class StarSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
     private Paint.Style paintStyle = Paint.Style.STROKE;
     private int fillColor = Color.RED;
     private int strokeColor = Color.RED;
