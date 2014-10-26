@@ -91,7 +91,8 @@
         <activity
             android:name=".activities.InfoActivity"
             android:label="@string/title_activity_info"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            android:parentActivityName=".activities.RosterActivity"></activity>
     </application>
 
 </manifest>
