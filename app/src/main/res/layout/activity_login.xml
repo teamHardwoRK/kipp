@@ -1,8 +1,7 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rlLoginScreen"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/ivBackgroundLogin"
@@ -10,8 +9,7 @@
         android:layout_height="match_parent"
         android:layout_marginRight="@dimen/bg_login_right_offset"
         android:scaleType="centerCrop"
-        android:src="@drawable/bg_login"
-        />
+        android:src="@drawable/bg_login" />
 
     <ImageView
         android:id="@+id/imgLogo"
@@ -26,53 +24,52 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/imgLogo"
-        android:layout_marginTop="20dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/tint_rounded_black"
+        android:paddingBottom="20dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:paddingBottom="20dp"
-        android:paddingTop="20dp"
-        android:background="@drawable/tint_rounded_black"
-        >
+        android:paddingTop="20dp">
+
         <EditText
             android:id="@+id/etUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"
-            android:gravity="center"
-            android:textColor="@color/Pearl"
-            android:textColorHint="@color/GrayCloud"
-            android:paddingBottom="5dp"
             android:background="@drawable/edit_text_light_underline"
-            android:hint="@string/username_label" />
+            android:gravity="center"
+            android:hint="@string/username_label"
+            android:paddingBottom="5dp"
+            android:textColor="@color/Pearl"
+            android:textColorHint="@color/GrayCloud" />
 
         <EditText
             android:id="@+id/etPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/etUsername"
-            android:textColor="@color/Pearl"
-            android:textColorHint="@color/GrayCloud"
             android:background="@drawable/edit_text_light_underline"
             android:gravity="center"
-            android:paddingBottom="5dp"
             android:hint="@string/password_label"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:paddingBottom="5dp"
+            android:textColor="@color/Pearl"
+            android:textColorHint="@color/GrayCloud" />
     </RelativeLayout>
 
     <Button
         android:id="@+id/btnLogin"
+        style="@style/LoginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rlLoginInfo"
         android:layout_centerHorizontal="true"
-        android:text="@string/login_btn_label"
-        android:textScaleX="1.1"
-        android:paddingLeft="50dp"
-        android:paddingBottom="8dp"
-        android:paddingRight="50dp"
         android:layout_marginTop="50dp"
-        style="@style/LoginButton"
-        />
+        android:paddingBottom="8dp"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:text="@string/login_btn_label"
+        android:textScaleX="1.1" />
 </RelativeLayout>

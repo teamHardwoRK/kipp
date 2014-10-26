@@ -78,7 +78,7 @@ public class RosterFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        aStudents = new StudentArrayAdapter(getActivity(), R.layout.student_row, new ArrayList<Student>());
+        aStudents = new StudentArrayAdapter(getActivity(), R.layout.item_student_row, new ArrayList<Student>());
 
         schoolClass = ((KippApplication) getActivity().getApplication()).getSchoolClass();
 

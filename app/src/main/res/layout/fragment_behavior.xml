@@ -7,12 +7,11 @@
 
     <GridView
         android:id="@+id/gvBehaviors"
-        android:paddingRight="25dp"
-        android:paddingLeft="25dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:numColumns="2"
-        android:verticalSpacing="25dp"
         android:gravity="center_horizontal"
-     />
+        android:numColumns="2"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        android:verticalSpacing="25dp" />
 </RelativeLayout>

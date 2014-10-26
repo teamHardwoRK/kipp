@@ -6,9 +6,7 @@
     <LinearLayout
         android:id="@+id/back"
         style="@style/ListBackContent"
-        android:tag="back">
-
-    </LinearLayout>
+        android:tag="back"></LinearLayout>
 
     <RelativeLayout
         android:id="@+id/front"

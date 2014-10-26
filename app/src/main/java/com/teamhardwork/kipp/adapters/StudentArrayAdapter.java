@@ -36,7 +36,7 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
         if (convertView == null) {
             v = new ViewHolder();
             convertView = LayoutInflater.from(getContext()).inflate(
-                    R.layout.student_row, parent, false);
+                    R.layout.item_student_row, parent, false);
             v.ivProfilePic = (ImageView) convertView.findViewById(R.id.ivProfilePic);
             v.tvName = (TextView) convertView.findViewById(R.id.tvName);
             v.tvDescription = (TextView) convertView.findViewById(R.id.tvDescription);
