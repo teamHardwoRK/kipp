@@ -47,7 +47,6 @@
     <style name="ListImage">
         <item name="android:layout_width">@dimen/size_list_image</item>
         <item name="android:layout_height">@dimen/size_list_image</item>
-        <item name="android:scaleGravity">fill</item>
         <item name="android:layout_marginRight">@dimen/padding_default</item>
     </style>
 

@@ -1,7 +1,6 @@
 package com.teamhardwork.kipp.adapters;
 
 import android.content.Context;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fortysevendeg.swipelistview.SwipeListView;
+import com.squareup.picasso.Picasso;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.models.users.Student;
+import com.teamhardwork.kipp.utilities.RandomApiUrlGenerator;
 
 import java.util.List;
 
@@ -37,9 +38,10 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
             v = new ViewHolder();
             convertView = LayoutInflater.from(getContext()).inflate(
                     R.layout.item_student_row, parent, false);
+
             v.ivProfilePic = (ImageView) convertView.findViewById(R.id.ivProfilePic);
             v.tvName = (TextView) convertView.findViewById(R.id.tvName);
-            v.tvDescription = (TextView) convertView.findViewById(R.id.tvDescription);
+            v.tvPoints = (TextView) convertView.findViewById(R.id.tvPoints);
             convertView.setTag(v);
         } else {
             v = (ViewHolder) convertView.getTag();
@@ -47,9 +49,15 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
 
         ((SwipeListView) parent).recycle(convertView, position);
 
-        v.ivProfilePic.setImageResource(R.drawable.ic_logo);
-        v.tvName.setText(Html.fromHtml("<b>" + student.getFirstName() + " " + student.getLastName() + "</b>"));
-        v.tvDescription.setText(Html.fromHtml("<i>" + student.getGender().toString() + "</i>"));
+        int imageSizePx = context.getResources().getDimensionPixelSize(R.dimen.size_list_image);
+        Picasso.with(getContext())
+                .load(RandomApiUrlGenerator.getUrl())
+                .placeholder(R.drawable.ic_profile_placeholder)
+                .resize(imageSizePx, imageSizePx)
+                .into(v.ivProfilePic);
+
+        v.tvName.setText(student.getFullName());
+        v.tvPoints.setText(Integer.toString(student.getPoints()) + " points");
 
         return convertView;
     }
@@ -61,6 +69,6 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
     private static class ViewHolder {
         ImageView ivProfilePic;
         TextView tvName;
-        TextView tvDescription;
+        TextView tvPoints;
     }
 }

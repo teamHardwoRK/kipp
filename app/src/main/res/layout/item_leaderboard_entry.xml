@@ -2,6 +2,7 @@
 
 <!-- Inspiration http://www.android-app-patterns.com/img/sets/lists/streamzoo-list-2.png -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
@@ -12,11 +13,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
 
-    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ivProfilePic"
         android:layout_width="150px"
         android:layout_height="150px"
-        android:src="@drawable/ic_profile_placeholder"
+        android:scaleType="centerCrop"
         app:border_color="#FFFFFFFF"
         app:border_width="2dp" />
 

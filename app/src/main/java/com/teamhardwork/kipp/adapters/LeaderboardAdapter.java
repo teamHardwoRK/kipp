@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.models.users.Student;
+import com.teamhardwork.kipp.utilities.RandomApiUrlGenerator;
 
 import java.util.List;
 
@@ -18,8 +19,6 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class LeaderboardAdapter extends ArrayAdapter<Student> {
-
-    private static int cacheBusterId = 0;
 
     public LeaderboardAdapter(Context context, List<Student> objects) {
         super(context, 0, objects);
@@ -49,13 +48,10 @@ public class LeaderboardAdapter extends ArrayAdapter<Student> {
         holder.tvName.setText(student.getFirstName() + " " + student.getLastName());
         holder.tvPoints.setText(Integer.toString(student.getPoints()) + " points");
         Picasso.with(getContext())
-                .load("http://thecatapi.com/api/images/get?format=src&type=jpg&cachebuster="
-                        + cacheBusterId)
+                .load(RandomApiUrlGenerator.getUrl())
                 .placeholder(R.drawable.ic_profile_placeholder)
                 .resize(150, 150)
-                .centerCrop()
                 .into(holder.ivProfilePic);
-        cacheBusterId++;
     }
 
     static class ViewHolder {

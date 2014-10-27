@@ -76,4 +76,8 @@ public abstract class BaseKippFragment extends Fragment {
 
         getActivity().registerReceiver(pushReceiver, receiveIntentFilter);
     }
+
+    private float dpFromPx(float px) {
+        return px / getActivity().getResources().getDisplayMetrics().density;
+    }
 }
