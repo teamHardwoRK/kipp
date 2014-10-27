@@ -90,9 +90,9 @@ public class BehaviorFragment extends Fragment {
                 if (behavior.getPoints() > 0) {
                     createAndAnimateStars(view);
                 } else {
-                    createAndAnimateSadFaces(view);
+                    createAndAnimateStars(view);
                 }
-                listener.saveBehavior(behaviorsAdapter.getItem(position));
+                listener.saveBehavior(behavior);
             }
         });
         return v;
@@ -108,7 +108,7 @@ public class BehaviorFragment extends Fragment {
         int startRotationRange = 540;
         int endRotationRange = 1080;
 
-        for (StarDrawable star : StarDrawable.createUniverse(getActivity(), 20)) {
+        for (StarDrawable star : StarDrawable.createUniverse(getActivity(), 40)) {
             final ImageView starImageView = new ImageView(getActivity());
             starImageView.setBackground(star);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(GraphicsUtils.dpToPx(100), GraphicsUtils.dpToPx(100));
