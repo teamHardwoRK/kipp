@@ -17,10 +17,10 @@ import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.enums.Behavior;
 import com.teamhardwork.kipp.fragments.BehaviorFragment;
 import com.teamhardwork.kipp.fragments.BehaviorPagerFragment;
+import com.teamhardwork.kipp.fragments.LeaderboardFragment;
 import com.teamhardwork.kipp.fragments.RosterFragment;
-import com.teamhardwork.kipp.fragments.StatsFragment;
-import com.teamhardwork.kipp.listeners.FragmentTabListener;
 import com.teamhardwork.kipp.graphics.StarAnimationSet;
+import com.teamhardwork.kipp.listeners.FragmentTabListener;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.SchoolClass;
 import com.teamhardwork.kipp.models.users.Student;
@@ -78,17 +78,9 @@ public class RosterActivity extends Activity implements
                 .newTab()
                 .setText("LB")
                 .setIcon(R.drawable.ic_kipp)
-                .setTabListener(new FragmentTabListener<RosterFragment>(R.id.flRoster, this, "leaderboard",
-                        RosterFragment.class));
+                .setTabListener(new FragmentTabListener<LeaderboardFragment>(R.id.flRoster, this, "leaderboard",
+                        LeaderboardFragment.class));
         actionBar.addTab(tab2);
-
-        ActionBar.Tab tab3 = actionBar
-                .newTab()
-                .setText("Stats")
-                .setIcon(R.drawable.ic_kipp)
-                .setTabListener(new FragmentTabListener<StatsFragment>(R.id.flRoster, this, "stats",
-                        StatsFragment.class));
-        actionBar.addTab(tab3);
     }
 
     @Override
