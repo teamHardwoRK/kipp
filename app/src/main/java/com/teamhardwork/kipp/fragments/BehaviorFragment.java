@@ -2,16 +2,10 @@ package com.teamhardwork.kipp.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.RotateAnimation;
-import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
@@ -22,13 +16,17 @@ import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.adapters.BehaviorAdapter;
 import com.teamhardwork.kipp.enums.Behavior;
 import com.teamhardwork.kipp.enums.BehaviorCategory;
+import com.teamhardwork.kipp.graphics.StarAnimationSet;
 import com.teamhardwork.kipp.graphics.StarDrawable;
+import com.teamhardwork.kipp.utilities.GraphicsUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class BehaviorFragment extends Fragment {
     private static final String ARG_PARAM1 = "isPositive";
+    private static final String BEHAVIOR_POSITION = "behaviorPosition";
 
     private List<Behavior> behaviors;
     private boolean isPositive;
@@ -36,7 +34,6 @@ public class BehaviorFragment extends Fragment {
     private GridView gvBehaviors;
     private BehaviorListener listener;
     private RelativeLayout rlBehaviors;
-
 
     public BehaviorFragment() {
         // Required empty public constructor
@@ -89,66 +86,49 @@ public class BehaviorFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long mylng) {
                 // pass behavior back to listener
-                createAndAnimateStars(view, position);
+                Behavior behavior = behaviorsAdapter.getItem(position);
+                if (behavior.getPoints() > 0) {
+                    createAndAnimateStars(view);
+                } else {
+                    createAndAnimateSadFaces(view);
+                }
+                listener.saveBehavior(behaviorsAdapter.getItem(position));
             }
         });
-
         return v;
     }
 
-    void createAndAnimateStars(View view, final int position) {
-        final ImageView starImageView = new ImageView(getActivity());
-        StarDrawable starDrawable = new StarDrawable(50, 30);
-        starDrawable.setPaintStyle(Paint.Style.STROKE);
-        starDrawable.setStrokeColor(Color.RED);
-        starDrawable.setStrokeWidth(5);
-        starImageView.setBackground(starDrawable);
+    void createAndAnimateSadFaces(View view) {
 
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(100, 100);
-        params.setMargins(view.getLeft(), view.getTop(), 0, 0);
-        starImageView.setLayoutParams(params);
-        rlBehaviors.addView(starImageView);
+    }
 
-        final ImageView starImageView2 = new ImageView(getActivity());
-        StarDrawable starDrawable2 = new StarDrawable(50, 30);
-        starDrawable2.setPaintStyle(Paint.Style.FILL_AND_STROKE);
-        starDrawable2.setStrokeColor(Color.GREEN);
-        starDrawable2.setFillColor(Color.YELLOW);
-        starDrawable2.setStrokeWidth(3);
-        starImageView2.setBackground(starDrawable2);
+    void createAndAnimateStars(View view) {
+        int[] directionList = {-1, 0, 1};
+        int[] rotationDirection = {-1, 1};
+        int startRotationRange = 540;
+        int endRotationRange = 1080;
 
-        RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(100, 100);
-        params2.setMargins(view.getLeft() + 100, view.getTop() + 50, 0, 0);
-        starImageView2.setLayoutParams(params2);
-        rlBehaviors.addView(starImageView2);
+        for (StarDrawable star : StarDrawable.createUniverse(getActivity(), 20)) {
+            final ImageView starImageView = new ImageView(getActivity());
+            starImageView.setBackground(star);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(GraphicsUtils.dpToPx(100), GraphicsUtils.dpToPx(100));
 
-        AnimationSet set = new AnimationSet(true);
-        RotateAnimation rotateAnimation = new RotateAnimation(0, 360);
-        rotateAnimation.setDuration(3000);
-        set.addAnimation(rotateAnimation);
-        TranslateAnimation translateAnimation = new TranslateAnimation(0, 500, 0, 500);
-        translateAnimation.setDuration(3000);
-        set.addAnimation(translateAnimation);
-        set.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
+            int xOffset = view.getLeft();
+            int yOffset = view.getTop();
+            params.setMargins(xOffset, yOffset, 0, 0);
 
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                starImageView.setVisibility(View.GONE);
-                starImageView2.setVisibility(View.GONE);
-                listener.closeBehaviorPagerFragment(behaviors.get(position));
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        starImageView.startAnimation(set);
-        starImageView2.startAnimation(set);
+            starImageView.setLayoutParams(params);
+            rlBehaviors.addView(starImageView);
+            StarAnimationSet set = new StarAnimationSet(getActivity(), (StarAnimationSet.StarAnimationSetListener) getActivity(), starImageView);
+            set.setStartOffset(new Random().nextInt(500));
+            set.setDuration(5000);
+            set.setRotationAnimation(
+                    rotationDirection[new Random().nextInt(rotationDirection.length)] * (startRotationRange + new Random().nextInt(endRotationRange - startRotationRange)));
+            set.setScaleAnimation(5);
+            set.setTranslateAnimation(directionList[new Random().nextInt(directionList.length)],
+                    directionList[new Random().nextInt(directionList.length)]);
+            starImageView.startAnimation(set);
+        }
     }
 
     // Store the listener (activity) that will have events fired once the fragment is attached
@@ -164,6 +144,6 @@ public class BehaviorFragment extends Fragment {
     }
 
     public interface BehaviorListener {
-        public void closeBehaviorPagerFragment(Behavior behavior);
+        public void saveBehavior(Behavior behavior);
     }
 }

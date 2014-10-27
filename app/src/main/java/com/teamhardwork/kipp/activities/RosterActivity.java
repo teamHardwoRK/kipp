@@ -20,6 +20,7 @@ import com.teamhardwork.kipp.fragments.BehaviorPagerFragment;
 import com.teamhardwork.kipp.fragments.RosterFragment;
 import com.teamhardwork.kipp.fragments.StatsFragment;
 import com.teamhardwork.kipp.listeners.FragmentTabListener;
+import com.teamhardwork.kipp.graphics.StarAnimationSet;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.SchoolClass;
 import com.teamhardwork.kipp.models.users.Student;
@@ -30,7 +31,8 @@ import java.util.Date;
 public class RosterActivity extends Activity implements
         RosterFragment.OnStudentSelectedListener,
         RosterFragment.RosterSwipeListener,
-        BehaviorFragment.BehaviorListener {
+        BehaviorFragment.BehaviorListener,
+        StarAnimationSet.StarAnimationSetListener {
 
     private final String ROSTER_FRAGMENT_TAG = "RosterFragment";
     private final String BEHAVIOR_PAGER_FRAGMENT_TAG = "BehaviorPagerFragment";
@@ -154,15 +156,8 @@ public class RosterActivity extends Activity implements
         ((BehaviorPagerFragment) pagerFragment).show(fm, BEHAVIOR_PAGER_FRAGMENT_TAG);
     }
 
-    public void closeBehaviorPagerFragment(Behavior behavior) {
-        FragmentManager fm = getFragmentManager();
-        pagerFragment = fm.findFragmentByTag(BEHAVIOR_PAGER_FRAGMENT_TAG);
-
-        if (pagerFragment != null) {
-            // this will by default remove the fragment instance
-            ((BehaviorPagerFragment) pagerFragment).dismiss();
-        }
-
+    @Override
+    public void saveBehavior(Behavior behavior) {
         if (behavior == null) return;
         for (Student curStudent : selectedStudents) {
             BehaviorEvent behaviorEvent = new BehaviorEvent();
@@ -177,6 +172,17 @@ public class RosterActivity extends Activity implements
             int behaviorPoints = behaviorEvent.getBehavior().getPoints();
             curStudent.addPoints(behaviorPoints);
             curStudent.saveInBackground();
+        }
+    }
+
+    @Override
+    public void onAnimationEnd() {
+        FragmentManager fm = getFragmentManager();
+        pagerFragment = fm.findFragmentByTag(BEHAVIOR_PAGER_FRAGMENT_TAG);
+
+        if (pagerFragment != null) {
+            // this will by default remove the fragment instance
+            ((BehaviorPagerFragment) pagerFragment).dismiss();
         }
     }
 }

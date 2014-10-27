@@ -1,5 +1,7 @@
 package com.teamhardwork.kipp.graphics;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
@@ -8,13 +10,18 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 
+import com.teamhardwork.kipp.R;
+import com.teamhardwork.kipp.utilities.GraphicsUtils;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class StarDrawable extends Drawable {
     private Paint.Style paintStyle = Paint.Style.STROKE;
     private int fillColor = Color.BLACK;
     private int strokeColor = Color.BLACK;
-    private float strokeWidth = 0;
+    private float strokeWidth = GraphicsUtils.dpToPx(2);
     private int longLength;
     private int shortLength;
 
@@ -22,6 +29,60 @@ public class StarDrawable extends Drawable {
 
         this.longLength = longLength;
         this.shortLength = shortLength;
+    }
+
+    public static List<StarDrawable> createUniverse(Context context, int count) {
+        List<StarDrawable> starDrawableList = new ArrayList<StarDrawable>();
+
+        Resources resources = context.getResources();
+        int colorBlue = resources.getColor(R.color.BlueZircon);
+        int colorRed = resources.getColor(R.color.WatermelonPink);
+        int colorYellow = resources.getColor(R.color.Mustard);
+        int colorWhite = resources.getColor(R.color.Pearl);
+        int colorGreen = resources.getColor(R.color.GreenThumb);
+        int colorOrange = resources.getColor(R.color.PumpkinOrange);
+
+        List<Integer> colorList = new ArrayList<Integer>();
+        colorList.add(colorBlue);
+        colorList.add(colorRed);
+        colorList.add(colorYellow);
+        colorList.add(colorWhite);
+        colorList.add(colorGreen);
+        colorList.add(colorOrange);
+
+        List<Length> lengthList = new ArrayList<Length>();
+        lengthList.add(new Length(GraphicsUtils.dpToPx(20), GraphicsUtils.dpToPx(10)));
+        lengthList.add(new Length(GraphicsUtils.dpToPx(40), GraphicsUtils.dpToPx(20)));
+        lengthList.add(new Length(GraphicsUtils.dpToPx(30), GraphicsUtils.dpToPx(10)));
+
+        for (int i = 0; i < count; i++) {
+            List<StarDrawable> subList = new ArrayList<StarDrawable>();
+            for (Length length : lengthList) {
+                StarDrawable star = new StarDrawable(length.longLength, length.shortLength);
+
+                Paint.Style[] styleList = {Paint.Style.STROKE, Paint.Style.FILL_AND_STROKE, Paint.Style.STROKE, Paint.Style.STROKE};
+                Paint.Style style = styleList[new Random().nextInt(styleList.length)];
+
+                switch (style) {
+                    case FILL_AND_STROKE:
+                        star.setPaintStyle(Paint.Style.FILL_AND_STROKE);
+                        star.setFillColor(randomColor(colorList));
+                        star.setStrokeColor(randomColor(colorList));
+                        break;
+                    case STROKE:
+                        star.setPaintStyle(Paint.Style.STROKE);
+                        star.setStrokeColor(randomColor(colorList));
+                        break;
+                }
+                subList.add(star);
+            }
+            starDrawableList.addAll(subList);
+        }
+        return starDrawableList;
+    }
+
+    static int randomColor(List<Integer> colorList) {
+        return colorList.get(new Random().nextInt(colorList.size()));
     }
 
     @Override
@@ -103,5 +164,15 @@ public class StarDrawable extends Drawable {
 
     public void setStrokeWidth(float strokeWidth) {
         this.strokeWidth = strokeWidth;
+    }
+
+    static class Length {
+        public int longLength;
+        public int shortLength;
+
+        public Length(int longLength, int shortLength) {
+            this.longLength = longLength;
+            this.shortLength = shortLength;
+        }
     }
 }
