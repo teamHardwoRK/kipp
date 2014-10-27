@@ -1,5 +1,6 @@
 package com.teamhardwork.kipp.adapters;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import com.teamhardwork.kipp.models.users.Student;
 import com.teamhardwork.kipp.queries.FeedQueries;
 import com.teamhardwork.kipp.utilities.RandomApiUrlGenerator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //import com.nostra13.universalimageloader.core.ImageLoader;
@@ -29,6 +31,7 @@ import java.util.List;
  */
 public class StudentArrayAdapter extends ArrayAdapter<Student> {
     private Context context;
+    private ArrayList<Integer> changedPositions;
 
     public StudentArrayAdapter(Context context, int resource, List<Student> students) {
         super(context, resource, students);
@@ -38,6 +41,7 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final Student student = getItem(position);
+        boolean animate = false;
 
         ViewHolder v;
         if (convertView == null) {
@@ -64,27 +68,44 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
 
         v.tvName.setText(student.getFullName());
 
+        if (changedPositions != null && changedPositions.contains(position)) {
+            animate = true;
+            changedPositions.remove(changedPositions.indexOf(position));
+        }
+        final boolean doesAnimation = animate;
         final TextView tvBehaviors = v.tvPoints;
         FeedQueries.getStudentFeed(student, new FindCallback<BehaviorEvent>() {
             @Override
             public void done(List<BehaviorEvent> behaviorEvents, ParseException e) {
                 if (behaviorEvents == null) return;
 
-                StringBuilder sb = new StringBuilder();
+                StringBuilder newBehaviors = new StringBuilder();
                 for (int i = 0; i < 5 && i < behaviorEvents.size(); i++) {
                     if (behaviorEvents.get(i).getBehavior().getCategory() == BehaviorCategory.SLIP ||
                             behaviorEvents.get(i).getBehavior().getCategory() == BehaviorCategory.FALL) {
-                        sb.append("<font color=\"#FF6B6B\"> - </font>");
+                        newBehaviors.append("<font color=\"#FF6B6B\"> - </font>");
                     } else {
-                        sb.append("<font color=\"#C7F464\"> + </font>");
+                        newBehaviors.append("<font color=\"#C7F464\"> + </font>");
                     }
                 }
 
-                tvBehaviors.setText(Html.fromHtml(sb.toString()));
+                tvBehaviors.setText(Html.fromHtml(newBehaviors.toString()));
+
+                if (doesAnimation == true) {
+                    ObjectAnimator alpha = ObjectAnimator.ofFloat(tvBehaviors, "alpha", 0f, 1f);
+                    alpha.setDuration(1000);
+                    alpha.setRepeatCount(3);
+                    alpha.setStartDelay(3000);
+                    alpha.start();
+                }
             }
         });
 
         return convertView;
+    }
+
+    public void updatePositions(ArrayList<Integer> positions) {
+        changedPositions = new ArrayList<Integer>(positions);
     }
 
     public interface StudentAdapterListener {
