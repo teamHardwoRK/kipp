@@ -73,8 +73,15 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
             animate = true;
             changedPositions.remove(changedPositions.indexOf(position));
         }
+
+        animateBehaviors(student, v.tvPoints, animate);
+
+        return convertView;
+    }
+
+    public void animateBehaviors(Student student, TextView textView, boolean animate) {
         final boolean doesAnimation = animate;
-        final TextView tvBehaviors = v.tvPoints;
+        final TextView tvBehaviors = textView;
         FeedQueries.getStudentFeed(student, new FindCallback<BehaviorEvent>() {
             @Override
             public void done(List<BehaviorEvent> behaviorEvents, ParseException e) {
@@ -95,14 +102,13 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
                 if (doesAnimation == true) {
                     ObjectAnimator alpha = ObjectAnimator.ofFloat(tvBehaviors, "alpha", 0f, 1f);
                     alpha.setDuration(1000);
-                    alpha.setRepeatCount(3);
+                    alpha.setRepeatCount(5);
                     alpha.setStartDelay(3000);
                     alpha.start();
                 }
             }
         });
 
-        return convertView;
     }
 
     public void updatePositions(ArrayList<Integer> positions) {
