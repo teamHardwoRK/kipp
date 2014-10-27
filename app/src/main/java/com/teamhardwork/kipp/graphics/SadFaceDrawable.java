@@ -37,64 +37,6 @@ public class SadFaceDrawable extends Drawable {
         featuresPaint.setAntiAlias(true);
     }
 
-    @Override
-    public void draw(Canvas canvas) {
-        Point center = new Point(getBounds().width()/2, getBounds().height()/2);
-
-        headPaint.setColor(headColor);
-        headPaint.setAlpha(alpha);
-        headPaint.setStrokeWidth(strokeWidth);
-
-        featuresPaint.setStyle(Paint.Style.STROKE);
-        featuresPaint.setColor(featuresColor);
-        featuresPaint.setAlpha(alpha);
-        featuresPaint.setStrokeWidth(strokeWidth);
-
-        // Paint head
-        if(paintStyle == Paint.Style.FILL) {
-            headPaint.setStyle(Paint.Style.FILL);
-        }
-        else {
-            headPaint.setStyle(Paint.Style.STROKE);
-        }
-        canvas.drawCircle(center.x, center.y, radius - GraphicsUtils.dpToPx(5), headPaint);
-
-        // Paint mouth
-        float mouthTop = center.y + radius / 2;
-        float mouthLeft = center.x - radius / 2;
-
-        RectF mouthBounds = new RectF(mouthLeft, mouthTop, mouthLeft + radius, mouthTop + radius);
-        canvas.drawArc(mouthBounds, 220, 100, false, featuresPaint);
-
-        // Paint eyes
-        featuresPaint.setStyle(Paint.Style.FILL);
-
-        float leftTop = center.y - radius/2;
-        float leftLeft = center.x - radius/2;
-
-        RectF leftEye = new RectF(leftLeft, leftTop, leftLeft + radius/4, center.y);
-        canvas.drawOval(leftEye, featuresPaint);
-
-        float rightLeft = center.x + radius/4;
-        RectF rightEye = new RectF(rightLeft, leftTop, rightLeft + radius/4, center.y);
-        canvas.drawOval(rightEye, featuresPaint);
-    }
-
-    @Override
-    public void setAlpha(int alpha) {
-        this.alpha = alpha;
-    }
-
-    @Override
-    public void setColorFilter(ColorFilter cf) {
-
-    }
-
-    @Override
-    public int getOpacity() {
-        return 0;
-    }
-
     public static List<SadFaceDrawable> createPopulation(Context context, int count) {
         List<SadFaceDrawable> people = new ArrayList<SadFaceDrawable>();
 
@@ -122,7 +64,7 @@ public class SadFaceDrawable extends Drawable {
 
         for (int i = 0; i < count; i++) {
             float radius = (new Random().nextInt(100) / 60) * GraphicsUtils.dpToPx(40);
-            for(FaceColoring coloring : coloringList) {
+            for (FaceColoring coloring : coloringList) {
                 SadFaceDrawable sadFace = new SadFaceDrawable(radius);
                 sadFace.setAlpha(new Random().nextInt(155) + 90);
                 sadFace.paintStyle = coloring.paintStyle;
@@ -134,6 +76,63 @@ public class SadFaceDrawable extends Drawable {
             }
         }
         return people;
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        Point center = new Point(getBounds().width() / 2, getBounds().height() / 2);
+
+        headPaint.setColor(headColor);
+        headPaint.setAlpha(alpha);
+        headPaint.setStrokeWidth(strokeWidth);
+
+        featuresPaint.setStyle(Paint.Style.STROKE);
+        featuresPaint.setColor(featuresColor);
+        featuresPaint.setAlpha(alpha);
+        featuresPaint.setStrokeWidth(strokeWidth);
+
+        // Paint head
+        if (paintStyle == Paint.Style.FILL) {
+            headPaint.setStyle(Paint.Style.FILL);
+        } else {
+            headPaint.setStyle(Paint.Style.STROKE);
+        }
+        canvas.drawCircle(center.x, center.y, radius - GraphicsUtils.dpToPx(5), headPaint);
+
+        // Paint mouth
+        float mouthTop = center.y + radius / 2;
+        float mouthLeft = center.x - radius / 2;
+
+        RectF mouthBounds = new RectF(mouthLeft, mouthTop, mouthLeft + radius, mouthTop + radius);
+        canvas.drawArc(mouthBounds, 220, 100, false, featuresPaint);
+
+        // Paint eyes
+        featuresPaint.setStyle(Paint.Style.FILL);
+
+        float leftTop = center.y - radius / 2;
+        float leftLeft = center.x - radius / 2;
+
+        RectF leftEye = new RectF(leftLeft, leftTop, leftLeft + radius / 4, center.y);
+        canvas.drawOval(leftEye, featuresPaint);
+
+        float rightLeft = center.x + radius / 4;
+        RectF rightEye = new RectF(rightLeft, leftTop, rightLeft + radius / 4, center.y);
+        canvas.drawOval(rightEye, featuresPaint);
+    }
+
+    @Override
+    public void setAlpha(int alpha) {
+        this.alpha = alpha;
+    }
+
+    @Override
+    public void setColorFilter(ColorFilter cf) {
+
+    }
+
+    @Override
+    public int getOpacity() {
+        return 0;
     }
 
     static class FaceColoring {

@@ -7,12 +7,12 @@
     <ImageView
         android:id="@+id/ivBehaviorIcon"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:adjustViewBounds="true"
         android:alpha="0.7"
         android:scaleType="centerInside"
-        android:src="@drawable/wh_barn_owl" />
+        android:src="@drawable/wh_lion_ic" />
 
     <TextView
         android:id="@+id/tvBehaviorName"

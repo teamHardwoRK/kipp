@@ -108,7 +108,7 @@ public class BehaviorFragment extends Fragment {
         Point screenSize = new Point();
         ((WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getSize(screenSize);
 
-        for(int i = 0; i < sadFaceList.size(); i++) {
+        for (int i = 0; i < sadFaceList.size(); i++) {
             ImageView imageView = new ImageView(getActivity());
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(GraphicsUtils.dpToPx(200), GraphicsUtils.dpToPx(200));
             params.setMargins((new Random().nextInt(screenSize.x + GraphicsUtils.dpToPx(100))) - GraphicsUtils.dpToPx(100), -1 * GraphicsUtils.dpToPx(200), 0, 0);
@@ -122,7 +122,7 @@ public class BehaviorFragment extends Fragment {
             animationSet.setDuration(new Random().nextInt(1000) + 5000);
             animationSet.setTranslateAnimation();
 
-            if(i == sadFaceList.size() - 1) {
+            if (i == sadFaceList.size() - 1) {
                 animationSet.setListener();
             }
 

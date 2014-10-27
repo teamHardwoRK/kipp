@@ -3,19 +3,19 @@ package com.teamhardwork.kipp.enums;
 import com.teamhardwork.kipp.R;
 
 public enum Behavior {
-    CLEANING_UP("Cleaning Up", BehaviorCategory.INTEGRITY, 3, R.drawable.wh_crane),
-    ON_TASK("On Task", BehaviorCategory.PERSISTENCE, 2, R.drawable.wh_fish),
-    RESPECTING_EVERYONE("Respecting Everyone", BehaviorCategory.RELATIONSHIPS, 2, R.drawable.wh_two_fish),
-    SHOWING_GRATITUDE("Showing Gratitude", BehaviorCategory.INTEGRITY, 2, R.drawable.wh_monster),
-    SILENT_REMINDERS("Silent Reminders", BehaviorCategory.INTEGRITY, 2, R.drawable.wh_sheep),
-    VOLUNTEERING("Volunteering", BehaviorCategory.INTEGRITY, 2, R.drawable.wh_rabbit_smile),
+    CLEANING_UP("Cleaning Up", BehaviorCategory.INTEGRITY, 3, R.drawable.wh_tiger_ic),
+    ON_TASK("On Task", BehaviorCategory.PERSISTENCE, 2, R.drawable.wh_lion_ic),
+    RESPECTING_EVERYONE("Respecting Everyone", BehaviorCategory.RELATIONSHIPS, 2, R.drawable.wh_hippo_ic),
+    SHOWING_GRATITUDE("Showing Gratitude", BehaviorCategory.INTEGRITY, 2, R.drawable.wh_panda_ic), //
+    SILENT_REMINDERS("Silent Reminders", BehaviorCategory.INTEGRITY, 2, R.drawable.wh_sheep_ic),
+    VOLUNTEERING("Volunteering", BehaviorCategory.INTEGRITY, 2, R.drawable.wh_dog_ic), //
 
-    DRESS_CODE_VIOLATION("Dress Code Violation", BehaviorCategory.SLIP, -1, R.drawable.wh_dinosaur),
-    LACK_OF_INTEGRITY("Lack of Integrity", BehaviorCategory.FALL, -5, R.drawable.wh_fish_bones),
-    LATE("Late to School or Class", BehaviorCategory.SLIP, -1, R.drawable.wh_barn_owl),
-    TALKING("Talking", BehaviorCategory.FALL, -3, R.drawable.wh_cat),
-    HORSEPLAY("Horseplay", BehaviorCategory.SLIP, -1, R.drawable.wh_rocking_horse),
-    FIGHTING("Fighting", BehaviorCategory.FALL, -3, R.drawable.wh_teddybear);
+    DRESS_CODE_VIOLATION("Dress Code Violation", BehaviorCategory.SLIP, -1, R.drawable.wh_monkey_ic),
+    LACK_OF_INTEGRITY("Lack of Integrity", BehaviorCategory.FALL, -5, R.drawable.wh_mouse_ic),
+    LATE("Late", BehaviorCategory.SLIP, -1, R.drawable.wh_frog_ic),
+    TALKING("Talking", BehaviorCategory.FALL, -3, R.drawable.wh_rabbit_ic),
+    HORSEPLAY("Horseplay", BehaviorCategory.SLIP, -1, R.drawable.wh_reindeer_ic),
+    FIGHTING("Fighting", BehaviorCategory.FALL, -3, R.drawable.wh_bull_ic);
 
     String title;
     BehaviorCategory category;

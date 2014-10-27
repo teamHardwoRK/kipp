@@ -10,7 +10,7 @@ import android.view.animation.TranslateAnimation;
 
 import com.teamhardwork.kipp.utilities.GraphicsUtils;
 
-public class SadFaceAnimationSet extends AnimationSet implements Animation.AnimationListener{
+public class SadFaceAnimationSet extends AnimationSet implements Animation.AnimationListener {
     static final int BUFFER_OFFSET = GraphicsUtils.dpToPx(200);
     Context context;
     SadFaceAnimationSetListener listener;
