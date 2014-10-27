@@ -18,21 +18,25 @@ public class FeedQueries {
     public static void getLatestClassEvents(SchoolClass schoolClass, List<BehaviorEvent> eventList,
                                             FindCallback<BehaviorEvent> callback) {
         ParseQuery<BehaviorEvent> query = ParseQuery.getQuery(BehaviorEvent.class);
-        query.whereEqualTo(BehaviorEvent.SCHOOL_CLASS, schoolClass);
-        query.whereGreaterThan(BehaviorEvent.OCCURRED_AT, eventList.get(0).getOccurredAt());
-        query.include(BehaviorEvent.STUDENT);
-        query.orderByAscending(BehaviorEvent.OCCURRED_AT);
-        query.findInBackground(callback);
+        if (eventList.size() > 0) {
+            query.whereEqualTo(BehaviorEvent.SCHOOL_CLASS, schoolClass);
+            query.whereGreaterThan(BehaviorEvent.OCCURRED_AT, eventList.get(0).getOccurredAt());
+            query.include(BehaviorEvent.STUDENT);
+            query.orderByAscending(BehaviorEvent.OCCURRED_AT);
+            query.findInBackground(callback);
+        }
     }
 
     public static void getLatestStudentEvents(Student student, List<BehaviorEvent> eventList,
                                               FindCallback<BehaviorEvent> callback) {
-        ParseQuery<BehaviorEvent> query = ParseQuery.getQuery(BehaviorEvent.class);
-        query.whereEqualTo(BehaviorEvent.STUDENT, student);
-        query.whereGreaterThan(BehaviorEvent.OCCURRED_AT, eventList.get(0).getOccurredAt());
-        query.include(BehaviorEvent.STUDENT);
-        query.orderByAscending(BehaviorEvent.OCCURRED_AT);
-        query.findInBackground(callback);
+        if (eventList.size() > 0) {
+            ParseQuery<BehaviorEvent> query = ParseQuery.getQuery(BehaviorEvent.class);
+            query.whereEqualTo(BehaviorEvent.STUDENT, student);
+            query.whereGreaterThan(BehaviorEvent.OCCURRED_AT, eventList.get(0).getOccurredAt());
+            query.include(BehaviorEvent.STUDENT);
+            query.orderByAscending(BehaviorEvent.OCCURRED_AT);
+            query.findInBackground(callback);
+        }
     }
 
     public static void getClassFeed(SchoolClass schoolClass, FindCallback<BehaviorEvent> callback) {
