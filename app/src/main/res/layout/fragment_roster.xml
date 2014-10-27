@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -6,16 +6,21 @@
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
 
     <com.fortysevendeg.swipelistview.SwipeListView xmlns:swipe="http://schemas.android.com/apk/res-auto"
         android:id="@+id/lvStudents"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
         android:listSelector="#00000000"
         swipe:swipeBackView="@+id/back"
         swipe:swipeDrawableChecked="@drawable/choice_selected"
         swipe:swipeDrawableUnchecked="@drawable/choice_unselected"
         swipe:swipeFrontView="@+id/front" />
 
-</LinearLayout>
+</RelativeLayout>
