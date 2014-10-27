@@ -6,9 +6,24 @@
     android:padding="5dp">
 
     <TextView
+        android:id="@+id/tvPoints"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:textColor="#11BB84"
+        android:textStyle="bold" />
+
+    <TextView
         android:id="@+id/tvStudentName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/tvEventTimestamp"
+        android:layout_toRightOf="@+id/tvPoints"
         android:text="@string/default_student_name"
         android:textStyle="bold" />
 
@@ -16,13 +31,21 @@
         android:id="@+id/tvBehaviorName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_below="@id/tvStudentName"
+        android:layout_toLeftOf="@+id/tvEventTimestamp"
+        android:layout_toRightOf="@+id/tvPoints"
         android:text="@string/default_behavior_name" />
 
     <TextView
         android:id="@+id/tvEventTimestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
         android:layout_below="@id/tvBehaviorName"
-        android:text="11:53am - Monday, Oct 5" />
+        android:layout_centerVertical="true"
+        android:text="11:53am - Monday, Oct 5"
+        android:textColor="#8B939A" />
 </RelativeLayout>

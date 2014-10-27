@@ -1,6 +1,7 @@
 package com.teamhardwork.kipp.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,14 @@ public class BehaviorEventAdapter extends ArrayAdapter<BehaviorEvent> {
         holder.tvStudentName.setText(event.getStudent().getFirstName() + " " + event.getStudent().getLastName());
         holder.tvEventTimestamp.setText(age(event));
 
+        int points = event.getBehavior().getPoints();
+        holder.tvPoints.setText(Integer.toString(points));
+        if (points > 0) {
+            holder.tvPoints.setTextColor(Color.parseColor("#11BB84"));
+        } else {
+            holder.tvPoints.setTextColor(Color.parseColor("#DA585C"));
+        }
+
         return convertView;
     }
 
@@ -57,12 +66,12 @@ public class BehaviorEventAdapter extends ArrayAdapter<BehaviorEvent> {
     class ViewHolder {
         @InjectView(R.id.tvBehaviorName)
         TextView tvBehaviorName;
-
         @InjectView(R.id.tvStudentName)
         TextView tvStudentName;
-
         @InjectView(R.id.tvEventTimestamp)
         TextView tvEventTimestamp;
+        @InjectView(R.id.tvPoints)
+        TextView tvPoints;
 
         public ViewHolder(View view) {
             ButterKnife.inject(this, view);
