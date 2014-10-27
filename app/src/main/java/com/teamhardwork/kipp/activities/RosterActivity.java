@@ -4,7 +4,6 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -54,8 +53,6 @@ public class RosterActivity extends Activity implements
         getActionBar().setHomeButtonEnabled(true);
         getActionBar().setTitle(schoolClass.getName());
         setupTabs();
-
-        setupRoster();
     }
 
     private void setupTabs() {
@@ -105,14 +102,6 @@ public class RosterActivity extends Activity implements
         }
         return super.onOptionsItemSelected(item);
     }
-
-    private void setupRoster() {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        rosterFragment = RosterFragment.newInstance();
-        ft.replace(R.id.flRoster, rosterFragment, ROSTER_FRAGMENT_TAG);
-        ft.commit();
-    }
-
     @Override
     public void onStudentSelected(Student student) {
         Fragment rosterFragment = getFragmentManager().findFragmentByTag(ROSTER_FRAGMENT_TAG);
