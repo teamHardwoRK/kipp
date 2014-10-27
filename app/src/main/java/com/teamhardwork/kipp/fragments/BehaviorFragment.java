@@ -2,10 +2,13 @@ package com.teamhardwork.kipp.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
@@ -16,6 +19,8 @@ import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.adapters.BehaviorAdapter;
 import com.teamhardwork.kipp.enums.Behavior;
 import com.teamhardwork.kipp.enums.BehaviorCategory;
+import com.teamhardwork.kipp.graphics.SadFaceAnimationSet;
+import com.teamhardwork.kipp.graphics.SadFaceDrawable;
 import com.teamhardwork.kipp.graphics.StarAnimationSet;
 import com.teamhardwork.kipp.graphics.StarDrawable;
 import com.teamhardwork.kipp.utilities.GraphicsUtils;
@@ -90,7 +95,7 @@ public class BehaviorFragment extends Fragment {
                 if (behavior.getPoints() > 0) {
                     createAndAnimateStars(view);
                 } else {
-                    createAndAnimateStars(view);
+                    createAndAnimateSadFaces(view);
                 }
                 listener.saveBehavior(behavior);
             }
@@ -99,7 +104,25 @@ public class BehaviorFragment extends Fragment {
     }
 
     void createAndAnimateSadFaces(View view) {
+        List<SadFaceDrawable> sadFaceList = SadFaceDrawable.createPopulation(getActivity(), 5);
+        Point screenSize = new Point();
+        ((WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getSize(screenSize);
 
+        for(SadFaceDrawable sadFace : sadFaceList) {
+            ImageView imageView = new ImageView(getActivity());
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(GraphicsUtils.dpToPx(200), GraphicsUtils.dpToPx(200));
+            params.setMargins((new Random().nextInt(screenSize.x)) - GraphicsUtils.dpToPx(50), -200, 0, 0);
+            imageView.setLayoutParams(params);
+            imageView.setBackground(sadFace);
+            rlBehaviors.addView(imageView);
+
+            SadFaceAnimationSet animationSet = new SadFaceAnimationSet(getActivity(),
+                    (SadFaceAnimationSet.SadFaceAnimationSetListener) getActivity(), imageView);
+            animationSet.setStartOffset(new Random().nextInt(2000));
+            animationSet.setDuration(5000);
+            animationSet.setTranslateAnimation();
+            imageView.startAnimation(animationSet);
+        }
     }
 
     void createAndAnimateStars(View view) {
@@ -108,8 +131,8 @@ public class BehaviorFragment extends Fragment {
         int startRotationRange = 540;
         int endRotationRange = 1080;
 
-        for (StarDrawable star : StarDrawable.createUniverse(getActivity(), 40)) {
-            final ImageView starImageView = new ImageView(getActivity());
+        for (StarDrawable star : StarDrawable.createUniverse(getActivity(), 60)) {
+            ImageView starImageView = new ImageView(getActivity());
             starImageView.setBackground(star);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(GraphicsUtils.dpToPx(100), GraphicsUtils.dpToPx(100));
 
@@ -119,8 +142,9 @@ public class BehaviorFragment extends Fragment {
 
             starImageView.setLayoutParams(params);
             rlBehaviors.addView(starImageView);
+
             StarAnimationSet set = new StarAnimationSet(getActivity(), (StarAnimationSet.StarAnimationSetListener) getActivity(), starImageView);
-            set.setStartOffset(new Random().nextInt(1000));
+            set.setStartOffset(new Random().nextInt(2000));
             set.setDuration(new Random().nextInt(1000) + 4000);
             set.setRotationAnimation(
                     rotationDirection[new Random().nextInt(rotationDirection.length)] * (startRotationRange + new Random().nextInt(endRotationRange - startRotationRange)));

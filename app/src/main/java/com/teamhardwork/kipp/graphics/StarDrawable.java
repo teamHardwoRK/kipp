@@ -21,7 +21,7 @@ public class StarDrawable extends Drawable {
     private Paint.Style paintStyle = Paint.Style.STROKE;
     private int fillColor = Color.BLACK;
     private int strokeColor = Color.BLACK;
-    private float strokeWidth = GraphicsUtils.dpToPx(2);
+    private float strokeWidth = GraphicsUtils.dpToPx(3);
     private int longLength;
     private int shortLength;
 
@@ -54,6 +54,7 @@ public class StarDrawable extends Drawable {
         lengthList.add(new Length(GraphicsUtils.dpToPx(20), GraphicsUtils.dpToPx(10)));
         lengthList.add(new Length(GraphicsUtils.dpToPx(40), GraphicsUtils.dpToPx(20)));
         lengthList.add(new Length(GraphicsUtils.dpToPx(30), GraphicsUtils.dpToPx(10)));
+        lengthList.add(new Length(GraphicsUtils.dpToPx(50), GraphicsUtils.dpToPx(20)));
 
         for (int i = 0; i < count; i++) {
             List<StarDrawable> subList = new ArrayList<StarDrawable>();
