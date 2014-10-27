@@ -23,6 +23,9 @@ public class SadFaceAnimationSet extends AnimationSet implements Animation.Anima
         this.view = view;
         this.listener = listener;
 
+    }
+
+    public void setListener() {
         setAnimationListener(this);
     }
 

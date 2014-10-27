@@ -104,23 +104,28 @@ public class BehaviorFragment extends Fragment {
     }
 
     void createAndAnimateSadFaces(View view) {
-        List<SadFaceDrawable> sadFaceList = SadFaceDrawable.createPopulation(getActivity(), 10);
+        List<SadFaceDrawable> sadFaceList = SadFaceDrawable.createPopulation(getActivity(), 20);
         Point screenSize = new Point();
         ((WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getSize(screenSize);
 
-        for(SadFaceDrawable sadFace : sadFaceList) {
+        for(int i = 0; i < sadFaceList.size(); i++) {
             ImageView imageView = new ImageView(getActivity());
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(GraphicsUtils.dpToPx(200), GraphicsUtils.dpToPx(200));
-            params.setMargins((new Random().nextInt(screenSize.x)) - GraphicsUtils.dpToPx(50), -200, 0, 0);
+            params.setMargins((new Random().nextInt(screenSize.x + GraphicsUtils.dpToPx(100))) - GraphicsUtils.dpToPx(100), -1 * GraphicsUtils.dpToPx(200), 0, 0);
             imageView.setLayoutParams(params);
-            imageView.setBackground(sadFace);
+            imageView.setBackground(sadFaceList.get(i));
             rlBehaviors.addView(imageView);
 
             SadFaceAnimationSet animationSet = new SadFaceAnimationSet(getActivity(),
                     (SadFaceAnimationSet.SadFaceAnimationSetListener) getActivity(), imageView);
-            animationSet.setStartOffset(new Random().nextInt(2500));
-            animationSet.setDuration(5000);
+            animationSet.setStartOffset(new Random().nextInt(2000));
+            animationSet.setDuration(new Random().nextInt(1000) + 5000);
             animationSet.setTranslateAnimation();
+
+            if(i == sadFaceList.size() - 1) {
+                animationSet.setListener();
+            }
+
             imageView.startAnimation(animationSet);
         }
     }
