@@ -1,8 +1,6 @@
 package com.teamhardwork.kipp.fragments;
 
-
 import android.app.Activity;
-import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -21,7 +19,6 @@ import com.fortysevendeg.swipelistview.BaseSwipeListViewListener;
 import com.fortysevendeg.swipelistview.SwipeListView;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.adapters.StudentArrayAdapter;
 import com.teamhardwork.kipp.models.SchoolClass;
@@ -31,11 +28,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RosterFragment extends Fragment {
+import butterknife.ButterKnife;
+
+public class RosterFragment extends BaseKippFragment {
     private static final int GOOD_COLOR_ID = Color.parseColor("#C7F464");
     private static final int BAD_COLOR_ID = Color.parseColor("#FF6B6B");
 
-    SchoolClass schoolClass;
     List<Student> students;
     StudentArrayAdapter aStudents;
     SwipeListView lvStudents;
@@ -71,21 +69,8 @@ public class RosterFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        aStudents = new StudentArrayAdapter(getActivity(), R.layout.item_student_row, new ArrayList<Student>());
-
-        schoolClass = ((KippApplication) getActivity().getApplication()).getSchoolClass();
-
-        if (schoolClass != null) {
-            schoolClass.getClassRosterAsync(new FindCallback<Student>() {
-                @Override
-                public void done(List<Student> foundStudents, ParseException e) {
-                    students = foundStudents;
-                    Collections.sort(students);
-                    aStudents.addAll(students);
-
-                }
-            });
-        }
+        aStudents = new StudentArrayAdapter(getActivity(), R.layout.item_student_row,
+                new ArrayList<Student>());
     }
 
     @Override
@@ -93,7 +78,18 @@ public class RosterFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_roster, container, false);
+        ButterKnife.inject(this, v);
         setupViews(v);
+
+        currentClass.getClassRosterAsync(new FindCallback<Student>() {
+            @Override
+            public void done(List<Student> foundStudents, ParseException e) {
+                students = foundStudents;
+                Collections.sort(students);
+                aStudents.addAll(students);
+                progressBar.setVisibility(View.GONE);
+            }
+        });
         return v;
     }
 
@@ -121,7 +117,7 @@ public class RosterFragment extends Fragment {
                         for (int i = 0; i < positions.size(); i++) {
                             selectedStudents.add(aStudents.getItem(positions.get(i)));
                         }
-                        listener.showBehaviorPagerFragment(selectedStudents, schoolClass, true);
+                        listener.showBehaviorPagerFragment(selectedStudents, currentClass, true);
                         mode.finish();
                         return true;
                     default:
@@ -153,12 +149,12 @@ public class RosterFragment extends Fragment {
                 if (toRight == true) {
                     ArrayList<Student> selectedStudents = new ArrayList<Student>();
                     selectedStudents.add(aStudents.getItem(position));
-                    listener.showBehaviorPagerFragment(selectedStudents, schoolClass, true);
+                    listener.showBehaviorPagerFragment(selectedStudents, currentClass, true);
                     lvStudents.closeOpenedItems();
                 } else {
                     ArrayList<Student> selectedStudents = new ArrayList<Student>();
                     selectedStudents.add(aStudents.getItem(position));
-                    listener.showBehaviorPagerFragment(selectedStudents, schoolClass, false);
+                    listener.showBehaviorPagerFragment(selectedStudents, currentClass, false);
                     lvStudents.closeOpenedItems();
                 }
             }
@@ -219,6 +215,7 @@ public class RosterFragment extends Fragment {
     }
 
     public interface RosterSwipeListener {
-        public void showBehaviorPagerFragment(ArrayList<Student> students, SchoolClass schoolClass, boolean isPositive);
+        public void showBehaviorPagerFragment(ArrayList<Student> students, SchoolClass schoolClass
+                , boolean isPositive);
     }
 }

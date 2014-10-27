@@ -1,6 +1,5 @@
 package com.teamhardwork.kipp.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -17,7 +16,7 @@ import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.utilities.NetworkUtils;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends BaseKippActivity {
     private EditText etUsername;
     private EditText etPassword;
     private Button btnLogin;
@@ -74,6 +73,6 @@ public class LoginActivity extends Activity {
         ((KippApplication) getApplication()).setTeacher();
         ((KippApplication) getApplication()).setSchoolClass();
         Intent i = new Intent(this, RosterActivity.class);
-        startActivity(i);
+        enterActivity(i);
     }
 }

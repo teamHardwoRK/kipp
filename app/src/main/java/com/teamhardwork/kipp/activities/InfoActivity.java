@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class InfoActivity extends Activity implements FeedFragment.FeedListener {
+public class InfoActivity extends BaseKippActivity implements FeedFragment.FeedListener {
     @InjectView(R.id.vpPager)
     ViewPager vpPager;
     @InjectView(R.id.tabs)
