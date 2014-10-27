@@ -1,7 +1,6 @@
 package com.teamhardwork.kipp.activities;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -28,7 +27,7 @@ import com.teamhardwork.kipp.models.users.Student;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class RosterActivity extends Activity implements
+public class RosterActivity extends BaseKippActivity implements
         RosterFragment.OnStudentSelectedListener,
         RosterFragment.RosterSwipeListener,
         BehaviorFragment.BehaviorListener,
@@ -94,12 +93,12 @@ public class RosterActivity extends Activity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                startActivity(new Intent(this, InfoActivity.class));
+                gotoInfoActivity(null); // null is Class info activity
                 break;
             case R.id.action_logout:
                 ParseUser.logOut();
                 Intent intent = new Intent(this, LoginActivity.class);
-                this.finish();
+                exitActivity();
                 startActivity(intent);
                 break;
         }
@@ -129,8 +128,10 @@ public class RosterActivity extends Activity implements
 
     private void gotoInfoActivity(Student student) {
         Intent i = new Intent(this, InfoActivity.class);
-        i.putExtra("selected_student_id", student.getObjectId());
-        startActivity(i);
+        if (student != null) {
+            i.putExtra("selected_student_id", student.getObjectId());
+        }
+        enterActivity(i);
     }
 
     public void showBehaviorPagerFragment(ArrayList<Student> students, SchoolClass schoolClass, boolean isPositive) {
