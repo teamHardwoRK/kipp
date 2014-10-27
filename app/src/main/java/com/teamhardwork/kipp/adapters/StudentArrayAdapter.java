@@ -1,6 +1,7 @@
 package com.teamhardwork.kipp.adapters;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +10,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fortysevendeg.swipelistview.SwipeListView;
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.squareup.picasso.Picasso;
 import com.teamhardwork.kipp.R;
+import com.teamhardwork.kipp.enums.BehaviorCategory;
+import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.users.Student;
+import com.teamhardwork.kipp.queries.FeedQueries;
 import com.teamhardwork.kipp.utilities.RandomApiUrlGenerator;
 
 import java.util.List;
@@ -57,7 +63,26 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
                 .into(v.ivProfilePic);
 
         v.tvName.setText(student.getFullName());
-        v.tvPoints.setText(Integer.toString(student.getPoints()) + " points");
+
+        final TextView tvBehaviors = v.tvPoints;
+        FeedQueries.getStudentFeed(student, new FindCallback<BehaviorEvent>() {
+            @Override
+            public void done(List<BehaviorEvent> behaviorEvents, ParseException e) {
+                if (behaviorEvents == null) return;
+
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < 5 && i < behaviorEvents.size(); i++) {
+                    if (behaviorEvents.get(i).getBehavior().getCategory() == BehaviorCategory.SLIP ||
+                            behaviorEvents.get(i).getBehavior().getCategory() == BehaviorCategory.FALL) {
+                        sb.append("<font color=\"#FF6B6B\"> - </font>");
+                    } else {
+                        sb.append("<font color=\"#C7F464\"> + </font>");
+                    }
+                }
+
+                tvBehaviors.setText(Html.fromHtml(sb.toString()));
+            }
+        });
 
         return convertView;
     }
