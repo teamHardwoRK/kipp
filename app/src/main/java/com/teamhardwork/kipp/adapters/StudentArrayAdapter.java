@@ -67,6 +67,7 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
                 .into(v.ivProfilePic);
 
         v.tvName.setText(student.getFullName());
+        v.tvPoints.setText("");
 
         if (changedPositions != null && changedPositions.contains(position)) {
             animate = true;
