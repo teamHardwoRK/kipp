@@ -40,13 +40,6 @@ public class RosterFragment extends BaseKippFragment {
     private RosterSwipeListener listener;
     private OnStudentSelectedListener onStudentSelectedListener;
 
-    public static RosterFragment newInstance() {
-        RosterFragment fragment = new RosterFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

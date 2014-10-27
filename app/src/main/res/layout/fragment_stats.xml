@@ -5,6 +5,34 @@
     android:layout_height="match_parent"
     tools:context="com.teamhardwork.kipp.fragments.StatsFragment">
 
+    <RelativeLayout
+        android:id="@+id/rlRecommendationContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:padding="5dp"
+        android:background="#F6D05C">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/tvDismissRecommendation"
+            android:text="Congradulate student. Has been on task for 3 days in a row."
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/tvDismissRecommendation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="DISMISS"
+            android:textColor="#FFFFFF" />
+
+    </RelativeLayout>
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
