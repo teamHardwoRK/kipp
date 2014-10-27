@@ -85,6 +85,7 @@ public class InfoActivity extends BaseKippActivity implements FeedFragment.FeedL
         llActionBar.addView(ivProfilePic);
         Picasso.with(this)
                 .load("http://thecatapi.com/api/images/get?format=src&type=jpg")
+                .placeholder(R.drawable.ic_profile_placeholder)
                 .resize(80, 80)
                 .centerCrop()
                 .into(ivProfilePic);

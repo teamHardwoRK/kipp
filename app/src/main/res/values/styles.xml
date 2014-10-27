@@ -7,6 +7,7 @@
     <style name="KippTheme" parent="AppTheme">
         <item name="android:actionBarStyle">@style/KippTheme.ActionBar</item>
         <item name="android:actionBarTabTextStyle">@style/KippTheme.ActionBar.TabBarTextStyle</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_btn_back</item>
     </style>
 
     <style name="KippTheme.ActionBar" parent="android:Widget.Holo.ActionBar">
