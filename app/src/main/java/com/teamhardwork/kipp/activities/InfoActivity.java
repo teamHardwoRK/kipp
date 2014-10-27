@@ -2,14 +2,22 @@ package com.teamhardwork.kipp.activities;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.squareup.picasso.Picasso;
+import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.adapters.InfoPagerAdapter;
 import com.teamhardwork.kipp.dialogfragments.AddActionDialogFragment;
@@ -20,6 +28,7 @@ import com.teamhardwork.kipp.models.users.Student;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class InfoActivity extends Activity implements FeedFragment.FeedListener {
     @InjectView(R.id.vpPager)
@@ -50,10 +59,51 @@ public class InfoActivity extends Activity implements FeedFragment.FeedListener 
     private void setActionBarTitle() {
         selected = getSelectedStudent();
         if (selected != null) {
-            getActionBar().setTitle("Detail view for " + selected.getFullName());
+            setStudentIcon();
+            getActionBar().setTitle(selected.getFullName());
         } else {
-            getActionBar().setTitle("Info for class");
+            getActionBar().setTitle(((KippApplication)getApplication()).getSchoolClass().getName());
         }
+    }
+
+    // Hackily construct a new action bar because we want a circular image view near the title
+    private void setStudentIcon() {
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+
+        LinearLayout llActionBar = new LinearLayout(actionBar.getThemedContext());
+        llActionBar.setOrientation(LinearLayout.HORIZONTAL);
+        llActionBar.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        CircleImageView ivProfilePic = new CircleImageView(this);
+        ivProfilePic.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        ivProfilePic.setImageResource(R.drawable.ic_profile_placeholder);
+        ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(80, 80);
+        ivProfilePic.setLayoutParams(layoutParams);
+        ivProfilePic.setBorderColor(Color.parseColor("#FFFFFFFF"));
+        ivProfilePic.setBorderWidth(2);
+        llActionBar.addView(ivProfilePic);
+        Picasso.with(this)
+                .load("http://thecatapi.com/api/images/get?format=src&type=jpg")
+                .resize(80, 80)
+                .centerCrop()
+                .into(ivProfilePic);
+
+
+        TextView tvStudentName = new TextView(this);
+        tvStudentName.setText(selected.getFullName());
+        LinearLayout.LayoutParams studentNameParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                Gravity.CENTER_VERTICAL);
+        studentNameParams.setMargins(15, 15, 0, 0);
+        tvStudentName.setLayoutParams(studentNameParams);
+        tvStudentName.setTextColor(Color.parseColor("#FFFFFF"));
+        tvStudentName.setTextSize(17);
+        llActionBar.addView(tvStudentName);
+
+        actionBar.setCustomView(llActionBar);
     }
 
     @Override

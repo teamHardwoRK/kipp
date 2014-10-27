@@ -10,7 +10,7 @@
     </style>
 
     <style name="KippTheme.ActionBar" parent="android:Widget.Holo.ActionBar">
-        <item name="android:background">@color/MediumSeaGreen</item>
+        <item name="android:background">#22BD89</item>
         <item name="android:titleTextStyle">@style/KippTheme.ActionBar.TitleTextStyle</item>
     </style>
 
