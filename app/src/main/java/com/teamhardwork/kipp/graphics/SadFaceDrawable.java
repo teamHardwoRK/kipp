@@ -121,7 +121,7 @@ public class SadFaceDrawable extends Drawable {
         coloringList.add(new FaceColoring(darkRed, yellow, Paint.Style.FILL));
 
         for (int i = 0; i < count; i++) {
-            float radius = (new Random().nextInt(100) / 40) * GraphicsUtils.dpToPx(50);
+            float radius = (new Random().nextInt(100) / 40) * GraphicsUtils.dpToPx(40);
             for(FaceColoring coloring : coloringList) {
                 SadFaceDrawable sadFace = new SadFaceDrawable(radius);
                 sadFace.setAlpha(new Random().nextInt(155) + 90);
