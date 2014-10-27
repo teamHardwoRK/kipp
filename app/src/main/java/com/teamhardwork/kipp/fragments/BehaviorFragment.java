@@ -120,11 +120,11 @@ public class BehaviorFragment extends Fragment {
             starImageView.setLayoutParams(params);
             rlBehaviors.addView(starImageView);
             StarAnimationSet set = new StarAnimationSet(getActivity(), (StarAnimationSet.StarAnimationSetListener) getActivity(), starImageView);
-            set.setStartOffset(new Random().nextInt(500));
-            set.setDuration(5000);
+            set.setStartOffset(new Random().nextInt(1000));
+            set.setDuration(new Random().nextInt(1000) + 4000);
             set.setRotationAnimation(
                     rotationDirection[new Random().nextInt(rotationDirection.length)] * (startRotationRange + new Random().nextInt(endRotationRange - startRotationRange)));
-            set.setScaleAnimation(5);
+            set.setScaleAnimation(new Random().nextInt(3) + 3.5f);
             set.setTranslateAnimation(directionList[new Random().nextInt(directionList.length)],
                     directionList[new Random().nextInt(directionList.length)]);
             starImageView.startAnimation(set);
