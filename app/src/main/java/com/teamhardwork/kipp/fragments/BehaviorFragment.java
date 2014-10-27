@@ -104,7 +104,7 @@ public class BehaviorFragment extends Fragment {
     }
 
     void createAndAnimateSadFaces(View view) {
-        List<SadFaceDrawable> sadFaceList = SadFaceDrawable.createPopulation(getActivity(), 5);
+        List<SadFaceDrawable> sadFaceList = SadFaceDrawable.createPopulation(getActivity(), 10);
         Point screenSize = new Point();
         ((WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getSize(screenSize);
 
@@ -118,7 +118,7 @@ public class BehaviorFragment extends Fragment {
 
             SadFaceAnimationSet animationSet = new SadFaceAnimationSet(getActivity(),
                     (SadFaceAnimationSet.SadFaceAnimationSetListener) getActivity(), imageView);
-            animationSet.setStartOffset(new Random().nextInt(2000));
+            animationSet.setStartOffset(new Random().nextInt(2500));
             animationSet.setDuration(5000);
             animationSet.setTranslateAnimation();
             imageView.startAnimation(animationSet);

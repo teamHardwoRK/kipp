@@ -61,7 +61,8 @@ public class StarDrawable extends Drawable {
             for (Length length : lengthList) {
                 StarDrawable star = new StarDrawable(length.longLength, length.shortLength);
 
-                Paint.Style[] styleList = {Paint.Style.STROKE, Paint.Style.FILL_AND_STROKE, Paint.Style.STROKE, Paint.Style.STROKE};
+                Paint.Style[] styleList = {Paint.Style.STROKE, Paint.Style.FILL_AND_STROKE, Paint.Style.STROKE,
+                        Paint.Style.FILL_AND_STROKE, Paint.Style.STROKE};
                 Paint.Style style = styleList[new Random().nextInt(styleList.length)];
 
                 switch (style) {
