@@ -21,8 +21,10 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.adapters.StudentArrayAdapter;
+import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.SchoolClass;
 import com.teamhardwork.kipp.models.users.Student;
+import com.teamhardwork.kipp.queries.FeedQueries;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,6 +41,8 @@ public class RosterFragment extends BaseKippFragment {
     SwipeListView lvStudents;
     private RosterSwipeListener listener;
     private OnStudentSelectedListener onStudentSelectedListener;
+    private ArrayList<Student> selectedStudents;
+    private List<BehaviorEvent> classBehaviorEvents;
 
     @Override
     public void onAttach(Activity activity) {
@@ -83,6 +87,14 @@ public class RosterFragment extends BaseKippFragment {
                 progressBar.setVisibility(View.GONE);
             }
         });
+
+        FeedQueries.getClassFeed(currentClass, new FindCallback<BehaviorEvent>() {
+            @Override
+            public void done(List<BehaviorEvent> behaviorEvents, ParseException e) {
+                classBehaviorEvents = behaviorEvents;
+            }
+        });
+
         return v;
     }
 
@@ -106,7 +118,7 @@ public class RosterFragment extends BaseKippFragment {
                     case R.id.action_eval:
                         // go show behavior Fragment
                         List<Integer> positions = lvStudents.getPositionsSelected();
-                        ArrayList<Student> selectedStudents = new ArrayList<Student>();
+                        selectedStudents = new ArrayList<Student>();
                         for (int i = 0; i < positions.size(); i++) {
                             selectedStudents.add(aStudents.getItem(positions.get(i)));
                         }
@@ -140,12 +152,12 @@ public class RosterFragment extends BaseKippFragment {
             @Override
             public void onOpened(int position, boolean toRight) {
                 if (toRight == true) {
-                    ArrayList<Student> selectedStudents = new ArrayList<Student>();
+                    selectedStudents = new ArrayList<Student>();
                     selectedStudents.add(aStudents.getItem(position));
                     listener.showBehaviorPagerFragment(selectedStudents, currentClass, true);
                     lvStudents.closeOpenedItems();
                 } else {
-                    ArrayList<Student> selectedStudents = new ArrayList<Student>();
+                    selectedStudents = new ArrayList<Student>();
                     selectedStudents.add(aStudents.getItem(position));
                     listener.showBehaviorPagerFragment(selectedStudents, currentClass, false);
                     lvStudents.closeOpenedItems();
@@ -201,6 +213,31 @@ public class RosterFragment extends BaseKippFragment {
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         float px = dp * (metrics.densityDpi / 160f);
         return (int) px;
+    }
+
+    protected void updateData() {
+        FindCallback<BehaviorEvent> callback = new FindCallback<BehaviorEvent>() {
+            @Override
+            public void done(List<BehaviorEvent> eventList, ParseException e) {
+                ArrayList<Integer> changedPositions = new ArrayList<Integer>();
+                for (BehaviorEvent event : eventList) {
+                    classBehaviorEvents.add(0, event);
+                    Student student = event.getStudent();
+                    int pos = aStudents.getPosition(student);
+
+                    if (pos != -1) {
+                        changedPositions.add(pos);
+                    }
+                }
+
+                if (!changedPositions.isEmpty()) {
+                    aStudents.updatePositions(changedPositions);
+                    aStudents.notifyDataSetChanged();
+                }
+            }
+        };
+
+        FeedQueries.getLatestClassEvents(currentClass, classBehaviorEvents, callback);
     }
 
     public interface OnStudentSelectedListener {
