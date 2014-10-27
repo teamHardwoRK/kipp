@@ -1,7 +1,6 @@
 package com.teamhardwork.kipp.activities;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
@@ -61,7 +60,7 @@ public class InfoActivity extends BaseKippActivity implements FeedFragment.FeedL
         if (selected != null) {
             setCustomStudentActionBar();
         } else {
-            getActionBar().setTitle(((KippApplication)getApplication()).getSchoolClass().getName());
+            getActionBar().setTitle(((KippApplication) getApplication()).getSchoolClass().getName());
         }
     }
 

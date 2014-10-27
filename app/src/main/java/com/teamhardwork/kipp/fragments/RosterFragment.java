@@ -1,6 +1,7 @@
 package com.teamhardwork.kipp.fragments;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -166,6 +167,7 @@ public class RosterFragment extends BaseKippFragment {
 
             @Override
             public void onStartOpen(int position, int action, boolean toRight) {
+                Resources resources = RosterFragment.this.getActivity().getResources();
                 View v = lvStudents.getChildAt(position);
                 View backView = null;
                 if (v == null) return;
@@ -174,9 +176,9 @@ public class RosterFragment extends BaseKippFragment {
                 if (backView == null) return;
 
                 if (toRight == true) {
-                    backView.setBackgroundColor(GOOD_COLOR_ID);
+                    backView.setBackgroundColor(resources.getColor(R.color.AlgaeGreen));
                 } else {
-                    backView.setBackgroundColor(BAD_COLOR_ID);
+                    backView.setBackgroundColor(resources.getColor(R.color.PaleVioletRed));
                 }
             }
 

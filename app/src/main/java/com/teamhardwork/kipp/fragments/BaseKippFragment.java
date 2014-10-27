@@ -19,10 +19,9 @@ import butterknife.InjectView;
 
 public abstract class BaseKippFragment extends Fragment {
     protected SchoolClass currentClass;
-    private KippPushBroadcastReceiver pushReceiver;
-
     @InjectView(R.id.progressBar)
     ProgressBar progressBar;
+    private KippPushBroadcastReceiver pushReceiver;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

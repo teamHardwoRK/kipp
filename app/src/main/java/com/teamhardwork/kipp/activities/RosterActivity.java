@@ -17,9 +17,7 @@ import com.teamhardwork.kipp.fragments.BehaviorFragment;
 import com.teamhardwork.kipp.fragments.BehaviorPagerFragment;
 import com.teamhardwork.kipp.fragments.LeaderboardFragment;
 import com.teamhardwork.kipp.fragments.RosterFragment;
-import com.teamhardwork.kipp.fragments.StatsFragment;
 import com.teamhardwork.kipp.graphics.SadFaceAnimationSet;
-import com.teamhardwork.kipp.listeners.FragmentTabListener;
 import com.teamhardwork.kipp.graphics.StarAnimationSet;
 import com.teamhardwork.kipp.listeners.FragmentTabListener;
 import com.teamhardwork.kipp.models.BehaviorEvent;
@@ -105,6 +103,7 @@ public class RosterActivity extends BaseKippActivity implements
         }
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public void onStudentSelected(Student student) {
         Fragment rosterFragment = getFragmentManager().findFragmentByTag(ROSTER_FRAGMENT_TAG);
