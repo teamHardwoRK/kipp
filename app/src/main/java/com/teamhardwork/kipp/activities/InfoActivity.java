@@ -59,15 +59,14 @@ public class InfoActivity extends Activity implements FeedFragment.FeedListener 
     private void setActionBarTitle() {
         selected = getSelectedStudent();
         if (selected != null) {
-            setStudentIcon();
-            getActionBar().setTitle(selected.getFullName());
+            setCustomStudentActionBar();
         } else {
             getActionBar().setTitle(((KippApplication)getApplication()).getSchoolClass().getName());
         }
     }
 
     // Hackily construct a new action bar because we want a circular image view near the title
-    private void setStudentIcon() {
+    private void setCustomStudentActionBar() {
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 
