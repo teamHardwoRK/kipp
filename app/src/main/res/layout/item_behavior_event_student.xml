@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp">
+
+    <ImageView
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/ivBehaviorIcon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/color_bull_ic"
+        />
+
+    <TextView
+        android:id="@+id/tvBehaviorName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/ivBehaviorIcon"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="10dp"
+        android:text="@string/default_behavior_name"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvEventTimestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/ivBehaviorIcon"
+        android:layout_below="@id/tvBehaviorName"
+        android:layout_marginTop="8dp"
+        android:text="2h 33m ago"
+        android:layout_marginLeft="10dp"
+        android:textColor="#8B939A" />
+</RelativeLayout>

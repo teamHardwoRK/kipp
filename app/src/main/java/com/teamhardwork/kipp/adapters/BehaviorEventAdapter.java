@@ -37,25 +37,25 @@ public class BehaviorEventAdapter extends ArrayAdapter<BehaviorEvent> {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
 
-        if (convertView == null) {
+        if(classMode) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_behavior_event, parent, false);
-
-            holder = new ViewHolder(convertView);
-
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
+        }
+        else {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_behavior_event_student, parent, false);
         }
 
+        holder = new ViewHolder(convertView);
         Typeface typeface = KippApplication.getDefaultTypeFace(getContext());
         final BehaviorEvent event = getItem(position);
         holder.tvBehaviorName.setText(event.getBehavior().getTitle());
         holder.tvBehaviorName.setTypeface(typeface);
-        holder.tvStudentName.setText(event.getStudent().getFirstName() + " " + event.getStudent().getLastName());
-        holder.tvStudentName.setTypeface(typeface);
-        if (!classMode) {
-            holder.tvStudentName.setVisibility(View.GONE);
+
+        if(classMode) {
+            holder.tvStudentName = (TextView) convertView.findViewById(R.id.tvStudentName);
+            holder.tvStudentName.setText(event.getStudent().getFirstName() + " " + event.getStudent().getLastName());
+            holder.tvStudentName.setTypeface(typeface);
         }
+
         holder.tvEventTimestamp.setText(age(event));
         holder.tvEventTimestamp.setTypeface(typeface);
         holder.ivBehaviorIcon.setImageResource(event.getBehavior().getColorResource());
@@ -70,12 +70,12 @@ public class BehaviorEventAdapter extends ArrayAdapter<BehaviorEvent> {
     class ViewHolder {
         @InjectView(R.id.tvBehaviorName)
         TextView tvBehaviorName;
-        @InjectView(R.id.tvStudentName)
-        TextView tvStudentName;
         @InjectView(R.id.tvEventTimestamp)
         TextView tvEventTimestamp;
         @InjectView(R.id.ivBehaviorIcon)
         ImageView ivBehaviorIcon;
+
+        public TextView tvStudentName;
 
         public ViewHolder(View view) {
             ButterKnife.inject(this, view);
