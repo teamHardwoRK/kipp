@@ -106,7 +106,6 @@ public class StarDrawable extends Drawable {
                 paint.setStyle(Paint.Style.FILL);
                 paint.setColor(fillColor);
                 drawStar(canvas, paint, center);
-                paint = new Paint();
                 paint.setStyle(Paint.Style.STROKE);
                 paint.setColor(strokeColor);
                 drawStar(canvas, paint, center);
