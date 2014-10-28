@@ -1,13 +1,15 @@
 package com.teamhardwork.kipp.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.utilities.DateUtilities;
@@ -45,21 +47,18 @@ public class BehaviorEventAdapter extends ArrayAdapter<BehaviorEvent> {
             holder = (ViewHolder) convertView.getTag();
         }
 
+        Typeface typeface = KippApplication.getDefaultTypeFace(getContext());
         final BehaviorEvent event = getItem(position);
         holder.tvBehaviorName.setText(event.getBehavior().getTitle());
+        holder.tvBehaviorName.setTypeface(typeface);
         holder.tvStudentName.setText(event.getStudent().getFirstName() + " " + event.getStudent().getLastName());
+        holder.tvStudentName.setTypeface(typeface);
         if (!classMode) {
             holder.tvStudentName.setVisibility(View.GONE);
         }
         holder.tvEventTimestamp.setText(age(event));
-
-        int points = event.getBehavior().getPoints();
-        holder.tvPoints.setText(Integer.toString(points));
-        if (points > 0) {
-            holder.tvPoints.setTextColor(Color.parseColor("#11BB84"));
-        } else {
-            holder.tvPoints.setTextColor(Color.parseColor("#DA585C"));
-        }
+        holder.tvEventTimestamp.setTypeface(typeface);
+        holder.ivBehaviorIcon.setImageResource(event.getBehavior().getColorResource());
 
         return convertView;
     }
@@ -75,8 +74,8 @@ public class BehaviorEventAdapter extends ArrayAdapter<BehaviorEvent> {
         TextView tvStudentName;
         @InjectView(R.id.tvEventTimestamp)
         TextView tvEventTimestamp;
-        @InjectView(R.id.tvPoints)
-        TextView tvPoints;
+        @InjectView(R.id.ivBehaviorIcon)
+        ImageView ivBehaviorIcon;
 
         public ViewHolder(View view) {
             ButterKnife.inject(this, view);

@@ -38,8 +38,6 @@ public class FeedFragment extends BaseKippFragment {
     ProgressBar pbBehaviorFeed;
     @InjectView(R.id.lvActionFeed)
     ListView lvActionFeed;
-    @InjectView(R.id.tvBehaviorFeedTitle)
-    TextView tvBehaviorFeedTitle;
     @InjectView(R.id.tvActionFeedTitle)
     TextView tvActionFeedTitle;
 
@@ -102,7 +100,6 @@ public class FeedFragment extends BaseKippFragment {
 
     void showProgressBar() {
         lvBehaviorFeed.setVisibility(View.GONE);
-        tvBehaviorFeedTitle.setVisibility(View.GONE);
         lvActionFeed.setVisibility(View.GONE);
         tvActionFeedTitle.setVisibility(View.GONE);
         pbBehaviorFeed.setVisibility(View.VISIBLE);
@@ -110,7 +107,6 @@ public class FeedFragment extends BaseKippFragment {
 
     void showBehaviorFeed() {
         pbBehaviorFeed.setVisibility(View.GONE);
-        tvBehaviorFeedTitle.setVisibility(View.VISIBLE);
         lvBehaviorFeed.setVisibility(View.VISIBLE);
     }
 

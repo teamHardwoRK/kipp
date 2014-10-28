@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.enums.Behavior;
 
@@ -30,8 +31,7 @@ public class BehaviorAdapter extends ArrayAdapter<Behavior> {
             holder = new ViewHolder();
             holder.tvBehaviorName = (TextView) convertView.findViewById(R.id.tvBehaviorName);
             holder.ivBehaviorIcon = (ImageView) convertView.findViewById(R.id.ivBehaviorIcon);
-            Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/VarelaRound-Regular.otf");
-            holder.tvBehaviorName.setTypeface(typeface);
+            holder.tvBehaviorName.setTypeface(KippApplication.getDefaultTypeFace(getContext()));
 
             convertView.setTag(holder);
         } else {

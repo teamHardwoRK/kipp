@@ -84,12 +84,12 @@
         <activity
             android:name=".activities.RosterActivity"
             android:label="@string/title_activity_roster"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.InfoActivity"
             android:label="@string/title_activity_info"
             android:screenOrientation="portrait"
-            android:parentActivityName=".activities.RosterActivity"></activity>
+            android:parentActivityName=".activities.RosterActivity" />
     </application>
 
 </manifest>

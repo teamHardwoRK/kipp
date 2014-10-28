@@ -1,6 +1,8 @@
 package com.teamhardwork.kipp;
 
 import android.app.Application;
+import android.content.Context;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -103,5 +105,9 @@ public class KippApplication extends Application {
             setSchoolClass();
         }
         return schoolClass;
+    }
+
+    public static Typeface getDefaultTypeFace(Context context) {
+        return Typeface.createFromAsset(context.getAssets(), "fonts/VarelaRound-Regular.otf");
     }
 }

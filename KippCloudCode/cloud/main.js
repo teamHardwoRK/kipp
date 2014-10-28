@@ -12,7 +12,7 @@ Parse.Cloud.afterSave("BehaviorEvent", function(request) {
         {
             where: query,
             data: {
-                alert: "Behavior Event recorded."
+                alert: "Behavior " + request.object.get("behavior") + " recorded for student " + request.object.get("student").id
             }
         },
         {

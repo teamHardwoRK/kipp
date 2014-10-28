@@ -42,9 +42,12 @@ public class DateUtilities {
         if (period.getHours() > 0) {
             sb.append(period.getHours()).append("h ");
         }
-        sb.append(period.getMinutes()).append("m ");
-        sb.append(period.getSeconds()).append("s ");
-
+        if (period.getMinutes() > 0) {
+            sb.append(period.getMinutes()).append("m ");
+        }
+        else {
+            sb.append(period.getSeconds()).append("s ");
+        }
         return sb.toString();
     }
 }

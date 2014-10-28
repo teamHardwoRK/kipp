@@ -5,47 +5,44 @@
     android:layout_height="match_parent"
     android:padding="5dp">
 
-    <TextView
-        android:id="@+id/tvPoints"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="10dp"
-        android:textColor="#11BB84"
-        android:textStyle="bold" />
+    <ImageView
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/ivBehaviorIcon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/color_bull_ic"
+        />
 
     <TextView
         android:id="@+id/tvStudentName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/tvEventTimestamp"
-        android:layout_toRightOf="@+id/tvPoints"
+        android:layout_toRightOf="@+id/ivBehaviorIcon"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
         android:text="@string/default_student_name"
+        android:textSize="20sp"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvBehaviorName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_marginTop="5dp"
         android:layout_below="@id/tvStudentName"
-        android:layout_toLeftOf="@+id/tvEventTimestamp"
-        android:layout_toRightOf="@+id/tvPoints"
+        android:layout_alignLeft="@id/tvStudentName"
         android:text="@string/default_behavior_name" />
 
     <TextView
         android:id="@+id/tvEventTimestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_below="@id/tvBehaviorName"
-        android:layout_centerVertical="true"
-        android:text="11:53am - Monday, Oct 5"
+        android:layout_toRightOf="@id/tvBehaviorName"
+        android:layout_alignBottom="@id/tvBehaviorName"
+        android:text="2h 33m ago"
+        android:layout_marginLeft="10dp"
         android:textColor="#8B939A" />
 </RelativeLayout>
