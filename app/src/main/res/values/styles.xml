@@ -20,6 +20,7 @@
 
     <style name="KippTheme.ActionBar.TabBarTextStyle" parent="android:Widget.Holo.ActionBar.TabText">
         <item name="android:textColor">@color/Black</item>
+        <item name="android:textSize">11dp</item>
     </style>
 
     <!-- Buttons -->
