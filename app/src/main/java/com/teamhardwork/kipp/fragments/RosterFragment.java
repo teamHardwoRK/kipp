@@ -24,6 +24,7 @@ import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.SchoolClass;
 import com.teamhardwork.kipp.models.users.Student;
 import com.teamhardwork.kipp.queries.FeedQueries;
+import com.teamhardwork.kipp.utilities.Recommendation;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -73,9 +74,9 @@ public class RosterFragment extends BaseKippFragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_roster, container, false);
         ButterKnife.inject(this, v);
+        aStudents.clear();
         setupViews(v);
 
-        aStudents.clear();
         currentClass.getClassRosterAsync(new FindCallback<Student>() {
             @Override
             public void done(List<Student> foundStudents, ParseException e) {
@@ -83,6 +84,12 @@ public class RosterFragment extends BaseKippFragment {
                 Collections.sort(students);
                 aStudents.addAll(students);
                 progressBar.setVisibility(View.GONE);
+                if (!Recommendation.getInstance().isInit()) {
+                    for (Student student : students) {
+                        Recommendation.getInstance().addRecs(student);
+                    }
+                    aStudents.notifyDataSetChanged();
+                }
             }
         });
 

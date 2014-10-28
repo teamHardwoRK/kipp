@@ -14,22 +14,23 @@
         android:background="#F6D05C">
 
         <TextView
+            android:id="@+id/tvRecommendation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/tvDismissRecommendation"
-            android:text="Congradulate student. Has been on task for 3 days in a row."
+            android:layout_toLeftOf="@+id/btnDismissRecommendation"
+            android:layout_alignTop="@id/btnDismissRecommendation"
             android:textColor="#FFFFFF" />
 
-        <TextView
-            android:id="@+id/tvDismissRecommendation"
+        <Button
+            android:id="@+id/btnDismissRecommendation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="DISMISS"
-            android:textColor="#FFFFFF" />
+            android:text="Dismiss"
+            android:textColor="#FFFFFF"
+            style="@style/KippTheme.ActionBar"/>
 
     </RelativeLayout>
 
@@ -43,7 +44,8 @@
         android:id="@+id/pieGraph"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"
+        android:layout_below="@id/rlRecommendationContainer"/>
 
 
     <LinearLayout

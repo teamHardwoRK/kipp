@@ -1,7 +1,9 @@
 package com.teamhardwork.kipp.adapters;
 
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.Color;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +22,7 @@ import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.users.Student;
 import com.teamhardwork.kipp.queries.FeedQueries;
 import com.teamhardwork.kipp.utilities.RandomApiUrlGenerator;
+import com.teamhardwork.kipp.utilities.Recommendation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +35,7 @@ import java.util.List;
 public class StudentArrayAdapter extends ArrayAdapter<Student> {
     private Context context;
     private ArrayList<Integer> changedPositions;
+    private int tipColor = Color.parseColor("#FFD119"); //The color for tips
 
     public StudentArrayAdapter(Context context, int resource, List<Student> students) {
         super(context, resource, students);
@@ -52,6 +56,7 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
             v.ivProfilePic = (ImageView) convertView.findViewById(R.id.ivProfilePic);
             v.tvName = (TextView) convertView.findViewById(R.id.tvName);
             v.tvPoints = (TextView) convertView.findViewById(R.id.tvPoints);
+            v.ivTips = (ImageView) convertView.findViewById(R.id.ivTips);
             convertView.setTag(v);
         } else {
             v = (ViewHolder) convertView.getTag();
@@ -73,19 +78,27 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
             animate = true;
             changedPositions.remove(changedPositions.indexOf(position));
         }
-
-        animateBehaviors(student, v.tvPoints, animate);
+        updateStudentInfo(student, v.tvPoints, v.ivTips, animate);
 
         return convertView;
     }
 
-    public void animateBehaviors(Student student, TextView textView, boolean animate) {
-        final boolean doesAnimation = animate;
-        final TextView tvBehaviors = textView;
+    public void updateStudentInfo(final Student student, final TextView tvBehaviors, final ImageView tvTips, final boolean animate) {
+        tvTips.setImageResource(0);
         FeedQueries.getStudentFeed(student, new FindCallback<BehaviorEvent>() {
             @Override
             public void done(List<BehaviorEvent> behaviorEvents, ParseException e) {
                 if (behaviorEvents == null) return;
+
+                if (Recommendation.getInstance().hasRecs(student)) {
+                    tvTips.setImageResource(R.drawable.ic_tips);
+                    tvTips.setColorFilter(tipColor);
+
+                    ObjectAnimator alpha = ObjectAnimator.ofFloat(tvTips, "alpha", 0f, 1f);
+                    alpha.setDuration(2000);
+                    alpha.setRepeatCount(ValueAnimator.INFINITE);
+                    alpha.start();
+                }
 
                 StringBuilder newBehaviors = new StringBuilder();
                 int behaviorsSize = Math.min(5, behaviorEvents.size());
@@ -101,7 +114,7 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
 
                 tvBehaviors.setText(Html.fromHtml(newBehaviors.toString()));
 
-                if (doesAnimation == true) {
+                if (animate == true) {
                     ObjectAnimator alpha = ObjectAnimator.ofFloat(tvBehaviors, "alpha", 0f, 1f);
                     alpha.setDuration(1000);
                     alpha.setRepeatCount(5);
@@ -124,5 +137,6 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
         ImageView ivProfilePic;
         TextView tvName;
         TextView tvPoints;
+        ImageView ivTips;
     }
 }
