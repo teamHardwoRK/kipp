@@ -66,12 +66,15 @@ public class FeedFragment extends BaseKippFragment {
         View view = inflater.inflate(R.layout.fragment_feed, container, false);
         ButterKnife.inject(this, view);
 
+        boolean classMode = true;
         if (getArguments() != null && getArguments().containsKey(CURRENT_STUDENT_ID_KEY)) {
             String currentStudentId = getArguments().getString(CURRENT_STUDENT_ID_KEY);
             student = Student.getStudent(currentStudentId);
+            classMode = false;
         }
 
-        behaviorAdapter = new BehaviorEventAdapter(getActivity(), new ArrayList<BehaviorEvent>());
+        behaviorAdapter = new BehaviorEventAdapter(getActivity(), new ArrayList<BehaviorEvent>(),
+                classMode);
         lvBehaviorFeed.setAdapter(behaviorAdapter);
         actionAdapter = new ActionEventAdapter(getActivity(), new ArrayList<Action>());
 

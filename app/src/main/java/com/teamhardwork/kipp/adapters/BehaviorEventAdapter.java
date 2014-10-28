@@ -19,10 +19,12 @@ import butterknife.InjectView;
 
 public class BehaviorEventAdapter extends ArrayAdapter<BehaviorEvent> {
     List<BehaviorEvent> eventList;
+    boolean classMode;
 
-    public BehaviorEventAdapter(Context context, List<BehaviorEvent> eventList) {
+    public BehaviorEventAdapter(Context context, List<BehaviorEvent> eventList, boolean isClassMode) {
         super(context, R.layout.item_behavior_event, eventList);
         this.eventList = eventList;
+        classMode = isClassMode;
     }
 
     public List<BehaviorEvent> getEventList() {
@@ -46,6 +48,9 @@ public class BehaviorEventAdapter extends ArrayAdapter<BehaviorEvent> {
         final BehaviorEvent event = getItem(position);
         holder.tvBehaviorName.setText(event.getBehavior().getTitle());
         holder.tvStudentName.setText(event.getStudent().getFirstName() + " " + event.getStudent().getLastName());
+        if (!classMode) {
+            holder.tvStudentName.setVisibility(View.GONE);
+        }
         holder.tvEventTimestamp.setText(age(event));
 
         int points = event.getBehavior().getPoints();
