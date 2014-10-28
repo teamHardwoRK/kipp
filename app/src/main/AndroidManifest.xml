@@ -79,7 +79,7 @@
 
         <meta-data
             android:name="com.parse.push.notification_icon"
-            android:resource="@drawable/ic_logo" />
+            android:resource="@drawable/ic_kipp" />
 
         <activity
             android:name=".activities.RosterActivity"
