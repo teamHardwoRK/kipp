@@ -6,7 +6,6 @@ import android.support.v13.app.FragmentPagerAdapter;
 
 import com.teamhardwork.kipp.fragments.BaseKippFragment;
 import com.teamhardwork.kipp.fragments.FeedFragment;
-import com.teamhardwork.kipp.fragments.LeaderboardFragment;
 import com.teamhardwork.kipp.fragments.StatsFragment;
 import com.teamhardwork.kipp.fragments.StudentStatsFragment;
 

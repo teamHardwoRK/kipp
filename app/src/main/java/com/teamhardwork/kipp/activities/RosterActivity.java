@@ -30,9 +30,6 @@ import com.teamhardwork.kipp.models.users.Student;
 import java.util.ArrayList;
 import java.util.Date;
 
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
-
 public class RosterActivity extends BaseKippActivity implements
         RosterFragment.OnStudentSelectedListener,
         RosterFragment.RosterSwipeListener,
