@@ -197,13 +197,15 @@ public class RosterFragment extends BaseKippFragment {
     }
 
     private void reloadListView() {
+        DisplayMetrics displayMetrics = getActivity().getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
         lvStudents.setSwipeMode(SwipeListView.SWIPE_MODE_BOTH);
         lvStudents.setSwipeActionLeft(SwipeListView.SWIPE_ACTION_REVEAL);
         lvStudents.setSwipeActionRight(SwipeListView.SWIPE_ACTION_REVEAL);
-        lvStudents.setOffsetLeft(convertDpToPixel(0));
-        lvStudents.setOffsetRight(convertDpToPixel(0));
+        lvStudents.setOffsetLeft(convertDpToPixel(dpWidth / 2));
+        lvStudents.setOffsetRight(convertDpToPixel(dpWidth / 2));
         lvStudents.setSwipeCloseAllItemsWhenMoveList(true);
-        lvStudents.setAnimationTime(0);
+        lvStudents.setAnimationTime(1000);
         lvStudents.setSwipeOpenOnLongPress(false);
     }
 

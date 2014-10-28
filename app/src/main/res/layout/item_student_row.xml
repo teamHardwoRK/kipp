@@ -4,11 +4,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/back"
         style="@style/ListBackContent"
         android:orientation="horizontal"
-        android:tag="back"></LinearLayout>
+        android:tag="back">
+
+        <ImageView
+            android:id="@+id/ivLeftLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:padding="20dp"
+            android:src="@drawable/ic_thumb_up"/>
+
+        <ImageView
+            android:id="@+id/ivRightLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:padding="20dp"
+            android:src="@drawable/ic_thumb_down"/>
+
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/front"
