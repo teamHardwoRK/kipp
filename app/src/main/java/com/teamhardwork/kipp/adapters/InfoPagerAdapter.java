@@ -4,13 +4,13 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentPagerAdapter;
 
+import com.teamhardwork.kipp.fragments.ActionLogFragment;
 import com.teamhardwork.kipp.fragments.BaseKippFragment;
 import com.teamhardwork.kipp.fragments.FeedFragment;
-import com.teamhardwork.kipp.fragments.StatsFragment;
 import com.teamhardwork.kipp.fragments.StudentStatsFragment;
 
 public class InfoPagerAdapter extends FragmentPagerAdapter {
-    private static int NUM_ITEMS = 2;
+    private static int NUM_ITEMS = 3;
 
     private String currentStudentId;
 
@@ -28,21 +28,11 @@ public class InfoPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                StatsFragment statsFragment;
-                if (currentStudentId == null) {
-                    statsFragment = new StatsFragment();
-                } else {
-                    statsFragment = StudentStatsFragment.newInstance(currentStudentId);
-                }
-                return statsFragment;
+                return StudentStatsFragment.newInstance(currentStudentId);
             case 1:
-                FeedFragment feedFragment;
-                if (currentStudentId == null) {
-                    feedFragment = new FeedFragment();
-                } else {
-                    feedFragment = FeedFragment.newInstance(currentStudentId);
-                }
-                return feedFragment;
+                return FeedFragment.newInstance(currentStudentId);
+            case 2:
+                return ActionLogFragment.newInstance(currentStudentId);
             default:
                 return null;
         }

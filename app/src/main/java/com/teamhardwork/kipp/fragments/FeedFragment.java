@@ -34,14 +34,7 @@ public class FeedFragment extends BaseKippFragment {
 
     @InjectView(R.id.lvBehaviorFeed)
     ListView lvBehaviorFeed;
-    @InjectView(R.id.progressBar)
-    ProgressBar pbBehaviorFeed;
-    @InjectView(R.id.lvActionFeed)
-    ListView lvActionFeed;
-    @InjectView(R.id.tvActionFeedTitle)
-    TextView tvActionFeedTitle;
 
-    ActionEventAdapter actionAdapter;
     BehaviorEventAdapter behaviorAdapter;
     FeedListener listener;
 
@@ -74,9 +67,7 @@ public class FeedFragment extends BaseKippFragment {
         behaviorAdapter = new BehaviorEventAdapter(getActivity(), new ArrayList<BehaviorEvent>(),
                 classMode);
         lvBehaviorFeed.setAdapter(behaviorAdapter);
-        actionAdapter = new ActionEventAdapter(getActivity(), new ArrayList<Action>());
 
-        lvActionFeed.setAdapter(actionAdapter);
         setupListeners();
 
         if (student != null) {
@@ -100,24 +91,17 @@ public class FeedFragment extends BaseKippFragment {
 
     void showProgressBar() {
         lvBehaviorFeed.setVisibility(View.GONE);
-        lvActionFeed.setVisibility(View.GONE);
-        tvActionFeedTitle.setVisibility(View.GONE);
-        pbBehaviorFeed.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     void showBehaviorFeed() {
-        pbBehaviorFeed.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
         lvBehaviorFeed.setVisibility(View.VISIBLE);
-    }
-
-    void showActionFeed() {
-        tvActionFeedTitle.setVisibility(View.VISIBLE);
-        lvActionFeed.setVisibility(View.VISIBLE);
-        pbBehaviorFeed.setVisibility(View.GONE);
     }
 
     @Override
     protected void updateData() {
+        super.updateData();
         FindCallback<BehaviorEvent> callback = new FindCallback<BehaviorEvent>() {
             @Override
             public void done(List<BehaviorEvent> eventList, ParseException e) {
@@ -127,19 +111,9 @@ public class FeedFragment extends BaseKippFragment {
             }
         };
 
-        FindCallback<Action> actionLogCallback = new FindCallback<Action>() {
-            @Override
-            public void done(List<Action> actionList, ParseException e) {
-                for (Action action : actionList) {
-                    actionAdapter.insert(action, 0);
-                }
-            }
-        };
-
         switch (feedType) {
             case STUDENT:
                 FeedQueries.getLatestStudentEvents(student, behaviorAdapter.getEventList(), callback);
-                FeedQueries.getLatestActionLog(student, actionAdapter.getEventList(), actionLogCallback);
                 break;
             case CLASS:
                 FeedQueries.getLatestClassEvents(currentClass, behaviorAdapter.getEventList(), callback);
@@ -159,22 +133,10 @@ public class FeedFragment extends BaseKippFragment {
                 showBehaviorFeed();
             }
         });
-
-        FeedQueries.getStudentActionLog(student, new FindCallback<Action>() {
-            @Override
-            public void done(List<Action> actions, ParseException e) {
-                actionAdapter.clear();
-                actionAdapter.addAll(actions);
-                showBehaviorFeed();
-                showActionFeed();
-            }
-        });
     }
 
     public void changeToClassFeed() {
         showProgressBar();
-
-        lvActionFeed.setVisibility(View.GONE);
 
         FeedQueries.getClassFeed(currentClass, new FindCallback<BehaviorEvent>() {
             @Override
@@ -189,7 +151,7 @@ public class FeedFragment extends BaseKippFragment {
 
     @Override
     public String getTitle() {
-        return "Feed";
+        return "Behaviors";
     }
 
     public enum FeedType {

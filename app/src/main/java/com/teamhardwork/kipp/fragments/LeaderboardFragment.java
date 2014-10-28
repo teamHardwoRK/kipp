@@ -64,6 +64,7 @@ public class LeaderboardFragment extends BaseKippFragment {
 
     @Override
     protected void updateData() {
+        super.updateData();
         updateLeaderboard();
     }
 

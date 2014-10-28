@@ -277,6 +277,7 @@ public class StatsFragment extends BaseKippFragment {
 
     @Override
     protected void updateData() {
+        super.updateData();
         fillChartWithOverallData();
     }
 
