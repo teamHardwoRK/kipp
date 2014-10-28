@@ -120,7 +120,7 @@ public class InfoActivity extends BaseKippActivity implements FeedFragment.FeedL
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
-            NavUtils.navigateUpFromSameTask(this);
+            exitActivity();
             return true;
         }
         return super.onOptionsItemSelected(item);
