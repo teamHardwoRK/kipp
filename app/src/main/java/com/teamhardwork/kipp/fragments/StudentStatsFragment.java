@@ -1,9 +1,7 @@
 package com.teamhardwork.kipp.fragments;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.users.Student;
@@ -34,12 +32,12 @@ public class StudentStatsFragment extends StatsFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = super.onCreateView(inflater, container, savedInstanceState);
+    protected void fillChartWithOverallData() {
+        FeedQueries.getStudentFeed(student, overallResponseCallback);
+    }
 
-        rlRecommendationContainer.setVisibility(View.GONE);
-        tvRecommendation.setVisibility(View.GONE);
-        btnDismissRecommendation.setVisibility(View.GONE);
+    @Override
+    protected void setRecommendation(List<BehaviorEvent> behaviorEvents) {
         btnDismissRecommendation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,16 +48,6 @@ public class StudentStatsFragment extends StatsFragment {
             }
         });
 
-        return v;
-    }
-
-    @Override
-    protected void fillChartWithOverallData() {
-        FeedQueries.getStudentFeed(student, overallResponseCallback);
-    }
-
-    @Override
-    protected void setRecommendation(List<BehaviorEvent> behaviorEvents) {
         if (Recommendation.getInstance().hasRecs(student)) {
             tvRecommendation.setText(student.getFirstName() + Recommendation.getInstance().getRecs(student));
             rlRecommendationContainer.setVisibility(View.VISIBLE);

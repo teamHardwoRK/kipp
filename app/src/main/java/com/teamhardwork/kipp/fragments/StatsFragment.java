@@ -165,6 +165,10 @@ public class StatsFragment extends BaseKippFragment {
             }
         });
 
+        rlRecommendationContainer.setVisibility(View.GONE);
+        tvRecommendation.setVisibility(View.GONE);
+        btnDismissRecommendation.setVisibility(View.GONE);
+
         return rtnView;
     }
 
