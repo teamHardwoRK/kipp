@@ -88,7 +88,9 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
                 if (behaviorEvents == null) return;
 
                 StringBuilder newBehaviors = new StringBuilder();
-                for (int i = 0; i < 5 && i < behaviorEvents.size(); i++) {
+                int behaviorsSize = Math.min(5, behaviorEvents.size());
+
+                for (int i = behaviorsSize - 1; i >= 0; i--) {
                     if (behaviorEvents.get(i).getBehavior().getCategory() == BehaviorCategory.SLIP ||
                             behaviorEvents.get(i).getBehavior().getCategory() == BehaviorCategory.FALL) {
                         newBehaviors.append("<font color=\"#FF6B6B\"> - </font>");
@@ -108,7 +110,6 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
                 }
             }
         });
-
     }
 
     public void updatePositions(ArrayList<Integer> positions) {

@@ -17,6 +17,7 @@ public class KippPushBroadcastReceiver extends ParsePushBroadcastReceiver {
 
     @Override
     protected void onPushReceive(Context context, Intent intent) {
+        super.onPushReceive(context, intent);
         if (callback != null) {
             callback.onPushReceive();
         }
