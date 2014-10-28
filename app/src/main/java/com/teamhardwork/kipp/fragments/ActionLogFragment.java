@@ -1,7 +1,6 @@
 package com.teamhardwork.kipp.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class ActionLogFragment extends BaseKippFragment {
+public class ActionLogFragment extends BaseKippFragment implements Updatable {
 
     private static final String CURRENT_STUDENT_ID_KEY = "student_id";
 
@@ -31,8 +30,6 @@ public class ActionLogFragment extends BaseKippFragment {
 
     @InjectView(R.id.lvActionFeed)
     ListView lvActionFeed;
-    @InjectView(R.id.tvActionFeedTitle)
-    TextView tvActionFeedTitle;
 
     public static ActionLogFragment newInstance(String currentStudentId) {
         Bundle args = new Bundle();
@@ -70,9 +67,7 @@ public class ActionLogFragment extends BaseKippFragment {
     }
 
     @Override
-    protected void updateData() {
-        super.updateData();
-
+    public void updateData() {
         FindCallback<Action> actionLogCallback = new FindCallback<Action>() {
             @Override
             public void done(List<Action> actionList, ParseException e) {
@@ -82,7 +77,9 @@ public class ActionLogFragment extends BaseKippFragment {
             }
         };
 
-        FeedQueries.getLatestActionLog(student, actionAdapter.getEventList(), actionLogCallback);
+        if (student != null) { // Check whether on create was called yet
+            FeedQueries.getLatestActionLog(student, actionAdapter.getEventList(), actionLogCallback);
+        }
     }
 
     @Override

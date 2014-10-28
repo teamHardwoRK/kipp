@@ -20,7 +20,6 @@ import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.adapters.InfoPagerAdapter;
 import com.teamhardwork.kipp.dialogfragments.AddActionDialogFragment;
 import com.teamhardwork.kipp.fragments.FeedFragment;
-import com.teamhardwork.kipp.fragments.StatsFragment;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.users.Student;
 
@@ -33,8 +32,9 @@ public class InfoActivity extends BaseKippActivity implements FeedFragment.FeedL
     ViewPager vpPager;
     @InjectView(R.id.tabs)
     PagerSlidingTabStrip tabs;
-    private StatsFragment statsFragment;
+
     private Student selected;
+    private InfoPagerAdapter infoPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +49,8 @@ public class InfoActivity extends BaseKippActivity implements FeedFragment.FeedL
 
         String selectedId = (selected != null) ? selected.getObjectId() : null;
 
-        FragmentPagerAdapter pagerAdapter = new InfoPagerAdapter(getFragmentManager(), selectedId);
-        vpPager.setAdapter(pagerAdapter);
+        infoPagerAdapter = new InfoPagerAdapter(getFragmentManager(), selectedId);
+        vpPager.setAdapter(infoPagerAdapter);
         tabs.setViewPager(vpPager);
     }
 
@@ -108,7 +108,7 @@ public class InfoActivity extends BaseKippActivity implements FeedFragment.FeedL
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.info, menu);
 
-        if(selected != null) {
+        if (selected != null) {
             MenuItem item = menu.findItem(R.id.icContactStudent);
             item.setVisible(true);
         }
@@ -125,8 +125,7 @@ public class InfoActivity extends BaseKippActivity implements FeedFragment.FeedL
 
         if (id == android.R.id.home) {
             exitActivity();
-        }
-        else if (id == R.id.icContactStudent) {
+        } else if (id == R.id.icContactStudent) {
             if (selected != null) {
                 AddActionDialogFragment dialogFragment = AddActionDialogFragment.getInstance(selected);
 
@@ -150,5 +149,19 @@ public class InfoActivity extends BaseKippActivity implements FeedFragment.FeedL
         AddActionDialogFragment dialogFragment = AddActionDialogFragment.getInstance(event);
 
         dialogFragment.show(getFragmentManager(), "dialog_fragment_add_action");
+    }
+
+    @Override
+    protected void updateFragments() {
+        super.updateFragments();
+        if (infoPagerAdapter.getActionLogFragment() != null) {
+            infoPagerAdapter.getActionLogFragment().updateData();
+        }
+        if (infoPagerAdapter.getFeedFragment() != null) {
+            infoPagerAdapter.getFeedFragment().updateData();
+        }
+        if (infoPagerAdapter.getStatsFragment() != null) {
+            infoPagerAdapter.getStatsFragment().updateData();
+        }
     }
 }

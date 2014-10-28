@@ -22,7 +22,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class LeaderboardFragment extends BaseKippFragment {
+public class LeaderboardFragment extends BaseKippFragment implements Updatable {
     @InjectView(R.id.lvLeaderboard)
     ListView lvLeaderboard;
     private LeaderboardAdapter leaderboardAdapter;
@@ -63,8 +63,7 @@ public class LeaderboardFragment extends BaseKippFragment {
     }
 
     @Override
-    protected void updateData() {
-        super.updateData();
+    public void updateData() {
         updateLeaderboard();
     }
 

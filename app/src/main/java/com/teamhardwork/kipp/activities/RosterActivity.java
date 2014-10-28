@@ -88,7 +88,7 @@ public class RosterActivity extends BaseKippActivity implements
                 .newTab()
                 .setText("Log")
                 .setTabListener(
-                        new FragmentTabListener<FeedFragment>(R.id.flRoster, this, "Log",
+                        new FragmentTabListener<FeedFragment>(R.id.flRoster, this, "log",
                                 FeedFragment.class));
         actionBar.addTab(tab3);
 
@@ -186,6 +186,26 @@ public class RosterActivity extends BaseKippActivity implements
         if (pagerFragment != null) {
             // this will by default remove the fragment instance
             ((BehaviorPagerFragment) pagerFragment).dismiss();
+        }
+    }
+
+    @Override
+    protected void updateFragments() {
+        super.updateFragments();
+        StatsFragment statsFragment = (StatsFragment) getFragmentManager().findFragmentByTag("stats");
+        if (statsFragment != null) {
+            statsFragment.updateData();
+        }
+
+        FeedFragment feedFragment = (FeedFragment) getFragmentManager().findFragmentByTag("log");
+        if (feedFragment != null) {
+            feedFragment.updateData();
+        }
+
+        LeaderboardFragment leaderboardFragment = (LeaderboardFragment) getFragmentManager()
+                .findFragmentByTag("leaderboard");
+        if (leaderboardFragment != null) {
+            leaderboardFragment.updateData();
         }
     }
 }

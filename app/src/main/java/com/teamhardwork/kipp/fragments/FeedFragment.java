@@ -26,7 +26,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class FeedFragment extends BaseKippFragment {
+public class FeedFragment extends BaseKippFragment implements Updatable {
     private static final String CURRENT_STUDENT_ID_KEY = "student_id";
 
     FeedType feedType;
@@ -99,28 +99,6 @@ public class FeedFragment extends BaseKippFragment {
         lvBehaviorFeed.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    protected void updateData() {
-        super.updateData();
-        FindCallback<BehaviorEvent> callback = new FindCallback<BehaviorEvent>() {
-            @Override
-            public void done(List<BehaviorEvent> eventList, ParseException e) {
-                for (BehaviorEvent event : eventList) {
-                    behaviorAdapter.insert(event, 0);
-                }
-            }
-        };
-
-        switch (feedType) {
-            case STUDENT:
-                FeedQueries.getLatestStudentEvents(student, behaviorAdapter.getEventList(), callback);
-                break;
-            case CLASS:
-                FeedQueries.getLatestClassEvents(currentClass, behaviorAdapter.getEventList(), callback);
-                break;
-        }
-    }
-
     public void changeToStudentFeed() {
         showProgressBar();
 
@@ -147,6 +125,27 @@ public class FeedFragment extends BaseKippFragment {
                 showBehaviorFeed();
             }
         });
+    }
+
+    @Override
+    public void updateData() {
+        FindCallback<BehaviorEvent> callback = new FindCallback<BehaviorEvent>() {
+            @Override
+            public void done(List<BehaviorEvent> eventList, ParseException e) {
+                for (BehaviorEvent event : eventList) {
+                    behaviorAdapter.insert(event, 0);
+                }
+            }
+        };
+
+        switch (feedType) {
+            case STUDENT:
+                FeedQueries.getLatestStudentEvents(student, behaviorAdapter.getEventList(), callback);
+                break;
+            case CLASS:
+                FeedQueries.getLatestClassEvents(currentClass, behaviorAdapter.getEventList(), callback);
+                break;
+        }
     }
 
     @Override

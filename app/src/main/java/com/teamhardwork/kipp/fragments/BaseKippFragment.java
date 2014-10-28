@@ -23,7 +23,6 @@ public abstract class BaseKippFragment extends Fragment {
     protected SchoolClass currentClass;
     @InjectView(R.id.progressBar)
     ProgressBar progressBar;
-    private KippPushBroadcastReceiver pushReceiver;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,41 +40,6 @@ public abstract class BaseKippFragment extends Fragment {
 
     public String getTitle() {
         return "Default";
-    }
-
-    protected void updateData() {
-        Crouton.makeText(getActivity(), "Data Updated", Style.INFO).show();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        registerPushReceiver();
-
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (pushReceiver != null) {
-            getActivity().unregisterReceiver(pushReceiver);
-        }
-    }
-
-    private void registerPushReceiver() {
-        pushReceiver = new KippPushBroadcastReceiver(new KippPushBroadcastReceiver.Callback() {
-            @Override
-            public void onPushReceive() {
-                updateData();
-            }
-        });
-
-        IntentFilter receiveIntentFilter = new IntentFilter();
-        receiveIntentFilter.addAction("com.parse.push.intent.RECEIVE");
-        receiveIntentFilter.addAction("com.parse.push.intent.DELETE");
-        receiveIntentFilter.addAction("com.parse.push.intent.OPEN");
-
-        getActivity().registerReceiver(pushReceiver, receiveIntentFilter);
     }
 
     private float dpFromPx(float px) {

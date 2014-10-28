@@ -35,7 +35,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 // Stats for class
-public class StatsFragment extends BaseKippFragment {
+public class StatsFragment extends BaseKippFragment implements Updatable {
     private static final int GOOD_COLOR_ID = Color.parseColor("#C7F464");
     private static final int BAD_COLOR_ID = Color.parseColor("#FF6B6B");
     private static final int EXTRA_COLOR_ONE = Color.parseColor("#C44D58");
@@ -274,8 +274,7 @@ public class StatsFragment extends BaseKippFragment {
     }
 
     @Override
-    protected void updateData() {
-        super.updateData();
+    public void updateData() {
         fillChartWithOverallData();
     }
 
