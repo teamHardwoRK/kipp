@@ -88,7 +88,6 @@ public class InfoActivity extends BaseKippActivity implements FeedFragment.FeedL
                 .centerCrop()
                 .into(ivProfilePic);
 
-
         TextView tvStudentName = new TextView(this);
         tvStudentName.setText(selected.getFullName());
         LinearLayout.LayoutParams studentNameParams = new LinearLayout.LayoutParams(
@@ -108,6 +107,12 @@ public class InfoActivity extends BaseKippActivity implements FeedFragment.FeedL
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.info, menu);
+
+        if(selected != null) {
+            MenuItem item = menu.findItem(R.id.icContactStudent);
+            item.setVisible(true);
+        }
+
         return true;
     }
 
@@ -120,7 +125,13 @@ public class InfoActivity extends BaseKippActivity implements FeedFragment.FeedL
 
         if (id == android.R.id.home) {
             exitActivity();
-            return true;
+        }
+        else if (id == R.id.icContactStudent) {
+            if (selected != null) {
+                AddActionDialogFragment dialogFragment = AddActionDialogFragment.getInstance(selected);
+
+                dialogFragment.show(getFragmentManager(), "dialog_fragment_add_action");
+            }
         }
         return super.onOptionsItemSelected(item);
     }

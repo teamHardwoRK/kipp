@@ -1,4 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.teamhardwork.kipp.activities.InfoActivity">
+    <item
+        android:id="@+id/icContactStudent"
+        android:icon="@drawable/ic_action_contact"
+        android:showAsAction="always"
+        android:visible="false"
+        />
 </menu>
