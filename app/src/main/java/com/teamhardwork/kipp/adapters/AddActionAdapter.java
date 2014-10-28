@@ -1,10 +1,12 @@
 package com.teamhardwork.kipp.adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.teamhardwork.kipp.R;
@@ -28,6 +30,8 @@ public class AddActionAdapter extends ArrayAdapter<ActionType> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_add_action, parent, false);
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
+            Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/VarelaRound-Regular.otf");
+            holder.tvActionTypeName.setTypeface(typeface);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
@@ -35,6 +39,7 @@ public class AddActionAdapter extends ArrayAdapter<ActionType> {
         ActionType actionType = getItem(position);
 
         holder.tvActionTypeName.setText(actionType.getDisplayName());
+        holder.ivActionIcon.setImageResource(actionType.getResource());
 
         return convertView;
     }
@@ -42,6 +47,9 @@ public class AddActionAdapter extends ArrayAdapter<ActionType> {
     class ViewHolder {
         @InjectView(R.id.tvActionTypeName)
         TextView tvActionTypeName;
+
+        @InjectView(R.id.ivActionIcon)
+        ImageView ivActionIcon;
 
         public ViewHolder(View view) {
             ButterKnife.inject(this, view);

@@ -8,8 +8,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -41,8 +42,8 @@ public class AddActionDialogFragment extends DialogFragment {
     BehaviorEvent event;
     ActionType type;
 
-    @InjectView(R.id.lvActions)
-    ListView lvActions;
+    @InjectView(R.id.gvActions)
+    GridView gvActions;
 
     @InjectView(R.id.pbAddAction)
     ProgressBar pbAddAction;
@@ -67,14 +68,15 @@ public class AddActionDialogFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+
         View view = inflater.inflate(R.layout.fragment_add_action, container, false);
         ButterKnife.inject(this, view);
+        getDialog().getWindow().setBackgroundDrawableResource(R.color.Transparent);
 
-        lvActions.setAdapter(new AddActionAdapter(getActivity(), Role.STUDENT));
+        gvActions.setAdapter(new AddActionAdapter(getActivity(), Role.STUDENT));
         setupListeners();
         retrieveData();
-
-        getDialog().setTitle(R.string.title_add_action);
 
         return view;
     }
@@ -109,14 +111,15 @@ public class AddActionDialogFragment extends DialogFragment {
 
     void hideProgressBar() {
         pbAddAction.setVisibility(View.GONE);
-        lvActions.setVisibility(View.VISIBLE);
+        gvActions.setVisibility(View.VISIBLE);
+        getDialog().getWindow().setBackgroundDrawableResource(R.drawable.btn_light_green);
     }
 
     void setupListeners() {
-        lvActions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gvActions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                type = (ActionType) lvActions.getItemAtPosition(position);
+                type = (ActionType) gvActions.getItemAtPosition(position);
                 Activity activity = getActivity();
                 Intent intent = new Intent();
                 String telephone = student.getTelephonNumber();
@@ -151,8 +154,6 @@ public class AddActionDialogFragment extends DialogFragment {
 
                             message = activity.getResources().getString(R.string.choose_email_client);
                         }
-                        break;
-                    case NOTE:
                         break;
                     case TEXT:
                         if (telephone != null) {

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rlAddAction"
+    android:paddingRight="10dp"
+    android:paddingLeft="10dp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
@@ -8,15 +11,14 @@
         android:id="@+id/pbAddAction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:visibility="visible" />
 
-    <ListView
-        android:id="@+id/lvActions"
+    <GridView
+        android:id="@+id/gvActions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:visibility="gone" />
-
+        android:numColumns="3"
+        android:visibility="invisible" />
 </RelativeLayout>
