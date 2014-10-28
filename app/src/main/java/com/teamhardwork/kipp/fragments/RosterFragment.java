@@ -205,7 +205,7 @@ public class RosterFragment extends BaseKippFragment {
         lvStudents.setOffsetLeft(convertDpToPixel(dpWidth / 2));
         lvStudents.setOffsetRight(convertDpToPixel(dpWidth / 2));
         lvStudents.setSwipeCloseAllItemsWhenMoveList(true);
-        lvStudents.setAnimationTime(1000);
+        lvStudents.setAnimationTime(500);
         lvStudents.setSwipeOpenOnLongPress(false);
     }
 
