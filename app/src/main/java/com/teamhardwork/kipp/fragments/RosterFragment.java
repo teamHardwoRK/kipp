@@ -64,6 +64,7 @@ public class RosterFragment extends BaseKippFragment {
 
         aStudents = new StudentArrayAdapter(getActivity(), R.layout.item_student_row,
                 new ArrayList<Student>());
+        selectedStudents = new ArrayList<Student>();
     }
 
     @Override
@@ -116,7 +117,7 @@ public class RosterFragment extends BaseKippFragment {
                     case R.id.action_eval:
                         // go show behavior Fragment
                         List<Integer> positions = lvStudents.getPositionsSelected();
-                        selectedStudents = new ArrayList<Student>();
+                        selectedStudents.clear();
                         for (int i = 0; i < positions.size(); i++) {
                             selectedStudents.add(aStudents.getItem(positions.get(i)));
                         }
@@ -150,12 +151,12 @@ public class RosterFragment extends BaseKippFragment {
             @Override
             public void onOpened(int position, boolean toRight) {
                 if (toRight == true) {
-                    selectedStudents = new ArrayList<Student>();
+                    selectedStudents.clear();
                     selectedStudents.add(aStudents.getItem(position));
                     listener.showBehaviorPagerFragment(selectedStudents, currentClass, true);
                     lvStudents.closeOpenedItems();
                 } else {
-                    selectedStudents = new ArrayList<Student>();
+                    selectedStudents.clear();
                     selectedStudents.add(aStudents.getItem(position));
                     listener.showBehaviorPagerFragment(selectedStudents, currentClass, false);
                     lvStudents.closeOpenedItems();
