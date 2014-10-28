@@ -210,8 +210,8 @@ public class RosterFragment extends BaseKippFragment {
         lvStudents.setSwipeMode(SwipeListView.SWIPE_MODE_BOTH);
         lvStudents.setSwipeActionLeft(SwipeListView.SWIPE_ACTION_REVEAL);
         lvStudents.setSwipeActionRight(SwipeListView.SWIPE_ACTION_REVEAL);
-        lvStudents.setOffsetLeft(convertDpToPixel(dpWidth / 2));
-        lvStudents.setOffsetRight(convertDpToPixel(dpWidth / 2));
+        lvStudents.setOffsetLeft(convertDpToPixel(dpWidth / 4));
+        lvStudents.setOffsetRight(convertDpToPixel(dpWidth / 4));
         lvStudents.setSwipeCloseAllItemsWhenMoveList(true);
         lvStudents.setAnimationTime(500);
         lvStudents.setSwipeOpenOnLongPress(false);
