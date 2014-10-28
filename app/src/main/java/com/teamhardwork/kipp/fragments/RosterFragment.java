@@ -74,6 +74,7 @@ public class RosterFragment extends BaseKippFragment {
         ButterKnife.inject(this, v);
         setupViews(v);
 
+        aStudents.clear();
         currentClass.getClassRosterAsync(new FindCallback<Student>() {
             @Override
             public void done(List<Student> foundStudents, ParseException e) {
@@ -83,6 +84,7 @@ public class RosterFragment extends BaseKippFragment {
                 progressBar.setVisibility(View.GONE);
             }
         });
+
 
         FeedQueries.getClassFeed(currentClass, new FindCallback<BehaviorEvent>() {
             @Override
