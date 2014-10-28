@@ -63,8 +63,7 @@ public class RosterActivity extends BaseKippActivity implements
 
         ActionBar.Tab tab1 = actionBar
                 .newTab()
-                .setText("Roster")
-                .setIcon(R.drawable.ic_kipp)
+                .setText(R.string.roster_tab_title)
                 .setTabListener(
                         new FragmentTabListener<RosterFragment>(R.id.flRoster, this, "roster",
                                 RosterFragment.class));
@@ -74,8 +73,7 @@ public class RosterActivity extends BaseKippActivity implements
 
         ActionBar.Tab tab2 = actionBar
                 .newTab()
-                .setText("LB")
-                .setIcon(R.drawable.ic_kipp)
+                .setText(R.string.leaderboard_tab_title)
                 .setTabListener(new FragmentTabListener<LeaderboardFragment>(R.id.flRoster, this, "leaderboard",
                         LeaderboardFragment.class));
         actionBar.addTab(tab2);

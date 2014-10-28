@@ -22,4 +22,8 @@
     <string name="title_activity_info">InfoActivity</string>
     <string name="good_behaviors_label">GOOD</string>
     <string name="poor_behaviors_label">POOR</string>
+    <string name="roster_tab_title">Students</string>
+    <string name="leaderboard_tab_title">Leaderboard</string>
+    <string name="default_rank">2</string>
+    <string name="string_default_points">405 points</string>
 </resources>

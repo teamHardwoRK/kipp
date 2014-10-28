@@ -34,9 +34,6 @@ import java.util.List;
 import butterknife.ButterKnife;
 
 public class RosterFragment extends BaseKippFragment {
-    private static final int GOOD_COLOR_ID = Color.parseColor("#C7F464");
-    private static final int BAD_COLOR_ID = Color.parseColor("#FF6B6B");
-
     List<Student> students;
     StudentArrayAdapter aStudents;
     SwipeListView lvStudents;
