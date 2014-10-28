@@ -50,7 +50,7 @@ public class StatsFragment extends BaseKippFragment {
             Behavior.ON_TASK, Behavior.RESPECTING_EVERYONE, Behavior.SHOWING_GRATITUDE,
             Behavior.SILENT_REMINDERS, Behavior.VOLUNTEERING);
 
-    protected static String statForString = "Class";
+    protected String statForString = "Class";
 
     @InjectView(R.id.rlRecommendationContainer)
     RelativeLayout rlRecommendationContainer;
@@ -58,8 +58,6 @@ public class StatsFragment extends BaseKippFragment {
     TextView tvRecommendation;
     @InjectView(R.id.btnDismissRecommendation)
     Button btnDismissRecommendation;
-    @InjectView(R.id.rlStatsContainer)
-    RelativeLayout rlStatsContainer;
     @InjectView(R.id.pieGraph)
     PieGraph pieGraph;
     @InjectView(R.id.tvLegendDescription)
