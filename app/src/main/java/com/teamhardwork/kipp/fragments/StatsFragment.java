@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -51,6 +52,12 @@ public class StatsFragment extends BaseKippFragment {
 
     protected static String statForString = "Class";
 
+    @InjectView(R.id.rlRecommendationContainer)
+    RelativeLayout rlRecommendationContainer;
+    @InjectView(R.id.tvRecommendation)
+    TextView tvRecommendation;
+    @InjectView(R.id.btnDismissRecommendation)
+    Button btnDismissRecommendation;
     @InjectView(R.id.rlStatsContainer)
     RelativeLayout rlStatsContainer;
     @InjectView(R.id.pieGraph)
@@ -83,6 +90,7 @@ public class StatsFragment extends BaseKippFragment {
                     curBehaviorEvents = behaviorEvents;
                     behaviorCounts = BehaviorEventListFilterer.getGroupedCount(behaviorEvents);
                     activateOverallChart(behaviorEvents);
+                    setRecommendation(behaviorEvents);
                     progressBar.setVisibility(View.GONE);
                 }
             };
@@ -163,6 +171,8 @@ public class StatsFragment extends BaseKippFragment {
     protected void fillChartWithOverallData() {
         FeedQueries.getClassFeed(currentClass, overallResponseCallback);
     }
+
+    protected void setRecommendation(List<BehaviorEvent> behaviorEvents) {}
 
     private void activateOverallChart(List<BehaviorEvent> behaviorEvents) {
         unsetChartValues();
