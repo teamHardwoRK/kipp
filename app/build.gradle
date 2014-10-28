@@ -34,4 +34,5 @@ dependencies {
     compile group:'com.jakewharton', name:'butterknife', version:'5.1.2'
     compile group: 'com.android.support', name:'support-v4', version:'19.0.+'
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile files('libs/crouton-1.8.5.jar')
 }

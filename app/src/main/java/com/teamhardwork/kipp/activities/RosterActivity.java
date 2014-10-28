@@ -30,6 +30,9 @@ import com.teamhardwork.kipp.models.users.Student;
 import java.util.ArrayList;
 import java.util.Date;
 
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
+
 public class RosterActivity extends BaseKippActivity implements
         RosterFragment.OnStudentSelectedListener,
         RosterFragment.RosterSwipeListener,
@@ -132,7 +135,6 @@ public class RosterActivity extends BaseKippActivity implements
         }
 
         gotoInfoActivity(student);
-        Toast.makeText(this, student.getFirstName() + " selected", Toast.LENGTH_SHORT).show();
     }
 
     private void gotoInfoActivity(Student student) {
@@ -169,7 +171,9 @@ public class RosterActivity extends BaseKippActivity implements
             behaviorEvent.setOccurredAt(new Date());
             behaviorEvent.setNotes("");
             behaviorEvent.saveInBackground();
-            Toast.makeText(RosterActivity.this, "behaviorEvent saved for " + curStudent.getFirstName(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(RosterActivity.this,
+                    "behaviorEvent saved for " + curStudent.getFirstName(), Toast.LENGTH_SHORT)
+                    .show();
 
             int behaviorPoints = behaviorEvent.getBehavior().getPoints();
             curStudent.addPoints(behaviorPoints);

@@ -16,6 +16,8 @@ import com.teamhardwork.kipp.receivers.KippPushBroadcastReceiver;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
 public abstract class BaseKippFragment extends Fragment {
     protected SchoolClass currentClass;
@@ -42,7 +44,7 @@ public abstract class BaseKippFragment extends Fragment {
     }
 
     protected void updateData() {
-
+        Crouton.makeText(getActivity(), "Data Updated", Style.INFO).show();
     }
 
     @Override

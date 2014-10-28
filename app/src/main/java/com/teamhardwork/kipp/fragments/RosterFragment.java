@@ -2,7 +2,6 @@ package com.teamhardwork.kipp.fragments;
 
 import android.app.Activity;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.ActionMode;
@@ -14,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.fortysevendeg.swipelistview.BaseSwipeListViewListener;
 import com.fortysevendeg.swipelistview.SwipeListView;
@@ -183,7 +181,6 @@ public class RosterFragment extends BaseKippFragment {
             public void onClickFrontView(int position) {
                 Student clicked = aStudents.getItem(position);
                 onStudentSelectedListener.onStudentSelected(clicked);
-                Toast.makeText(getActivity(), clicked.getFirstName() + " selected", Toast.LENGTH_SHORT).show();
             }
 
             @Override
