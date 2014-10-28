@@ -12,11 +12,14 @@ import android.widget.Toast;
 import com.parse.ParseUser;
 import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
+import com.teamhardwork.kipp.dialogfragments.AddActionDialogFragment;
 import com.teamhardwork.kipp.enums.Behavior;
 import com.teamhardwork.kipp.fragments.BehaviorFragment;
 import com.teamhardwork.kipp.fragments.BehaviorPagerFragment;
+import com.teamhardwork.kipp.fragments.FeedFragment;
 import com.teamhardwork.kipp.fragments.LeaderboardFragment;
 import com.teamhardwork.kipp.fragments.RosterFragment;
+import com.teamhardwork.kipp.fragments.StatsFragment;
 import com.teamhardwork.kipp.graphics.SadFaceAnimationSet;
 import com.teamhardwork.kipp.graphics.StarAnimationSet;
 import com.teamhardwork.kipp.listeners.FragmentTabListener;
@@ -32,17 +35,20 @@ public class RosterActivity extends BaseKippActivity implements
         RosterFragment.RosterSwipeListener,
         BehaviorFragment.BehaviorListener,
         SadFaceAnimationSet.SadFaceAnimationSetListener,
+        FeedFragment.FeedListener,
         StarAnimationSet.StarAnimationSetListener {
 
     private final String ROSTER_FRAGMENT_TAG = "RosterFragment";
     private final String BEHAVIOR_PAGER_FRAGMENT_TAG = "BehaviorPagerFragment";
-
-    private RosterFragment rosterFragment;
     private Fragment pagerFragment;
-
     private ArrayList<Student> selectedStudents;
     private SchoolClass schoolClass;
 
+    @Override
+    public void addAction(BehaviorEvent event) {
+        AddActionDialogFragment dialogFragment = AddActionDialogFragment.getInstance(event);
+        dialogFragment.show(getFragmentManager(), "dialog_fragment_add_action");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +57,6 @@ public class RosterActivity extends BaseKippActivity implements
 
         SchoolClass schoolClass = ((KippApplication) getApplication()).getSchoolClass();
 
-        getActionBar().setHomeButtonEnabled(true);
         getActionBar().setTitle(schoolClass.getName());
         setupTabs();
     }
@@ -73,10 +78,27 @@ public class RosterActivity extends BaseKippActivity implements
 
         ActionBar.Tab tab2 = actionBar
                 .newTab()
-                .setText(R.string.leaderboard_tab_title)
-                .setTabListener(new FragmentTabListener<LeaderboardFragment>(R.id.flRoster, this, "leaderboard",
-                        LeaderboardFragment.class));
+                .setText("Stats")
+                .setTabListener(
+                        new FragmentTabListener<StatsFragment>(R.id.flRoster, this, "stats",
+                                StatsFragment.class));
         actionBar.addTab(tab2);
+
+        ActionBar.Tab tab3 = actionBar
+                .newTab()
+                .setText("Log")
+                .setTabListener(
+                        new FragmentTabListener<FeedFragment>(R.id.flRoster, this, "Log",
+                                FeedFragment.class));
+        actionBar.addTab(tab3);
+
+        ActionBar.Tab tab4 = actionBar
+                .newTab()
+                .setText("Rankings")
+                .setTabListener(new FragmentTabListener<LeaderboardFragment>(R.id.flRoster, this,
+                        "leaderboard",
+                        LeaderboardFragment.class));
+        actionBar.addTab(tab4);
     }
 
     @Override
@@ -89,9 +111,6 @@ public class RosterActivity extends BaseKippActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                gotoInfoActivity(null); // null is Class info activity
-                break;
             case R.id.action_logout:
                 ParseUser.logOut();
                 Intent intent = new Intent(this, LoginActivity.class);

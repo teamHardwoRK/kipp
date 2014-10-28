@@ -11,7 +11,7 @@ import com.teamhardwork.kipp.fragments.StatsFragment;
 import com.teamhardwork.kipp.fragments.StudentStatsFragment;
 
 public class InfoPagerAdapter extends FragmentPagerAdapter {
-    private static int NUM_ITEMS = 3;
+    private static int NUM_ITEMS = 2;
 
     private String currentStudentId;
 
@@ -44,8 +44,6 @@ public class InfoPagerAdapter extends FragmentPagerAdapter {
                     feedFragment = FeedFragment.newInstance(currentStudentId);
                 }
                 return feedFragment;
-            case 2:
-                return new LeaderboardFragment();
             default:
                 return null;
         }
