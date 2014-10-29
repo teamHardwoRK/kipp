@@ -33,6 +33,7 @@ public class Recommendation {
     private static Recommendation instance = null;
     private HashMap<Student, RecommendationData> studentRecs;
     private boolean init;
+    private Recommendation.AddRecListener listener;
 
     public enum RecommendationType {
         GOOD(1),
@@ -59,6 +60,7 @@ public class Recommendation {
     protected Recommendation() {
         this.studentRecs = new HashMap<Student, RecommendationData>();
         this.init = false;
+        this.listener = null;
     }
 
     public static Recommendation getInstance() {
@@ -140,6 +142,9 @@ public class Recommendation {
                 }
                 if (riskyBehavior != null) {
                     studentRecs.put(student, getRecPerBehavior(riskyBehavior));
+                    if (listener != null) {
+                        listener.onAddRec(student, getRecPerBehavior(riskyBehavior));
+                    }
                 }
             }
         });
@@ -154,4 +159,11 @@ public class Recommendation {
         return studentRecs.get(student);
     }
 
+    public void setListener(AddRecListener listener) {
+        this.listener = listener;
+    }
+
+    public interface AddRecListener {
+        public void onAddRec(Student student, RecommendationData rec);
+    }
 }

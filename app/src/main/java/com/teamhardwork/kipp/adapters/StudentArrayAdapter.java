@@ -1,7 +1,5 @@
 package com.teamhardwork.kipp.adapters;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -25,12 +23,10 @@ import com.teamhardwork.kipp.models.users.Student;
 import com.teamhardwork.kipp.queries.FeedQueries;
 import com.teamhardwork.kipp.utilities.Recommendation;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class StudentArrayAdapter extends ArrayAdapter<Student> {
     private Context context;
-    private ArrayList<Integer> changedPositions;
     public static final int warningColor = Color.parseColor("#FFD119"); // color for warning tips
     public static final int infoColor = Color.parseColor("#1C70EF");
 
@@ -42,7 +38,6 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final Student student = getItem(position);
-        boolean animate = false;
 
         ViewHolder v;
         if (convertView == null) {
@@ -68,12 +63,7 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
         v.tvName.setText(student.getFullName());
         v.tvRecentBehaviors.setText("");
         v.tvNewBehavior.setText("");
-
-        if (changedPositions != null && changedPositions.contains(position)) {
-            animate = true;
-            changedPositions.remove(changedPositions.indexOf(position));
-        }
-        updateStudentInfo(student, v.tvRecentBehaviors, v.tvNewBehavior, v.ivTips, animate);
+        updateStudentInfo(student, v.tvRecentBehaviors, v.tvNewBehavior, v.ivTips);
 
         return convertView;
     }
@@ -81,19 +71,18 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
     public void updateStudentInfo(final Student student,
                                   final TextView tvRecentBehaviors,
                                   final TextView tvNewBehavior,
-                                  final ImageView tvTips,
-                                  final boolean animate) {
-        tvTips.setImageResource(0);
+                                  final ImageView ivTips) {
+        ivTips.setImageResource(0);
         FeedQueries.getStudentFeedMostRecent(student, new FindCallback<BehaviorEvent>() {
             @Override
             public void done(List<BehaviorEvent> behaviorEvents, ParseException e) {
                 if (behaviorEvents == null || behaviorEvents.isEmpty()) return;
 
                 if (Recommendation.getInstance().hasRecs(student)) {
-                    tvTips.setImageResource(R.drawable.ic_tips);
+                    ivTips.setImageResource(R.drawable.ic_tips);
                     int tipColor = (Recommendation.getInstance().getRecs(student).getRecType() == Recommendation.RecommendationType.BAD) ?
                             warningColor : infoColor;
-                    tvTips.setColorFilter(tipColor);
+                    ivTips.setColorFilter(tipColor);
                 }
 
                 StringBuilder recentBehaviors = new StringBuilder();
@@ -105,40 +94,17 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
 
                 tvRecentBehaviors.setText(Html.fromHtml(recentBehaviors.toString()));
                 tvNewBehavior.setText(Html.fromHtml(getBehaviorHtmlString(behaviorEvents.get(0).getBehavior())));
-                if (animate == true) {
-                    ObjectAnimator scaleX = ObjectAnimator.ofFloat(tvNewBehavior, "scaleX", 2.0f, 1.0f)
-                            .setDuration(1000);
-                    scaleX.setRepeatCount(5);
-
-                    ObjectAnimator scaleY = ObjectAnimator.ofFloat(tvNewBehavior, "scaleY", 2.0f, 1.0f)
-                            .setDuration(1000);
-                    scaleY.setRepeatCount(5);
-
-                    AnimatorSet set = new AnimatorSet();
-                    set.playTogether(scaleX, scaleY);
-
-                    set.setStartDelay(3000);
-                    set.start();
-                }
             }
         });
     }
 
-    public String getBehaviorHtmlString(Behavior behavior) {
+    public static String getBehaviorHtmlString(Behavior behavior) {
         if (behavior.getCategory() == BehaviorCategory.SLIP ||
                 behavior.getCategory() == BehaviorCategory.FALL) {
             return new String("<font color=\"#FF6B6B\"> - </font>");
         } else {
             return new String("<font color=\"#C7F464\"> + </font>");
         }
-    }
-
-    public void updatePositions(ArrayList<Integer> positions) {
-        changedPositions = new ArrayList<Integer>(positions);
-    }
-
-    public interface StudentAdapterListener {
-        void addAction(Student student);
     }
 
     private static class ViewHolder {

@@ -1,8 +1,11 @@
 package com.teamhardwork.kipp.fragments;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.DisplayMetrics;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -12,7 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.fortysevendeg.swipelistview.BaseSwipeListViewListener;
 import com.fortysevendeg.swipelistview.SwipeListView;
@@ -32,7 +37,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 
-public class RosterFragment extends BaseKippFragment {
+public class RosterFragment extends BaseKippFragment implements Recommendation.AddRecListener {
     List<Student> students;
     StudentArrayAdapter aStudents;
     SwipeListView lvStudents;
@@ -68,6 +73,7 @@ public class RosterFragment extends BaseKippFragment {
         aStudents = new StudentArrayAdapter(getActivity(), R.layout.item_student_row,
                 new ArrayList<Student>());
         selectedStudents = new ArrayList<Student>();
+        Recommendation.getInstance().setListener(this);
     }
 
     @Override
@@ -230,28 +236,86 @@ public class RosterFragment extends BaseKippFragment {
     }
 
     public void updateData() {
-        FindCallback<BehaviorEvent> callback = new FindCallback<BehaviorEvent>() {
+        final FindCallback<BehaviorEvent> callback = new FindCallback<BehaviorEvent>() {
             @Override
             public void done(List<BehaviorEvent> eventList, ParseException e) {
-                ArrayList<Integer> changedPositions = new ArrayList<Integer>();
                 for (BehaviorEvent event : eventList) {
                     classBehaviorEvents.add(0, event);
                     Student student = event.getStudent();
                     int pos = aStudents.getPosition(student);
 
                     if (pos != -1) {
-                        changedPositions.add(pos);
+                        View v = lvStudents.getChildAt(pos -
+                                lvStudents.getFirstVisiblePosition());
+                        updateStudentBehavior(v, student, event);
                     }
-                }
-
-                if (!changedPositions.isEmpty()) {
-                    aStudents.updatePositions(changedPositions);
-                    aStudents.notifyDataSetChanged();
                 }
             }
         };
 
         FeedQueries.getLatestClassEvents(currentClass, classBehaviorEvents, callback);
+    }
+
+    public void updateStudentBehavior(final View view, final Student student, final BehaviorEvent event) {
+        final TextView tvRecentBehaviors = (TextView) view.findViewById(R.id.tvRecentBehaviors);
+        final TextView tvNewBehavior = (TextView) view.findViewById(R.id.tvNewBehavior);
+        final ImageView ivTips = (ImageView) view.findViewById(R.id.ivTips);
+
+        tvRecentBehaviors.setText("");
+        tvNewBehavior.setText("");
+        ivTips.setImageResource(0);
+
+        tvNewBehavior.setText(Html.fromHtml(StudentArrayAdapter.getBehaviorHtmlString(event.getBehavior())));
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(tvNewBehavior, "scaleX", 2.0f, 1.0f)
+                .setDuration(1000);
+        scaleX.setRepeatCount(5);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(tvNewBehavior, "scaleY", 2.0f, 1.0f)
+                .setDuration(1000);
+        scaleY.setRepeatCount(5);
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(scaleX, scaleY);
+        set.setStartDelay(3000);
+        set.start();
+
+        // Recalculate Recommendation for this student
+        if (Recommendation.getInstance().hasRecs(student)) {
+            Recommendation.getInstance().dismissRecs(student);
+        }
+        Recommendation.getInstance().addRecs(student);
+
+        FeedQueries.getStudentFeedMostRecent(student, new FindCallback<BehaviorEvent>() {
+            @Override
+            public void done(List<BehaviorEvent> behaviorEvents, ParseException e) {
+                if (behaviorEvents == null || behaviorEvents.isEmpty()) return;
+
+                StringBuilder recentBehaviors = new StringBuilder();
+                int behaviorsSize = Math.min(FeedQueries.MOST_RECENT_MAX, behaviorEvents.size());
+                for (int i = behaviorsSize - 1; i >= 1; i--) {
+                    recentBehaviors.append(StudentArrayAdapter.getBehaviorHtmlString(behaviorEvents.get(i).getBehavior()));
+                }
+                tvRecentBehaviors.setText(Html.fromHtml(recentBehaviors.toString()));
+            }
+        });
+    }
+
+    public void onAddRec(Student student, Recommendation.RecommendationData rec) {
+        int pos = aStudents.getPosition(student);
+
+        if (pos != -1) {
+            View v = lvStudents.getChildAt(pos -
+                    lvStudents.getFirstVisiblePosition());
+            if (v == null) return;
+
+            ImageView ivTips = (ImageView) v.findViewById(R.id.ivTips);
+            updateStudentRec(ivTips, rec);
+        }
+    }
+
+    public void updateStudentRec(final ImageView ivTips, final Recommendation.RecommendationData rec) {
+        ivTips.setImageResource(R.drawable.ic_tips);
+        int tipColor = (rec.getRecType() == Recommendation.RecommendationType.BAD) ?
+                StudentArrayAdapter.warningColor : StudentArrayAdapter.infoColor;
+        ivTips.setColorFilter(tipColor);
     }
 
     public interface OnStudentSelectedListener {
