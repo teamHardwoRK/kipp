@@ -1,12 +1,18 @@
 package com.teamhardwork.kipp.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.models.Action;
 import com.teamhardwork.kipp.utilities.DateUtilities;
@@ -42,9 +48,14 @@ public class ActionEventAdapter extends ArrayAdapter<Action> {
 
         Action action = getItem(position);
 
-        holder.tvStudentName.setText(action.getStudent().getFullName());
-        holder.tvEventTimeStamp.setText(age(action));
+        Typeface typeface = KippApplication.getDefaultTypeFace(getContext());
+        Drawable d = getContext().getResources().getDrawable(action.getType().getResource());
+        d.setColorFilter(Color.parseColor("#00BC8A"), PorterDuff.Mode.MULTIPLY);
+        holder.ivActionIcon.setImageDrawable(d);
+        holder.tvActionTypeName.setTypeface(typeface);
         holder.tvActionTypeName.setText(action.getType().getDisplayName());
+        holder.tvEventTimeStamp.setText(age(action));
+        holder.tvEventTimeStamp.setTypeface(typeface);
 
         return convertView;
     }
@@ -54,14 +65,12 @@ public class ActionEventAdapter extends ArrayAdapter<Action> {
     }
 
     class ViewHolder {
+        @InjectView(R.id.ivActionIcon)
+        ImageView ivActionIcon;
         @InjectView(R.id.tvActionTypeName)
         TextView tvActionTypeName;
-
         @InjectView(R.id.tvEventTimestamp)
         TextView tvEventTimeStamp;
-
-        @InjectView(R.id.tvStudentName)
-        TextView tvStudentName;
 
         public ViewHolder(View view) {
             ButterKnife.inject(this, view);

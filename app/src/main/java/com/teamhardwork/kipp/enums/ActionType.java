@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum ActionType {
-    CALL("call", Role.STUDENT, R.drawable.wh_phone_ic),
-    TEXT("text", Role.STUDENT, R.drawable.wh_sms_ic),
-    EMAIL("email", Role.STUDENT, R.drawable.wh_email_ic),
-    PARENT_CALL("call", Role.PARENT, R.drawable.wh_phone_ic),
-    PARENT_TEXT("textt", Role.PARENT, R.drawable.wh_sms_ic),
-    PARENT_EMAIL("email", Role.PARENT, R.drawable.wh_email_ic);
+    CALL("Call", Role.STUDENT, R.drawable.wh_phone_ic),
+    TEXT("Text", Role.STUDENT, R.drawable.wh_sms_ic),
+    EMAIL("Email", Role.STUDENT, R.drawable.wh_email_ic),
+    PARENT_CALL("Call", Role.PARENT, R.drawable.wh_phone_ic),
+    PARENT_TEXT("Text", Role.PARENT, R.drawable.wh_sms_ic),
+    PARENT_EMAIL("Email", Role.PARENT, R.drawable.wh_email_ic);
 
     String displayName;
     Role role;

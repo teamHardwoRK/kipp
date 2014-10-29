@@ -5,24 +5,37 @@
     android:layout_height="match_parent"
     android:padding="5dp">
 
-    <TextView
-        android:id="@+id/tvStudentName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/default_student_name"
-        android:textStyle="bold" />
+    <ImageView
+        android:id="@+id/ivActionIcon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp"
+        android:scaleType="centerInside" />
 
     <TextView
         android:id="@+id/tvActionTypeName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvStudentName"
-        android:text="@string/default_action_type_name" />
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:layout_toRightOf="@id/ivActionIcon"
+        android:text="@string/default_action_type_name"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvEventTimestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_below="@id/tvActionTypeName"
-        android:text="@string/default_timestamp" />
+        android:layout_toRightOf="@+id/ivActionIcon"
+        android:paddingBottom="20dp"
+        android:text="@string/default_timestamp"
+        android:textColor="#8B939A" />
 </RelativeLayout>
