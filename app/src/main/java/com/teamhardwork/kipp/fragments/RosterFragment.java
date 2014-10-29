@@ -256,6 +256,7 @@ public class RosterFragment extends BaseKippFragment implements Recommendation.R
     }
 
     public void updateStudentBehavior(final View view, final Student student, final BehaviorEvent event) {
+        if (view == null) return;
         final ImageView ivFirstBehavior = (ImageView) view.findViewById(R.id.ivFirstBehavior);
         final ImageView ivSecondBehavior = (ImageView) view.findViewById(R.id.ivSecondBehavior);
         final ImageView ivThirdBehavior = (ImageView) view.findViewById(R.id.ivThirdBehavior);
@@ -345,6 +346,7 @@ public class RosterFragment extends BaseKippFragment implements Recommendation.R
     }
 
     public void updateStudentRec(final ImageView ivTips, final Recommendation.RecommendationData rec) {
+        if (ivTips == null || rec == null) return;
         ivTips.setImageResource(R.drawable.ic_tips);
         int tipColor = (rec.getRecType() == Recommendation.RecommendationType.BAD) ?
                 StudentArrayAdapter.warningColor : StudentArrayAdapter.infoColor;
