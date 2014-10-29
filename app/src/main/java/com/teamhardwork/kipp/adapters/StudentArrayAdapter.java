@@ -2,7 +2,6 @@ package com.teamhardwork.kipp.adapters;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -32,7 +31,8 @@ import java.util.List;
 public class StudentArrayAdapter extends ArrayAdapter<Student> {
     private Context context;
     private ArrayList<Integer> changedPositions;
-    private int tipColor = Color.parseColor("#FFD119"); //The color for tips
+    private int warningColor = Color.parseColor("#FFD119"); // color for warning tips
+    private int infoColor = Color.parseColor("#1C70EF");
 
     public StudentArrayAdapter(Context context, int resource, List<Student> students) {
         super(context, resource, students);
@@ -91,12 +91,9 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
 
                 if (Recommendation.getInstance().hasRecs(student)) {
                     tvTips.setImageResource(R.drawable.ic_tips);
+                    int tipColor = (Recommendation.getInstance().getRecs(student).getRecType() == Recommendation.RecommendationType.BAD) ?
+                            warningColor : infoColor;
                     tvTips.setColorFilter(tipColor);
-
-                    ObjectAnimator alpha = ObjectAnimator.ofFloat(tvTips, "alpha", 0f, 1f);
-                    alpha.setDuration(2000);
-                    alpha.setRepeatCount(ValueAnimator.INFINITE);
-                    alpha.start();
                 }
 
                 StringBuilder recentBehaviors = new StringBuilder();
@@ -129,7 +126,7 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
 
     public String getBehaviorHtmlString(Behavior behavior) {
         if (behavior.getCategory() == BehaviorCategory.SLIP ||
-            behavior.getCategory() == BehaviorCategory.FALL) {
+                behavior.getCategory() == BehaviorCategory.FALL) {
             return new String("<font color=\"#FF6B6B\"> - </font>");
         } else {
             return new String("<font color=\"#C7F464\"> + </font>");

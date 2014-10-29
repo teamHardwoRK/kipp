@@ -50,7 +50,7 @@ public class StudentStatsFragment extends StatsFragment {
         });
 
         if (Recommendation.getInstance().hasRecs(student)) {
-            tvRecommendation.setText(student.getFirstName() + Recommendation.getInstance().getRecs(student));
+            tvRecommendation.setText(student.getFirstName() + Recommendation.getInstance().getRecs(student).toString());
             rlRecommendationContainer.setVisibility(View.VISIBLE);
             tvRecommendation.setVisibility(View.VISIBLE);
             btnDismissRecommendation.setVisibility(View.VISIBLE);
