@@ -182,7 +182,7 @@ public class InfoActivity extends BaseKippActivity implements FeedFragment.FeedL
     protected void updateFragments() {
         super.updateFragments();
         StudentStatsFragment studentStatsFragment = (StudentStatsFragment) getFragmentManager()
-                .findFragmentByTag(StudentStatsFragment.STUDENT_ID_ARG_KEY);
+                .findFragmentByTag(StudentStatsFragment.TAG);
         if (studentStatsFragment != null) {
             studentStatsFragment.updateData();
         }
