@@ -74,9 +74,7 @@ public class InfoActivity extends BaseKippActivity implements FeedFragment.FeedL
                 ViewGroup.LayoutParams.WRAP_CONTENT));
 
         CircleImageView ivProfilePic = new CircleImageView(this);
-        ivProfilePic.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        ivProfilePic.setImageResource(R.drawable.ic_profile_placeholder);
-        ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(80, 80);
+        ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(110, 110);
         ivProfilePic.setLayoutParams(layoutParams);
         ivProfilePic.setBorderColor(Color.parseColor("#FFFFFFFF"));
         ivProfilePic.setBorderWidth(2);
@@ -84,7 +82,7 @@ public class InfoActivity extends BaseKippActivity implements FeedFragment.FeedL
         Picasso.with(this)
                 .load("http://thecatapi.com/api/images/get?format=src&type=jpg")
                 .placeholder(R.drawable.ic_profile_placeholder)
-                .resize(80, 80)
+                .resize(110, 110)
                 .centerCrop()
                 .into(ivProfilePic);
 
