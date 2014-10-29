@@ -5,6 +5,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.teamhardwork.kipp.enums.Avatar;
 import com.teamhardwork.kipp.enums.Gender;
 
 import java.util.Date;
@@ -22,6 +23,7 @@ public class KippUser extends ParseObject {
     static final String FIRST_NAME = "firstName";
     static final String LAST_NAME = "lastName";
     static final String GENDER = "gender";
+    static final String AVATAR = "avatar";
 
     public KippUser() {
     }
@@ -99,6 +101,20 @@ public class KippUser extends ParseObject {
 
     public void setFirstName(String firstName) {
         put(FIRST_NAME, firstName);
+    }
+
+    public Avatar getAvatar() {
+        String avatar = getString(AVATAR);
+        if(avatar != null) {
+            return Avatar.valueOf(avatar);
+        }
+        else {
+            return Avatar.MORTAL_KOMBAT;
+        }
+    }
+
+    public void setAvatar(Avatar avatar) {
+        put(AVATAR, avatar.name());
     }
 
     public Gender getGender() {

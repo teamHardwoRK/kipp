@@ -2,7 +2,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:padding="5dp">
 
     <ImageView
@@ -24,7 +24,7 @@
         android:layout_marginTop="15dp"
         android:layout_toRightOf="@+id/ivBehaviorIcon"
         android:text="@string/default_student_name"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold" />
 
     <TextView
@@ -40,9 +40,8 @@
         android:id="@+id/tvEventTimestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/tvBehaviorName"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@id/tvBehaviorName"
-        android:text="2h 33m ago"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:text="2h ago"
         android:textColor="#8B939A" />
 </RelativeLayout>

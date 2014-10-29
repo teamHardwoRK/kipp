@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,24 +17,18 @@ import android.widget.TextView;
 import com.fortysevendeg.swipelistview.SwipeListView;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.squareup.picasso.Picasso;
+import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.enums.Behavior;
 import com.teamhardwork.kipp.enums.BehaviorCategory;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.users.Student;
 import com.teamhardwork.kipp.queries.FeedQueries;
-import com.teamhardwork.kipp.utilities.RandomApiUrlGenerator;
 import com.teamhardwork.kipp.utilities.Recommendation;
 
 import java.util.ArrayList;
 import java.util.List;
 
-//import com.nostra13.universalimageloader.core.ImageLoader;
-
-/**
- * Created by hugh_sd on 10/15/14.
- */
 public class StudentArrayAdapter extends ArrayAdapter<Student> {
     private Context context;
     private ArrayList<Integer> changedPositions;
@@ -67,13 +62,9 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
 
         ((SwipeListView) parent).recycle(convertView, position);
 
-        int imageSizePx = context.getResources().getDimensionPixelSize(R.dimen.size_list_image);
-        Picasso.with(getContext())
-                .load(RandomApiUrlGenerator.getUrl())
-                .placeholder(R.drawable.ic_profile_placeholder)
-                .resize(imageSizePx, imageSizePx)
-                .into(v.ivProfilePic);
-
+        Typeface typeface = KippApplication.getDefaultTypeFace(getContext());
+        v.ivProfilePic.setImageResource(student.getAvatar().getResourceId());
+        v.tvName.setTypeface(typeface);
         v.tvName.setText(student.getFullName());
         v.tvRecentBehaviors.setText("");
         v.tvNewBehavior.setText("");

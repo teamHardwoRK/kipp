@@ -30,19 +30,19 @@ public class DateUtilities {
         if (period.getYears() > 0) {
             sb.append(period.getYears()).append("y ");
         }
-        if (period.getMonths() > 0) {
+        else if (period.getMonths() > 0) {
             sb.append(period.getMonths()).append("M ");
         }
-        if (period.getWeeks() > 0) {
+        else if (period.getWeeks() > 0) {
             sb.append(period.getWeeks()).append("w ");
         }
-        if (period.getDays() > 0) {
+        else if (period.getDays() > 0) {
             sb.append(period.getDays()).append("d ");
         }
-        if (period.getHours() > 0) {
+        else if (period.getHours() > 0) {
             sb.append(period.getHours()).append("h ");
         }
-        if (period.getMinutes() > 0) {
+        else if (period.getMinutes() > 0) {
             sb.append(period.getMinutes()).append("m ");
         }
         else {

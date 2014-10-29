@@ -4,9 +4,16 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.ParseUser;
@@ -26,6 +33,7 @@ import com.teamhardwork.kipp.listeners.FragmentTabListener;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.SchoolClass;
 import com.teamhardwork.kipp.models.users.Student;
+import com.teamhardwork.kipp.utilities.ViewUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -71,7 +79,7 @@ public class RosterActivity extends BaseKippActivity implements
 
         ActionBar.Tab tab1 = actionBar
                 .newTab()
-                .setText(R.string.roster_tab_title)
+                .setCustomView(ViewUtils.tabTextView(this, "CLASS"))
                 .setTabListener(
                         new FragmentTabListener<RosterFragment>(R.id.flRoster, this, ROSTER_FRAGMENT_TAG,
                                 RosterFragment.class));
@@ -81,7 +89,7 @@ public class RosterActivity extends BaseKippActivity implements
 
         ActionBar.Tab tab2 = actionBar
                 .newTab()
-                .setText("Stats")
+                .setCustomView(ViewUtils.tabTextView(this, "STATS"))
                 .setTabListener(
                         new FragmentTabListener<StatsFragment>(R.id.flRoster, this, STATS_FRAGMENT_TAG,
                                 StatsFragment.class));
@@ -89,7 +97,7 @@ public class RosterActivity extends BaseKippActivity implements
 
         ActionBar.Tab tab3 = actionBar
                 .newTab()
-                .setText("Log")
+                .setCustomView(ViewUtils.tabTextView(this, "LOG"))
                 .setTabListener(
                         new FragmentTabListener<FeedFragment>(R.id.flRoster, this, LOG_FRAGMENT_TAG,
                                 FeedFragment.class));
@@ -97,7 +105,7 @@ public class RosterActivity extends BaseKippActivity implements
 
         ActionBar.Tab tab4 = actionBar
                 .newTab()
-                .setText("Rankings")
+                .setCustomView(ViewUtils.tabTextView(this, "RANK"))
                 .setTabListener(new FragmentTabListener<LeaderboardFragment>(R.id.flRoster, this,
                         LEADERBOARD_FRAGMENT_TAG,
                         LeaderboardFragment.class));

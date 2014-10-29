@@ -24,9 +24,10 @@ public class GraphicsUtils {
         Resources resources = context.getResources();
         colorList.add(resources.getColor(R.color.DodgerBlue));
         colorList.add(resources.getColor(R.color.ForestGreen));
-        colorList.add(resources.getColor(R.color.PumpkinOrange));
         colorList.add(resources.getColor(R.color.Beer));
+        colorList.add(resources.getColor(R.color.PumpkinOrange));
         colorList.add(resources.getColor(R.color.PaleVioletRed));
+        colorList.add(resources.getColor(R.color.MediumVioletRed));
 
         return colorList;
     }

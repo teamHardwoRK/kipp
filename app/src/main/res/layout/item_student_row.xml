@@ -35,38 +35,50 @@
         android:orientation="vertical"
         android:tag="front">
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <ImageView
             android:id="@+id/ivProfilePic"
-            style="@style/ListImage"
-            app:border_color="#FFFFFFFF"
-            app:border_width="2dp" />
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="5dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/img_leo"
+            />
 
         <TextView
             android:id="@+id/tvName"
-            style="@style/ListTitle"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/ivProfilePic" />
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_toRightOf="@id/ivProfilePic"
+            android:text="@string/default_student_name"
+            />
 
         <TextView
             android:id="@+id/tvRecentBehaviors"
-            style="@style/ListDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:layout_below="@id/tvName"
+            android:layout_marginTop="-10dp"
+            android:layout_alignLeft="@id/tvName"
             android:layout_toRightOf="@id/ivProfilePic"
+            android:text="++"
             android:textSize="30sp"/>
         <TextView
             android:id="@+id/tvNewBehavior"
-            style="@style/ListDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:layout_below="@id/tvName"
             android:layout_toRightOf="@id/tvRecentBehaviors"
             android:textSize="30sp"
-            android:layout_alignBottom="@id/tvRecentBehaviors"/>
+            android:layout_marginTop="-10dp"
+            android:text="+"
+            android:layout_alignBottom="@id/tvRecentBehaviors"
+            />
 
         <TextView
             android:layout_width="wrap_content"
@@ -79,7 +91,6 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:padding="20dp" />
-
     </RelativeLayout>
 
 </FrameLayout>
