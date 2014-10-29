@@ -80,12 +80,7 @@ public class InfoActivity extends BaseKippActivity implements FeedFragment.FeedL
             }
         });
         llActionBar.addView(ivProfilePic);
-        Picasso.with(this)
-                .load("http://thecatapi.com/api/images/get?format=src&type=jpg")
-                .placeholder(R.drawable.ic_profile_placeholder)
-                .resize(110, 110)
-                .centerCrop()
-                .into(ivProfilePic);
+        ivProfilePic.setImageResource(selected.getAvatar().getResourceId());
 
         TextView tvStudentName = new TextView(this);
         tvStudentName.setText(selected.getFullName());

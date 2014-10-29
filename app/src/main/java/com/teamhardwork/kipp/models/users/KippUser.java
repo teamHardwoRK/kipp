@@ -9,6 +9,7 @@ import com.teamhardwork.kipp.enums.Avatar;
 import com.teamhardwork.kipp.enums.Gender;
 
 import java.util.Date;
+import java.util.Random;
 
 @ParseClassName("KippUser")
 public class KippUser extends ParseObject {
@@ -109,7 +110,8 @@ public class KippUser extends ParseObject {
             return Avatar.valueOf(avatar);
         }
         else {
-            return Avatar.MORTAL_KOMBAT;
+            Avatar[] values = Avatar.values();
+            return values[new Random().nextInt(values.length)];
         }
     }
 
