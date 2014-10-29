@@ -31,8 +31,8 @@ import java.util.List;
 public class StudentArrayAdapter extends ArrayAdapter<Student> {
     private Context context;
     private ArrayList<Integer> changedPositions;
-    private int warningColor = Color.parseColor("#FFD119"); // color for warning tips
-    private int infoColor = Color.parseColor("#1C70EF");
+    public static final int warningColor = Color.parseColor("#FFD119"); // color for warning tips
+    public static final int infoColor = Color.parseColor("#1C70EF");
 
     public StudentArrayAdapter(Context context, int resource, List<Student> students) {
         super(context, resource, students);

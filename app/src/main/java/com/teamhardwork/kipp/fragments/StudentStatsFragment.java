@@ -3,6 +3,7 @@ package com.teamhardwork.kipp.fragments;
 import android.os.Bundle;
 import android.view.View;
 
+import com.teamhardwork.kipp.adapters.StudentArrayAdapter;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.users.Student;
 import com.teamhardwork.kipp.queries.FeedQueries;
@@ -50,8 +51,14 @@ public class StudentStatsFragment extends StatsFragment {
         });
 
         if (Recommendation.getInstance().hasRecs(student)) {
-            tvRecommendation.setText(student.getFirstName() + Recommendation.getInstance().getRecs(student).toString());
+            Recommendation.RecommendationData rec = Recommendation.getInstance().getRecs(student);
+            tvRecommendation.setText(student.getFirstName() + rec.toString());
             rlRecommendationContainer.setVisibility(View.VISIBLE);
+            if (rec.getRecType() == Recommendation.RecommendationType.BAD) {
+                rlRecommendationContainer.setBackgroundColor(StudentArrayAdapter.warningColor);
+            } else {
+                rlRecommendationContainer.setBackgroundColor(StudentArrayAdapter.infoColor);
+            }
             tvRecommendation.setVisibility(View.VISIBLE);
             btnDismissRecommendation.setVisibility(View.VISIBLE);
         }
