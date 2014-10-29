@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -21,6 +22,7 @@ import com.teamhardwork.kipp.fragments.StudentStatsFragment;
 import com.teamhardwork.kipp.listeners.FragmentTabListener;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.users.Student;
+import com.teamhardwork.kipp.utilities.ViewUtils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -71,6 +73,12 @@ public class InfoActivity extends BaseKippActivity implements FeedFragment.FeedL
         ivProfilePic.setLayoutParams(layoutParams);
         ivProfilePic.setBorderColor(Color.parseColor("#FFFFFFFF"));
         ivProfilePic.setBorderWidth(2);
+        ivProfilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                exitActivity();
+            }
+        });
         llActionBar.addView(ivProfilePic);
         Picasso.with(this)
                 .load("http://thecatapi.com/api/images/get?format=src&type=jpg")
@@ -151,7 +159,7 @@ public class InfoActivity extends BaseKippActivity implements FeedFragment.FeedL
 
         ActionBar.Tab tab1 = actionBar
                 .newTab()
-                .setText("Stats")
+                .setCustomView(ViewUtils.tabTextView(this, "STATS"))
                 .setTabListener(
                         new FragmentTabListener<StudentStatsFragment>(R.id.flInfoContainer, this,
                                 StudentStatsFragment.TAG, StudentStatsFragment.class, args));
@@ -160,7 +168,7 @@ public class InfoActivity extends BaseKippActivity implements FeedFragment.FeedL
 
         ActionBar.Tab tab2 = actionBar
                 .newTab()
-                .setText("Behaviors")
+                .setCustomView(ViewUtils.tabTextView(this, "BEHAVIORS"))
                 .setTabListener(
                         new FragmentTabListener<FeedFragment>(R.id.flInfoContainer, this,
                                 FeedFragment.TAG, FeedFragment.class, args));
@@ -168,7 +176,7 @@ public class InfoActivity extends BaseKippActivity implements FeedFragment.FeedL
 
         ActionBar.Tab tab3 = actionBar
                 .newTab()
-                .setText("Log")
+                .setCustomView(ViewUtils.tabTextView(this, "ACTIONS"))
                 .setTabListener(
                         new FragmentTabListener<ActionLogFragment>(R.id.flInfoContainer, this,
                                 ActionLogFragment.TAG, ActionLogFragment.class, args));
