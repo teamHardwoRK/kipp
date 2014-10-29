@@ -24,7 +24,7 @@ public class BehaviorEventAdapter extends ArrayAdapter<BehaviorEvent> {
     boolean classMode;
 
     public BehaviorEventAdapter(Context context, List<BehaviorEvent> eventList, boolean isClassMode) {
-        super(context, R.layout.item_behavior_event, eventList);
+        super(context, 0, eventList);
         this.eventList = eventList;
         classMode = isClassMode;
     }
@@ -37,21 +37,29 @@ public class BehaviorEventAdapter extends ArrayAdapter<BehaviorEvent> {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
 
-        if(classMode) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_behavior_event, parent, false);
+        if(convertView == null) {
+            if (classMode) {
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_behavior_event, parent, false);
+            } else {
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_behavior_event_student, parent, false);
+            }
+            holder = new ViewHolder(convertView);
+
+            if(classMode) {
+                holder.tvStudentName = (TextView) convertView.findViewById(R.id.tvStudentName);
+            }
+            convertView.setTag(holder);
         }
         else {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_behavior_event_student, parent, false);
+            holder = (ViewHolder) convertView.getTag();
         }
 
-        holder = new ViewHolder(convertView);
         Typeface typeface = KippApplication.getDefaultTypeFace(getContext());
-        final BehaviorEvent event = getItem(position);
+        BehaviorEvent event = getItem(position);
         holder.tvBehaviorName.setText(event.getBehavior().getTitle());
         holder.tvBehaviorName.setTypeface(typeface);
 
         if(classMode) {
-            holder.tvStudentName = (TextView) convertView.findViewById(R.id.tvStudentName);
             holder.tvStudentName.setText(event.getStudent().getFirstName() + " " + event.getStudent().getLastName());
             holder.tvStudentName.setTypeface(typeface);
         }
@@ -65,6 +73,22 @@ public class BehaviorEventAdapter extends ArrayAdapter<BehaviorEvent> {
 
     String age(BehaviorEvent event) {
         return DateUtilities.timestampAge(event.getOccurredAt()) + " " + getContext().getResources().getString(R.string.past_label);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if(classMode) {
+            return 0;
+        }
+        else {
+            return 1;
+        }
+
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return 2;
     }
 
     class ViewHolder {
