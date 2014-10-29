@@ -291,6 +291,8 @@ public class RosterFragment extends BaseKippFragment implements Recommendation.R
             public void done(List<BehaviorEvent> behaviorEvents, ParseException e) {
                 if (behaviorEvents == null || behaviorEvents.isEmpty()) return;
 
+                Collections.reverse(behaviorEvents);
+
                 for(int i = behaviorEvents.size() - 1; i >= 0; i--) {
                     int eventResource = behaviorEvents.get(i).getBehavior().getColorResource();
 
