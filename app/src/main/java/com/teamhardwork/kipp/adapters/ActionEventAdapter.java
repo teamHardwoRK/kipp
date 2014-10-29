@@ -49,9 +49,7 @@ public class ActionEventAdapter extends ArrayAdapter<Action> {
         Action action = getItem(position);
 
         Typeface typeface = KippApplication.getDefaultTypeFace(getContext());
-        Drawable d = getContext().getResources().getDrawable(action.getType().getResource());
-        d.setColorFilter(Color.parseColor("#00BC8A"), PorterDuff.Mode.MULTIPLY);
-        holder.ivActionIcon.setImageDrawable(d);
+        holder.ivActionIcon.setImageResource(action.getType().getGreenResource());
         holder.tvActionTypeName.setTypeface(typeface);
         holder.tvActionTypeName.setText(action.getType().getDisplayName());
         holder.tvEventTimeStamp.setText(age(action));
