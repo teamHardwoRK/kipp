@@ -269,10 +269,10 @@ public class RosterFragment extends BaseKippFragment implements Recommendation.R
         tvNewBehavior.setText(Html.fromHtml(StudentArrayAdapter.getBehaviorHtmlString(event.getBehavior())));
         ObjectAnimator scaleX = ObjectAnimator.ofFloat(tvNewBehavior, "scaleX", 2.0f, 1.0f)
                 .setDuration(1000);
-        scaleX.setRepeatCount(5);
+        scaleX.setRepeatCount(8);
         ObjectAnimator scaleY = ObjectAnimator.ofFloat(tvNewBehavior, "scaleY", 2.0f, 1.0f)
                 .setDuration(1000);
-        scaleY.setRepeatCount(5);
+        scaleY.setRepeatCount(8);
         AnimatorSet set = new AnimatorSet();
         set.playTogether(scaleX, scaleY);
         set.setStartDelay(3000);
