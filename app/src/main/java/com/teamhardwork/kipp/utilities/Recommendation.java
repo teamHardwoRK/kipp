@@ -24,18 +24,40 @@ public class Recommendation {
     private static final String REC_VOLUNTEERING = " deserves a star for actively volunteering";
 
     private static final String REC_DRESS_CODE_VIOLATION = " needs to learn the proper dress code";
-    private static final String REC_LACK_OF_INTEGRITY = " needs to learn integrity";
+    private static final String REC_LACK_OF_INTEGRITY = " needs to have a talk about integrity";
     private static final String REC_LATE = " is frequently late to class- contact the parents";
     private static final String REC_TALKING = " frequently talks in class- contact the parents";
     private static final String REC_HORSEPLAY = " must go to detention for horseplay";
     private static final String REC_FIGHTING = " must do to detention for fighting in school- and contact the parents";
 
     private static Recommendation instance = null;
-    private HashMap<Student, String> studentRecs;
+    private HashMap<Student, RecommendationData> studentRecs;
     private boolean init;
 
+    public enum RecommendationType {
+        GOOD(1),
+        BAD(2);
+        private int value;
+        private RecommendationType(int value) {
+            this.value = value;
+        }
+        public int getValue() {
+            return value;
+        }
+    }
+    public class RecommendationData {
+        String rec;
+        RecommendationType recType;
+        public RecommendationData(String rec, RecommendationType recType) {
+            this.rec = rec;
+            this.recType = recType;
+        }
+        public String toString() { return this.rec; }
+        public RecommendationType getRecType() { return this.recType; }
+    }
+
     protected Recommendation() {
-        this.studentRecs = new HashMap<Student, String>();
+        this.studentRecs = new HashMap<Student, RecommendationData>();
         this.init = false;
     }
 
@@ -46,43 +68,43 @@ public class Recommendation {
         return instance;
     }
 
-    public String getRecPerBehavior(Behavior behavior) {
+    public RecommendationData getRecPerBehavior(Behavior behavior) {
         switch (behavior) {
             case CLEANING_UP:
-                return REC_CLEANING_UP;
+                return new RecommendationData(REC_CLEANING_UP, RecommendationType.GOOD);
 
             case ON_TASK:
-                return REC_ON_TASK;
+                return new RecommendationData(REC_ON_TASK, RecommendationType.GOOD);
 
             case RESPECTING_EVERYONE:
-                return REC_RESPECTING_EVERYONE;
+                return new RecommendationData(REC_RESPECTING_EVERYONE, RecommendationType.GOOD);
 
             case SHOWING_GRATITUDE:
-                return REC_SHOWING_GRATITUDE;
+                return new RecommendationData(REC_SHOWING_GRATITUDE, RecommendationType.GOOD);
 
             case SILENT_REMINDERS:
-                return REC_SILENT_REMINDERS;
+                return new RecommendationData(REC_SILENT_REMINDERS, RecommendationType.GOOD);
 
             case VOLUNTEERING:
-                return REC_VOLUNTEERING;
+                return new RecommendationData(REC_VOLUNTEERING, RecommendationType.GOOD);
 
             case DRESS_CODE_VIOLATION:
-                return REC_DRESS_CODE_VIOLATION;
+                return new RecommendationData(REC_DRESS_CODE_VIOLATION, RecommendationType.BAD);
 
             case LACK_OF_INTEGRITY:
-                return REC_LACK_OF_INTEGRITY;
+                return new RecommendationData(REC_LACK_OF_INTEGRITY, RecommendationType.BAD);
 
             case LATE:
-                return REC_LATE;
+                return new RecommendationData(REC_LATE, RecommendationType.BAD);
 
             case TALKING:
-                return REC_TALKING;
+                return new RecommendationData(REC_TALKING, RecommendationType.BAD);
 
             case HORSEPLAY:
-                return REC_HORSEPLAY;
+                return new RecommendationData(REC_HORSEPLAY, RecommendationType.BAD);
 
             case FIGHTING:
-                return REC_FIGHTING;
+                return new RecommendationData(REC_FIGHTING, RecommendationType.BAD);
 
             default:
                 return null;
@@ -128,7 +150,7 @@ public class Recommendation {
         studentRecs.remove(student);
     }
 
-    public String getRecs(Student student) {
+    public RecommendationData getRecs(Student student) {
         return studentRecs.get(student);
     }
 
