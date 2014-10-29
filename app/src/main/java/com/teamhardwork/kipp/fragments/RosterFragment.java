@@ -74,24 +74,25 @@ public class RosterFragment extends BaseKippFragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_roster, container, false);
         ButterKnife.inject(this, v);
-        aStudents.clear();
         setupViews(v);
 
-        currentClass.getClassRosterAsync(new FindCallback<Student>() {
-            @Override
-            public void done(List<Student> foundStudents, ParseException e) {
-                students = foundStudents;
-                Collections.sort(students);
-                aStudents.addAll(students);
-                progressBar.setVisibility(View.GONE);
-                if (!Recommendation.getInstance().isInit()) {
-                    for (Student student : students) {
-                        Recommendation.getInstance().addRecs(student);
+        if (aStudents.isEmpty()) {
+            currentClass.getClassRosterAsync(new FindCallback<Student>() {
+                @Override
+                public void done(List<Student> foundStudents, ParseException e) {
+                    students = foundStudents;
+                    Collections.sort(students);
+                    aStudents.addAll(students);
+                    progressBar.setVisibility(View.GONE);
+                    if (!Recommendation.getInstance().isInit()) {
+                        for (Student student : students) {
+                            Recommendation.getInstance().addRecs(student);
+                        }
+                        aStudents.notifyDataSetChanged();
                     }
-                    aStudents.notifyDataSetChanged();
                 }
-            }
-        });
+            });
+        }
 
 
         FeedQueries.getClassFeed(currentClass, new FindCallback<BehaviorEvent>() {
