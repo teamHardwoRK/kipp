@@ -22,6 +22,7 @@ import com.teamhardwork.kipp.models.users.Student;
 import com.teamhardwork.kipp.queries.FeedQueries;
 import com.teamhardwork.kipp.utilities.Recommendation;
 
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -80,6 +81,8 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
             @Override
             public void done(List<BehaviorEvent> behaviorEvents, ParseException e) {
                 if (behaviorEvents == null || behaviorEvents.isEmpty()) return;
+
+                Collections.reverse(behaviorEvents);
 
                 if (Recommendation.getInstance().hasRecs(student)) {
                     holder.ivTips.setImageResource(R.drawable.ic_tips);
