@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -66,8 +65,6 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
     RelativeLayout rlBarChartContainer;
     @InjectView(R.id.barGraph)
     BarGraph barGraph;
-    @InjectView(R.id.ivBack)
-    ImageView ivBack;
     @InjectView(R.id.rlRecommendationContainer)
     RelativeLayout rlRecommendationContainer;
     @InjectView(R.id.tvRecommendation)
@@ -185,6 +182,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
                     }
                 } else {
                     setupBarGraph();
+                    rlBackButton.setVisibility(View.GONE);
                 }
             }
         });
@@ -198,7 +196,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
 
     private void setupBarGraph() {
         pieGraph.setVisibility(View.GONE);
-        llLegend.setVisibility(View.GONE);
+        rlLegend.setVisibility(View.GONE);
         rlBarChartContainer.setVisibility(View.VISIBLE);
 
         if (barGraph.getBars().size() == 0) {
@@ -289,10 +287,11 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
     @OnClick(R.id.ivBarGraphBack)
     void barToPie() {
         pieGraph.setVisibility(View.VISIBLE);
-        llLegend.setVisibility(View.VISIBLE);
+        rlLegend.setVisibility(View.VISIBLE);
         rlBarChartContainer.setVisibility(View.GONE);
         pieGraph.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in));
-        llLegend.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in));
+        rlLegend.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in));
+        rlBackButton.setVisibility(View.VISIBLE);
     }
 
     private void setupChart() {
