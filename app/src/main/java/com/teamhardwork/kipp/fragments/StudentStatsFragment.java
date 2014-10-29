@@ -59,10 +59,10 @@ public class StudentStatsFragment extends StatsFragment {
             rlRecommendationContainer.setVisibility(View.VISIBLE);
             if (rec.getRecType() == Recommendation.RecommendationType.BAD) {
                 rlRecommendationContainer.setBackgroundColor(StudentArrayAdapter.warningColor);
-                btnDismissRecommendation.setBackgroundResource(R.drawable.btn_light_green);
+                btnDismissRecommendation.setBackgroundResource(R.drawable.btn_dismiss_info_selector);
             } else {
                 rlRecommendationContainer.setBackgroundColor(StudentArrayAdapter.infoColor);
-                btnDismissRecommendation.setBackgroundResource(R.drawable.btn_yellow);
+                btnDismissRecommendation.setBackgroundResource(R.drawable.btn_dismiss_info_selector);
             }
             tvRecommendation.setVisibility(View.VISIBLE);
             btnDismissRecommendation.setVisibility(View.VISIBLE);
