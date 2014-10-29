@@ -15,6 +15,9 @@ import java.util.List;
  * Queries that provide data for Behavior Feeds.
  */
 public class FeedQueries {
+
+    private static final int QUERY_LIMIT = 40;
+
     public static void getLatestClassEvents(SchoolClass schoolClass, List<BehaviorEvent> eventList,
                                             FindCallback<BehaviorEvent> callback) {
         ParseQuery<BehaviorEvent> query = ParseQuery.getQuery(BehaviorEvent.class);
@@ -22,7 +25,7 @@ public class FeedQueries {
             query.whereEqualTo(BehaviorEvent.SCHOOL_CLASS, schoolClass);
             query.whereGreaterThan(BehaviorEvent.OCCURRED_AT, eventList.get(0).getOccurredAt());
             query.include(BehaviorEvent.STUDENT);
-            query.orderByAscending(BehaviorEvent.OCCURRED_AT);
+            query.orderByAscending(BehaviorEvent.OCCURRED_AT).setLimit(QUERY_LIMIT);
             query.findInBackground(callback);
         }
     }
@@ -34,7 +37,7 @@ public class FeedQueries {
             query.whereEqualTo(BehaviorEvent.STUDENT, student);
             query.whereGreaterThan(BehaviorEvent.OCCURRED_AT, eventList.get(0).getOccurredAt());
             query.include(BehaviorEvent.STUDENT);
-            query.orderByAscending(BehaviorEvent.OCCURRED_AT);
+            query.orderByAscending(BehaviorEvent.OCCURRED_AT).setLimit(QUERY_LIMIT);
             query.findInBackground(callback);
         }
     }
@@ -43,7 +46,7 @@ public class FeedQueries {
         ParseQuery<BehaviorEvent> query = ParseQuery.getQuery(BehaviorEvent.class);
         query.whereEqualTo(BehaviorEvent.SCHOOL_CLASS, schoolClass);
         query.include(BehaviorEvent.STUDENT);
-        query.orderByDescending(BehaviorEvent.OCCURRED_AT);
+        query.orderByDescending(BehaviorEvent.OCCURRED_AT).setLimit(QUERY_LIMIT);
         query.findInBackground(callback);
     }
 
@@ -51,7 +54,7 @@ public class FeedQueries {
         ParseQuery<BehaviorEvent> query = ParseQuery.getQuery(BehaviorEvent.class);
         query.whereEqualTo(BehaviorEvent.STUDENT, student);
         query.include(BehaviorEvent.STUDENT);
-        query.orderByDescending(BehaviorEvent.OCCURRED_AT);
+        query.orderByDescending(BehaviorEvent.OCCURRED_AT).setLimit(QUERY_LIMIT);
         query.findInBackground(callback);
     }
 
@@ -59,7 +62,7 @@ public class FeedQueries {
         ParseQuery<Action> query = ParseQuery.getQuery(Action.class);
         query.whereEqualTo(Action.STUDENT, student);
         query.include(Action.STUDENT);
-        query.orderByDescending(Action.OCCURRED_AT);
+        query.orderByDescending(Action.OCCURRED_AT).setLimit(QUERY_LIMIT);
         query.findInBackground(callback);
     }
 
@@ -68,7 +71,7 @@ public class FeedQueries {
         query.whereEqualTo(Action.STUDENT, student);
         query.whereGreaterThan(Action.OCCURRED_AT, actionList.get(0).getOccurredAt());
         query.include(Action.STUDENT);
-        query.orderByAscending(Action.OCCURRED_AT);
+        query.orderByAscending(Action.OCCURRED_AT).setLimit(QUERY_LIMIT);
         query.findInBackground(callback);
     }
 
