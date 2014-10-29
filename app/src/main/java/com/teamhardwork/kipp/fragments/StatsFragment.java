@@ -317,7 +317,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
 
     private void activateOverallLegend(int numGood, int numBad) {
         int total = numGood + numBad;
-        tvLegendDescription.setText("Behavior for " + statForString);
+        tvLegendDescription.setText("Behavior for " + statForString + "\n\t\t\t(total " + (numBad + numGood) + ")");
         tvGood.setText("Good: " + getPercentString((double) numGood / total));
         tvBad.setText("Bad: " + getPercentString((double) numBad / total));
         tvGood.setVisibility(View.VISIBLE);
@@ -331,12 +331,12 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
         if (chartMode.equals(ChartMode.BAD_DETAIL)) {
             behaviorType = "Bad Behaviors";
         }
-        tvLegendDescription.setText(behaviorType + " for " + statForString);
-        turnOffExtraLegendItems();
         int total = 0;
         for (Behavior behavior : behaviors) {
             total += groupedCounts.get(behavior);
         }
+        tvLegendDescription.setText(behaviorType + " for " + statForString + "\n\t\t\t(total " + total + ")");
+        turnOffExtraLegendItems();
 
         for (int i = 0; i < behaviors.size(); i++) {
             Behavior behavior = behaviors.get(i);
