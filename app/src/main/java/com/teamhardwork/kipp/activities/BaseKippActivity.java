@@ -45,6 +45,7 @@ public abstract class BaseKippActivity extends Activity {
         if (pushReceiver != null) {
             try {
                 this.unregisterReceiver(pushReceiver);
+                pushReceiver = null;
             } catch (Exception e) {
                 e.printStackTrace();
             }
