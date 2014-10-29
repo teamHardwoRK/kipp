@@ -47,6 +47,39 @@
         android:layout_centerInParent="true"
         android:layout_below="@id/rlRecommendationContainer"/>
 
+    <RelativeLayout
+        android:id="@+id/rlBarChartContainer"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content">
+
+
+        <com.echo.holographlibrary.BarGraph
+            android:id="@+id/barGraph"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_centerInParent="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="On Task Records (Last 6 Months)"
+            android:layout_below="@id/barGraph"
+            android:id="@+id/tvBarLabel"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:id="@+id/ivBarGraphBack"
+            android:src="@drawable/ic_back"
+            android:layout_toLeftOf="@+id/tvBarLabel"
+            android:layout_below="@+id/barGraph"
+            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
 
     <LinearLayout
         android:id="@+id/llLegend"

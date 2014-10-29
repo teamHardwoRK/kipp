@@ -7,12 +7,16 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.echo.holographlibrary.Bar;
+import com.echo.holographlibrary.BarGraph;
 import com.echo.holographlibrary.PieGraph;
 import com.echo.holographlibrary.PieSlice;
 import com.facebook.rebound.SimpleSpringListener;
@@ -28,12 +32,14 @@ import com.teamhardwork.kipp.queries.FeedQueries;
 import com.teamhardwork.kipp.utilities.behavior_event.BehaviorEventListFilterer;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 // Stats for class
 public class StatsFragment extends BaseKippFragment implements Updatable {
@@ -53,6 +59,10 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
 
     protected String statForString = "Class";
 
+    @InjectView(R.id.rlBarChartContainer)
+    RelativeLayout rlBarChartContainer;
+    @InjectView(R.id.barGraph)
+    BarGraph barGraph;
     @InjectView(R.id.ivBack)
     ImageView ivBack;
     @InjectView(R.id.rlRecommendationContainer)
@@ -162,6 +172,8 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
                             chartMode = ChartMode.BAD_DETAIL;
                             activateChartForBehaviors(behaviorCounts, badBehaviors);
                     }
+                } else {
+                    setupBarGraph();
                 }
             }
         });
@@ -171,6 +183,50 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
         btnDismissRecommendation.setVisibility(View.GONE);
 
         return rtnView;
+    }
+
+    private void setupBarGraph() {
+        pieGraph.setVisibility(View.GONE);
+        llLegend.setVisibility(View.GONE);
+        rlBarChartContainer.setVisibility(View.VISIBLE);
+
+        if (barGraph.getBars().size() == 0) {
+            ArrayList<Bar> points = new ArrayList<Bar>();
+            Bar d = new Bar();
+            d.setColor(Color.parseColor("#99CC00"));
+            d.setName("May");
+            d.setValue(10);
+            Bar d2 = new Bar();
+            d2.setColor(Color.parseColor("#99CC00"));
+            d2.setName("Jun");
+            d2.setValue(2);
+            Bar d3 = new Bar();
+            d3.setColor(Color.parseColor("#99CC00"));
+            d3.setName("Jul");
+            d3.setValue(5);
+            Bar d4 = new Bar();
+            d4.setColor(Color.parseColor("#99CC00"));
+            d4.setName("Aug");
+            d4.setValue(2);
+            Bar d5 = new Bar();
+            d5.setColor(Color.parseColor("#99CC00"));
+            d5.setName("Sep");
+            d5.setValue(6);
+            Bar d6 = new Bar();
+            d6.setColor(Color.parseColor("#99CC00"));
+            d6.setName("Oct");
+            d6.setValue(8);
+            points.add(d);
+            points.add(d2);
+            points.add(d3);
+            points.add(d4);
+            points.add(d5);
+            points.add(d6);
+
+            barGraph.setBars(points);
+        };
+
+        rlBarChartContainer.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in));
     }
 
     protected void fillChartWithOverallData() {
@@ -204,6 +260,15 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
         for (PieSlice slice : pieGraph.getSlices()) {
             slice.setGoalValue(0);
         }
+    }
+
+    @OnClick(R.id.ivBarGraphBack)
+    void barToPie() {
+        pieGraph.setVisibility(View.VISIBLE);
+        llLegend.setVisibility(View.VISIBLE);
+        rlBarChartContainer.setVisibility(View.GONE);
+        pieGraph.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in));
+        llLegend.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in));
     }
 
     private void setupChart() {
