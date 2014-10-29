@@ -2,6 +2,7 @@ package com.teamhardwork.kipp.fragments;
 
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -11,7 +12,6 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -44,12 +44,12 @@ import butterknife.OnClick;
 
 // Stats for class
 public class StatsFragment extends BaseKippFragment implements Updatable {
-    private static final int GOOD_COLOR_ID = Color.parseColor("#C7F464");
-    private static final int BAD_COLOR_ID = Color.parseColor("#FF6B6B");
-    private static final int EXTRA_COLOR_ONE = Color.parseColor("#C44D58");
-    private static final int EXTRA_COLOR_TWO = Color.parseColor("#4ECDC4");
-    private static final int EXTRA_COLOR_THREE = Color.parseColor("#556270");
-    private static final int EXTRA_COLOR_FOUR = Color.parseColor("#0066FF");
+    private static final int GOOD_COLOR_ID = Color.parseColor("#22BD89");
+    private static final int BAD_COLOR_ID = Color.parseColor("#FC6C85");
+    private static final int EXTRA_COLOR_ONE = Color.parseColor("#1589FF");
+    private static final int EXTRA_COLOR_TWO = Color.parseColor("#7A5DC7");
+    private static final int EXTRA_COLOR_THREE = Color.parseColor("#FDD017");
+    private static final int EXTRA_COLOR_FOUR = Color.parseColor("#E66C2C");
 
     private static final List<Behavior> badBehaviors = Arrays.asList(Behavior.DRESS_CODE_VIOLATION,
             Behavior.LACK_OF_INTEGRITY, Behavior.LATE, Behavior.TALKING, Behavior.HORSEPLAY,
@@ -91,7 +91,13 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
     @InjectView(R.id.tvExtraFour)
     TextView tvExtraFour;
     @InjectView(R.id.llLegend)
-    LinearLayout llLegend;
+    RelativeLayout rlLegend;
+    @InjectView(R.id.rlBackButton)
+    RelativeLayout rlBackButton;
+    @InjectView(R.id.ivBack)
+    ImageView ivBack;
+    @InjectView(R.id.tvBack)
+    TextView tvBack;
 
     private ChartMode chartMode = ChartMode.OVERALL;
     private List<TextView> legendItems;
@@ -115,6 +121,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
                              Bundle savedInstanceState) {
         View rtnView = inflater.inflate(R.layout.fragment_stats, container, false);
         ButterKnife.inject(this, rtnView);
+        setTypeface();
 
         legendItems = Arrays.asList(tvGood, tvBad, tvExtraOne, tvExtraTwo, tvExtraThree,
                 tvExtraFour);
@@ -136,7 +143,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
             }
         });
 
-        llLegend.setOnTouchListener(new View.OnTouchListener() {
+        rlLegend.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (chartMode != ChartMode.OVERALL) {
@@ -152,7 +159,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
             }
         });
 
-        llLegend.setOnClickListener(new View.OnClickListener() {
+        rlBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (chartMode != ChartMode.OVERALL) {
@@ -162,6 +169,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
             }
         });
 
+        pieGraph.setInnerCircleRatio(0);
         pieGraph.setOnSliceClickedListener(new PieGraph.OnSliceClickedListener() {
             @Override
             public void onClick(int index) {
@@ -233,6 +241,18 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
         rlBarChartContainer.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in));
     }
 
+    void setTypeface() {
+        Typeface typeface = KippApplication.getDefaultTypeFace(getActivity());
+        tvRecommendation.setTypeface(typeface);
+        tvLegendDescription.setTypeface(typeface);
+        tvGood.setTypeface(typeface);
+        tvBad.setTypeface(typeface);
+        tvExtraFour.setTypeface(typeface);
+        tvExtraThree.setTypeface(typeface);
+        tvExtraTwo.setTypeface(typeface);
+        tvExtraOne.setTypeface(typeface);
+    }
+
     protected void fillChartWithOverallData() {
         FeedQueries.getClassFeed(currentClass, overallResponseCallback);
     }
@@ -301,6 +321,8 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
         tvLegendDescription.setText("Behavior for " + statForString);
         tvGood.setText("Good: " + getPercentString((double) numGood / total));
         tvBad.setText("Bad: " + getPercentString((double) numBad / total));
+        tvGood.setVisibility(View.VISIBLE);
+        tvBad.setVisibility(View.VISIBLE);
         turnOffExtraLegendItems();
     }
 
@@ -324,7 +346,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
             legendItem.setText(behavior.getTitle() + ": " + percentage);
             legendItem.setVisibility(View.VISIBLE);
         }
-        ivBack.setVisibility(View.VISIBLE);
+        rlBackButton.setVisibility(View.VISIBLE);
     }
 
     private void turnOffExtraLegendItems() {
@@ -332,7 +354,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
         tvExtraTwo.setVisibility(View.GONE);
         tvExtraThree.setVisibility(View.GONE);
         tvExtraFour.setVisibility(View.GONE);
-        ivBack.setVisibility(View.GONE);
+        rlBackButton.setVisibility(View.GONE);
     }
 
     private String getPercentString(double fraction) {

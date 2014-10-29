@@ -10,17 +10,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:padding="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:background="#F6D05C">
 
         <TextView
             android:id="@+id/tvRecommendation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:text="@string/default_recommendation"
+            android:layout_toLeftOf="@+id/btnDismissRecommendation"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/btnDismissRecommendation"
-            android:layout_alignTop="@id/btnDismissRecommendation"
             android:textColor="#FFFFFF" />
 
         <Button
@@ -30,8 +35,10 @@
             android:layout_alignParentRight="true"
             android:text="Dismiss"
             android:textColor="#FFFFFF"
-            style="@style/KippTheme.ActionBar"/>
-
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:background="@drawable/btn_yellow"
+            />
     </RelativeLayout>
 
     <ProgressBar
@@ -44,7 +51,9 @@
         android:id="@+id/pieGraph"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_centerHorizontal="true"
         android:layout_below="@id/rlRecommendationContainer"/>
 
     <RelativeLayout
@@ -82,59 +91,114 @@
 
 
     <LinearLayout
+    <RelativeLayout
         android:id="@+id/llLegend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/ivBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_back"
-            android:visibility="gone"/>
+        android:orientation="vertical"
+        android:background="@drawable/bg_legend"
+        android:layout_marginTop="15dp"
+        android:padding="15dp"
+        >
 
         <TextView
             android:id="@+id/tvLegendDescription"
+            android:textStyle="bold"
+            android:textSize="17dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            />
 
         <TextView
             android:id="@+id/tvGood"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvLegendDescription"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="20dp"
+            android:textStyle="bold"
+            />
 
         <TextView
             android:id="@+id/tvBad"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/tvGood"
+            android:textStyle="bold"
+            android:paddingLeft="20dp"
+            />
 
         <TextView
             android:id="@+id/tvExtraOne"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textStyle="bold"
+            android:paddingLeft="20dp"
+            android:layout_below="@id/tvBad"
             android:visibility="gone" />
 
         <TextView
             android:id="@+id/tvExtraTwo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:textStyle="bold"
+            android:paddingLeft="20dp"
+            android:layout_below="@id/tvExtraOne"
             android:visibility="gone" />
 
         <TextView
             android:id="@+id/tvExtraThree"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="20dp"
+            android:layout_below="@+id/tvExtraTwo"
+            android:textStyle="bold"
             android:visibility="gone" />
 
         <TextView
             android:id="@+id/tvExtraFour"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="20dp"
+            android:textStyle="bold"
+            android:layout_below="@id/tvExtraThree"
             android:visibility="gone" />
+    </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/rlBackButton"
+        android:layout_below="@id/rlRecommendationContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:visibility="gone"
+        >
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/img_back_arrow"
+            />
+
+        <TextView
+            android:id="@+id/tvBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:layout_toRightOf="@id/ivBack"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/ActionBarGreen"
+            />
+    </RelativeLayout>
 
 </RelativeLayout>
