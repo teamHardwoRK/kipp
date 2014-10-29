@@ -3,12 +3,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="5dp">
+    android:paddingBottom="5dp">
+
+    <TextView
+        android:id="@+id/tvHeader"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="Today"
+        android:textSize="20sp"
+        android:layout_marginTop="15dp"
+        style="?android:listSeparatorTextViewStyle"/>
 
     <ImageView
         android:id="@+id/ivBehaviorIcon"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:layout_below="@+id/tvHeader"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
@@ -19,7 +30,7 @@
         android:id="@+id/tvStudentName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/tvHeader"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="15dp"
         android:layout_toRightOf="@+id/ivBehaviorIcon"
