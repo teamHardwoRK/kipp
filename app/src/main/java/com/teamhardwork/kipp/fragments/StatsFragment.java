@@ -140,7 +140,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
             }
         });
 
-        rlLegend.setOnTouchListener(new View.OnTouchListener() {
+        rlBackButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (chartMode != ChartMode.OVERALL) {
