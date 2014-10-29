@@ -40,6 +40,8 @@ public class RosterFragment extends BaseKippFragment {
     private OnStudentSelectedListener onStudentSelectedListener;
     private ArrayList<Student> selectedStudents;
     private List<BehaviorEvent> classBehaviorEvents;
+    private int frontViewId;
+    private int backViewId;
 
     @Override
     public void onAttach(Activity activity) {
@@ -109,6 +111,9 @@ public class RosterFragment extends BaseKippFragment {
         lvStudents = (SwipeListView) v.findViewById(R.id.lvStudents);
         lvStudents.setAdapter(aStudents);
 
+        frontViewId = lvStudents.getTouchListener().getFrontViewId();
+        backViewId = lvStudents.getTouchListener().getBackViewId();
+
         lvStudents.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         lvStudents.setFastScrollEnabled(true);
         lvStudents.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
@@ -174,11 +179,11 @@ public class RosterFragment extends BaseKippFragment {
             @Override
             public void onStartOpen(int position, int action, boolean toRight) {
                 Resources resources = RosterFragment.this.getActivity().getResources();
-                View v = lvStudents.getChildAt(position);
+                View v = lvStudents.getChildAt(position - lvStudents.getFirstVisiblePosition());
                 View backView = null;
                 if (v == null) return;
 
-                backView = v.findViewById(lvStudents.getTouchListener().getBackViewId());
+                backView = v.findViewById(backViewId);
                 if (backView == null) return;
 
                 if (toRight == true) {
