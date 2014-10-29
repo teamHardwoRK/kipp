@@ -84,7 +84,7 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
                                   final ImageView tvTips,
                                   final boolean animate) {
         tvTips.setImageResource(0);
-        FeedQueries.getStudentFeed(student, new FindCallback<BehaviorEvent>() {
+        FeedQueries.getStudentFeedMostRecent(student, new FindCallback<BehaviorEvent>() {
             @Override
             public void done(List<BehaviorEvent> behaviorEvents, ParseException e) {
                 if (behaviorEvents == null || behaviorEvents.isEmpty()) return;
@@ -97,7 +97,7 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
                 }
 
                 StringBuilder recentBehaviors = new StringBuilder();
-                int behaviorsSize = Math.min(5, behaviorEvents.size());
+                int behaviorsSize = Math.min(FeedQueries.MOST_RECENT_MAX, behaviorEvents.size());
 
                 for (int i = behaviorsSize - 1; i >= 1; i--) {
                     recentBehaviors.append(getBehaviorHtmlString(behaviorEvents.get(i).getBehavior()));

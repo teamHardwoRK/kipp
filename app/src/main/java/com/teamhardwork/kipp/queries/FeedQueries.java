@@ -17,6 +17,7 @@ import java.util.List;
 public class FeedQueries {
 
     private static final int QUERY_LIMIT = 200;
+    public static final int MOST_RECENT_MAX = 5;
 
     public static void getLatestClassEvents(SchoolClass schoolClass, List<BehaviorEvent> eventList,
                                             FindCallback<BehaviorEvent> callback) {
@@ -55,6 +56,14 @@ public class FeedQueries {
         query.whereEqualTo(BehaviorEvent.STUDENT, student);
         query.include(BehaviorEvent.STUDENT);
         query.orderByDescending(BehaviorEvent.OCCURRED_AT).setLimit(QUERY_LIMIT);
+        query.findInBackground(callback);
+    }
+
+    public static void getStudentFeedMostRecent(Student student, FindCallback<BehaviorEvent> callback) {
+        ParseQuery<BehaviorEvent> query = ParseQuery.getQuery(BehaviorEvent.class);
+        query.whereEqualTo(BehaviorEvent.STUDENT, student);
+        query.include(BehaviorEvent.STUDENT);
+        query.orderByDescending(BehaviorEvent.OCCURRED_AT).setLimit(MOST_RECENT_MAX);
         query.findInBackground(callback);
     }
 
