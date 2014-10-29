@@ -10,6 +10,7 @@ public enum Avatar {
     EMMA(R.drawable.img_emma),
     GOLEM(R.drawable.img_golem),
     JOKER(R.drawable.img_joker),
+    MOJO_JOJO(R.drawable.img_mojojojo),
     MORTAL_KOMBAT(R.drawable.img_mortal_kombat),
     NINJA_TURTLE(R.drawable.img_leo),
     PALE(R.drawable.img_pale),
