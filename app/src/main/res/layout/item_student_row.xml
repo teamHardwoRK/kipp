@@ -49,14 +49,24 @@
             android:layout_toRightOf="@id/ivProfilePic" />
 
         <TextView
-            android:id="@+id/tvPoints"
+            android:id="@+id/tvRecentBehaviors"
             style="@style/ListDescription"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:layout_below="@id/tvName"
             android:layout_toRightOf="@id/ivProfilePic"
             android:textSize="30sp"/>
+        <TextView
+            android:id="@+id/tvNewBehavior"
+            style="@style/ListDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_below="@id/tvName"
+            android:layout_toRightOf="@id/tvRecentBehaviors"
+            android:textSize="30sp"
+            android:layout_alignBottom="@id/tvRecentBehaviors"/>
 
         <TextView
             android:layout_width="wrap_content"

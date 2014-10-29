@@ -39,6 +39,9 @@ public class RosterActivity extends BaseKippActivity implements
         StarAnimationSet.StarAnimationSetListener {
 
     private final String ROSTER_FRAGMENT_TAG = "RosterFragment";
+    private final String STATS_FRAGMENT_TAG = "StatsFragment";
+    private final String LOG_FRAGMENT_TAG = "LogFragment";
+    private final String LEADERBOARD_FRAGMENT_TAG = "LeaderboardFragment";
     private final String BEHAVIOR_PAGER_FRAGMENT_TAG = "BehaviorPagerFragment";
     private Fragment pagerFragment;
     private ArrayList<Student> selectedStudents;
@@ -70,7 +73,7 @@ public class RosterActivity extends BaseKippActivity implements
                 .newTab()
                 .setText(R.string.roster_tab_title)
                 .setTabListener(
-                        new FragmentTabListener<RosterFragment>(R.id.flRoster, this, "roster",
+                        new FragmentTabListener<RosterFragment>(R.id.flRoster, this, ROSTER_FRAGMENT_TAG,
                                 RosterFragment.class));
 
         actionBar.addTab(tab1);
@@ -80,7 +83,7 @@ public class RosterActivity extends BaseKippActivity implements
                 .newTab()
                 .setText("Stats")
                 .setTabListener(
-                        new FragmentTabListener<StatsFragment>(R.id.flRoster, this, "stats",
+                        new FragmentTabListener<StatsFragment>(R.id.flRoster, this, STATS_FRAGMENT_TAG,
                                 StatsFragment.class));
         actionBar.addTab(tab2);
 
@@ -88,7 +91,7 @@ public class RosterActivity extends BaseKippActivity implements
                 .newTab()
                 .setText("Log")
                 .setTabListener(
-                        new FragmentTabListener<FeedFragment>(R.id.flRoster, this, "log",
+                        new FragmentTabListener<FeedFragment>(R.id.flRoster, this, LOG_FRAGMENT_TAG,
                                 FeedFragment.class));
         actionBar.addTab(tab3);
 
@@ -96,7 +99,7 @@ public class RosterActivity extends BaseKippActivity implements
                 .newTab()
                 .setText("Rankings")
                 .setTabListener(new FragmentTabListener<LeaderboardFragment>(R.id.flRoster, this,
-                        "leaderboard",
+                        LEADERBOARD_FRAGMENT_TAG,
                         LeaderboardFragment.class));
         actionBar.addTab(tab4);
     }
@@ -192,18 +195,24 @@ public class RosterActivity extends BaseKippActivity implements
     @Override
     protected void updateFragments() {
         super.updateFragments();
-        StatsFragment statsFragment = (StatsFragment) getFragmentManager().findFragmentByTag("stats");
+
+        RosterFragment rosterFragment = (RosterFragment) getFragmentManager().findFragmentByTag(ROSTER_FRAGMENT_TAG);
+        if (rosterFragment != null) {
+            rosterFragment.updateData();
+        }
+
+        StatsFragment statsFragment = (StatsFragment) getFragmentManager().findFragmentByTag(STATS_FRAGMENT_TAG);
         if (statsFragment != null) {
             statsFragment.updateData();
         }
 
-        FeedFragment feedFragment = (FeedFragment) getFragmentManager().findFragmentByTag("log");
+        FeedFragment feedFragment = (FeedFragment) getFragmentManager().findFragmentByTag(LOG_FRAGMENT_TAG);
         if (feedFragment != null) {
             feedFragment.updateData();
         }
 
         LeaderboardFragment leaderboardFragment = (LeaderboardFragment) getFragmentManager()
-                .findFragmentByTag("leaderboard");
+                .findFragmentByTag(LEADERBOARD_FRAGMENT_TAG);
         if (leaderboardFragment != null) {
             leaderboardFragment.updateData();
         }

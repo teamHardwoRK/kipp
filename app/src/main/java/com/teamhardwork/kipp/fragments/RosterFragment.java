@@ -223,7 +223,7 @@ public class RosterFragment extends BaseKippFragment {
         return (int) px;
     }
 
-    protected void updateData() {
+    public void updateData() {
         FindCallback<BehaviorEvent> callback = new FindCallback<BehaviorEvent>() {
             @Override
             public void done(List<BehaviorEvent> eventList, ParseException e) {

@@ -1,5 +1,6 @@
 package com.teamhardwork.kipp.adapters;
 
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -17,6 +18,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.squareup.picasso.Picasso;
 import com.teamhardwork.kipp.R;
+import com.teamhardwork.kipp.enums.Behavior;
 import com.teamhardwork.kipp.enums.BehaviorCategory;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.users.Student;
@@ -55,7 +57,8 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
 
             v.ivProfilePic = (ImageView) convertView.findViewById(R.id.ivProfilePic);
             v.tvName = (TextView) convertView.findViewById(R.id.tvName);
-            v.tvPoints = (TextView) convertView.findViewById(R.id.tvPoints);
+            v.tvRecentBehaviors = (TextView) convertView.findViewById(R.id.tvRecentBehaviors);
+            v.tvNewBehavior = (TextView) convertView.findViewById(R.id.tvNewBehavior);
             v.ivTips = (ImageView) convertView.findViewById(R.id.ivTips);
             convertView.setTag(v);
         } else {
@@ -72,23 +75,28 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
                 .into(v.ivProfilePic);
 
         v.tvName.setText(student.getFullName());
-        v.tvPoints.setText("");
+        v.tvRecentBehaviors.setText("");
+        v.tvNewBehavior.setText("");
 
         if (changedPositions != null && changedPositions.contains(position)) {
             animate = true;
             changedPositions.remove(changedPositions.indexOf(position));
         }
-        updateStudentInfo(student, v.tvPoints, v.ivTips, animate);
+        updateStudentInfo(student, v.tvRecentBehaviors, v.tvNewBehavior, v.ivTips, animate);
 
         return convertView;
     }
 
-    public void updateStudentInfo(final Student student, final TextView tvBehaviors, final ImageView tvTips, final boolean animate) {
+    public void updateStudentInfo(final Student student,
+                                  final TextView tvRecentBehaviors,
+                                  final TextView tvNewBehavior,
+                                  final ImageView tvTips,
+                                  final boolean animate) {
         tvTips.setImageResource(0);
         FeedQueries.getStudentFeed(student, new FindCallback<BehaviorEvent>() {
             @Override
             public void done(List<BehaviorEvent> behaviorEvents, ParseException e) {
-                if (behaviorEvents == null) return;
+                if (behaviorEvents == null || behaviorEvents.isEmpty()) return;
 
                 if (Recommendation.getInstance().hasRecs(student)) {
                     tvTips.setImageResource(R.drawable.ic_tips);
@@ -100,29 +108,41 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
                     alpha.start();
                 }
 
-                StringBuilder newBehaviors = new StringBuilder();
+                StringBuilder recentBehaviors = new StringBuilder();
                 int behaviorsSize = Math.min(5, behaviorEvents.size());
 
-                for (int i = behaviorsSize - 1; i >= 0; i--) {
-                    if (behaviorEvents.get(i).getBehavior().getCategory() == BehaviorCategory.SLIP ||
-                            behaviorEvents.get(i).getBehavior().getCategory() == BehaviorCategory.FALL) {
-                        newBehaviors.append("<font color=\"#FF6B6B\"> - </font>");
-                    } else {
-                        newBehaviors.append("<font color=\"#C7F464\"> + </font>");
-                    }
+                for (int i = behaviorsSize - 1; i >= 1; i--) {
+                    recentBehaviors.append(getBehaviorHtmlString(behaviorEvents.get(i).getBehavior()));
                 }
 
-                tvBehaviors.setText(Html.fromHtml(newBehaviors.toString()));
-
+                tvRecentBehaviors.setText(Html.fromHtml(recentBehaviors.toString()));
+                tvNewBehavior.setText(Html.fromHtml(getBehaviorHtmlString(behaviorEvents.get(0).getBehavior())));
                 if (animate == true) {
-                    ObjectAnimator alpha = ObjectAnimator.ofFloat(tvBehaviors, "alpha", 0f, 1f);
-                    alpha.setDuration(1000);
-                    alpha.setRepeatCount(5);
-                    alpha.setStartDelay(3000);
-                    alpha.start();
+                    ObjectAnimator scaleX = ObjectAnimator.ofFloat(tvNewBehavior, "scaleX", 2.0f, 1.0f)
+                            .setDuration(1000);
+                    scaleX.setRepeatCount(5);
+
+                    ObjectAnimator scaleY = ObjectAnimator.ofFloat(tvNewBehavior, "scaleY", 2.0f, 1.0f)
+                            .setDuration(1000);
+                    scaleY.setRepeatCount(5);
+
+                    AnimatorSet set = new AnimatorSet();
+                    set.playTogether(scaleX, scaleY);
+
+                    set.setStartDelay(3000);
+                    set.start();
                 }
             }
         });
+    }
+
+    public String getBehaviorHtmlString(Behavior behavior) {
+        if (behavior.getCategory() == BehaviorCategory.SLIP ||
+            behavior.getCategory() == BehaviorCategory.FALL) {
+            return new String("<font color=\"#FF6B6B\"> - </font>");
+        } else {
+            return new String("<font color=\"#C7F464\"> + </font>");
+        }
     }
 
     public void updatePositions(ArrayList<Integer> positions) {
@@ -136,7 +156,8 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
     private static class ViewHolder {
         ImageView ivProfilePic;
         TextView tvName;
-        TextView tvPoints;
+        TextView tvRecentBehaviors;
+        TextView tvNewBehavior;
         ImageView ivTips;
     }
 }
