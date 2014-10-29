@@ -7,10 +7,10 @@
 
     <ImageView
         android:id="@+id/ivActionIcon"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_centerHorizontal="true"
-        android:scaleType="centerInside"
+        android:scaleType="centerCrop"
         android:src="@drawable/wh_email_ic" />
 
     <TextView

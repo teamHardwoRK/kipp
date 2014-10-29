@@ -24,7 +24,7 @@
         android:id="@+id/ivProfilePic"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:scaleType="centerInside"
+        android:scaleType="centerCrop"
         android:src="@drawable/img_leo"
         android:layout_toRightOf="@id/tvRank"
         android:layout_centerVertical="true"
