@@ -14,7 +14,7 @@ public enum Avatar {
     NINJA_TURTLE(R.drawable.img_leo),
     PALE(R.drawable.img_pale),
     SCARLETT(R.drawable.img_scarlett),
-    STORMTROOER(R.drawable.img_stormtrooper),
+    STORMTROOPER(R.drawable.img_stormtrooper),
     TERMINATOR(R.drawable.img_terminator),
     WOLVERINE(R.drawable.img_wolverine);
 
