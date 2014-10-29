@@ -37,7 +37,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 
-public class RosterFragment extends BaseKippFragment implements Recommendation.AddRecListener {
+public class RosterFragment extends BaseKippFragment implements Recommendation.RecListener {
     List<Student> students;
     StudentArrayAdapter aStudents;
     SwipeListView lvStudents;
@@ -308,6 +308,20 @@ public class RosterFragment extends BaseKippFragment implements Recommendation.A
 
             ImageView ivTips = (ImageView) v.findViewById(R.id.ivTips);
             updateStudentRec(ivTips, rec);
+        }
+    }
+
+    @Override
+    public void onDismissRec(Student student) {
+        int pos = aStudents.getPosition(student);
+
+        if (pos != -1) {
+            View v = lvStudents.getChildAt(pos -
+                    lvStudents.getFirstVisiblePosition());
+            if (v == null) return;
+
+            ImageView ivTips = (ImageView) v.findViewById(R.id.ivTips);
+            ivTips.setImageResource(0);
         }
     }
 

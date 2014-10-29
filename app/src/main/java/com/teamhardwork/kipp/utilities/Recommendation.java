@@ -33,7 +33,7 @@ public class Recommendation {
     private static Recommendation instance = null;
     private HashMap<Student, RecommendationData> studentRecs;
     private boolean init;
-    private Recommendation.AddRecListener listener;
+    private Recommendation.RecListener listener;
 
     public enum RecommendationType {
         GOOD(1),
@@ -153,17 +153,22 @@ public class Recommendation {
 
     public void dismissRecs(Student student) {
         studentRecs.remove(student);
+        if (listener != null) {
+            listener.onDismissRec(student);
+        }
     }
 
     public RecommendationData getRecs(Student student) {
         return studentRecs.get(student);
     }
 
-    public void setListener(AddRecListener listener) {
+    public void setListener(RecListener listener) {
         this.listener = listener;
     }
 
-    public interface AddRecListener {
+    public interface RecListener {
         public void onAddRec(Student student, RecommendationData rec);
+
+        public void onDismissRec(Student student);
     }
 }
