@@ -5,7 +5,6 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.DisplayMetrics;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -17,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.fortysevendeg.swipelistview.BaseSwipeListViewListener;
 import com.fortysevendeg.swipelistview.SwipeListView;

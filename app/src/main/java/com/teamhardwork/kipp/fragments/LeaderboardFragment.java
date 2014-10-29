@@ -1,9 +1,11 @@
 package com.teamhardwork.kipp.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.nhaarman.listviewanimations.appearance.AnimationAdapter;
@@ -29,6 +31,19 @@ public class LeaderboardFragment extends BaseKippFragment implements Updatable {
 
     private AnimationAdapter mAnimAdapter;
 
+    private OnStudentSelectedListener listener;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof OnStudentSelectedListener) {
+            listener = (OnStudentSelectedListener) activity;
+        } else {
+            throw new ClassCastException(activity.toString()
+                    + " must implement LeaderboardFragment.OnStudentSelectedListener");
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -47,6 +62,13 @@ public class LeaderboardFragment extends BaseKippFragment implements Updatable {
         mAnimAdapter.setAbsListView(lvLeaderboard);
 
         lvLeaderboard.setAdapter(mAnimAdapter);
+        lvLeaderboard.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Student clicked = leaderboardAdapter.getItem(position);
+                listener.onStudentSelected(clicked);
+            }
+        });
     }
 
     public void updateLeaderboard() {
@@ -58,6 +80,7 @@ public class LeaderboardFragment extends BaseKippFragment implements Updatable {
                 Collections.reverse(students);
                 leaderboardAdapter.addAll(students);
                 progressBar.setVisibility(View.GONE);
+
             }
         });
     }
@@ -70,5 +93,9 @@ public class LeaderboardFragment extends BaseKippFragment implements Updatable {
     @Override
     public String getTitle() {
         return "Leaderboard";
+    }
+
+    public interface OnStudentSelectedListener {
+        public void onStudentSelected(Student student);
     }
 }

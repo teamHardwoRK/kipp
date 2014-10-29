@@ -37,7 +37,8 @@ public class RosterActivity extends BaseKippActivity implements
         BehaviorFragment.BehaviorListener,
         SadFaceAnimationSet.SadFaceAnimationSetListener,
         FeedFragment.FeedListener,
-        StarAnimationSet.StarAnimationSetListener {
+        StarAnimationSet.StarAnimationSetListener,
+        LeaderboardFragment.OnStudentSelectedListener {
 
     private final String ROSTER_FRAGMENT_TAG = "RosterFragment";
     private final String STATS_FRAGMENT_TAG = "StatsFragment";
