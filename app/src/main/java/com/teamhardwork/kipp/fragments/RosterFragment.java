@@ -239,6 +239,7 @@ public class RosterFragment extends BaseKippFragment implements Recommendation.R
         final FindCallback<BehaviorEvent> callback = new FindCallback<BehaviorEvent>() {
             @Override
             public void done(List<BehaviorEvent> eventList, ParseException e) {
+                if (aStudents == null) return;
                 for (BehaviorEvent event : eventList) {
                     classBehaviorEvents.add(0, event);
                     Student student = event.getStudent();
@@ -299,6 +300,7 @@ public class RosterFragment extends BaseKippFragment implements Recommendation.R
     }
 
     public void onAddRec(Student student, Recommendation.RecommendationData rec) {
+        if (aStudents == null) return;
         int pos = aStudents.getPosition(student);
 
         if (pos != -1) {
@@ -313,6 +315,7 @@ public class RosterFragment extends BaseKippFragment implements Recommendation.R
 
     @Override
     public void onDismissRec(Student student) {
+        if (aStudents == null) return;
         int pos = aStudents.getPosition(student);
 
         if (pos != -1) {

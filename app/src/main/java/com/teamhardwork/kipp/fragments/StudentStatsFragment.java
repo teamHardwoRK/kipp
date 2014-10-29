@@ -1,8 +1,10 @@
 package com.teamhardwork.kipp.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
+import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.adapters.StudentArrayAdapter;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.users.Student;
@@ -14,6 +16,7 @@ import java.util.List;
 public class StudentStatsFragment extends StatsFragment {
     public static final String TAG = "student_stats_fragment";
     public static final String STUDENT_ID_ARG_KEY = "student_id";
+    public static final int btnDismissGoodColor = Color.parseColor("#3BB9FF");
 
     private Student student;
 
@@ -56,11 +59,14 @@ public class StudentStatsFragment extends StatsFragment {
             rlRecommendationContainer.setVisibility(View.VISIBLE);
             if (rec.getRecType() == Recommendation.RecommendationType.BAD) {
                 rlRecommendationContainer.setBackgroundColor(StudentArrayAdapter.warningColor);
+                btnDismissRecommendation.setBackgroundResource(R.drawable.btn_light_green);
             } else {
                 rlRecommendationContainer.setBackgroundColor(StudentArrayAdapter.infoColor);
+                btnDismissRecommendation.setBackgroundResource(R.drawable.btn_yellow);
             }
             tvRecommendation.setVisibility(View.VISIBLE);
             btnDismissRecommendation.setVisibility(View.VISIBLE);
+
         }
     }
 }
