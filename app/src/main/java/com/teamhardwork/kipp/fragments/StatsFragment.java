@@ -25,6 +25,7 @@ import com.facebook.rebound.SpringSystem;
 import com.facebook.rebound.SpringUtil;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.enums.Behavior;
 import com.teamhardwork.kipp.models.BehaviorEvent;
@@ -59,6 +60,8 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
 
     protected String statForString = "Class";
 
+    @InjectView(R.id.tvBarLabel)
+    TextView tvBarLabel;
     @InjectView(R.id.rlBarChartContainer)
     RelativeLayout rlBarChartContainer;
     @InjectView(R.id.barGraph)
@@ -191,6 +194,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
         rlBarChartContainer.setVisibility(View.VISIBLE);
 
         if (barGraph.getBars().size() == 0) {
+            tvBarLabel.setTypeface(KippApplication.getDefaultTypeFace(getActivity()));
             ArrayList<Bar> points = new ArrayList<Bar>();
             Bar d = new Bar();
             d.setColor(Color.parseColor("#99CC00"));
