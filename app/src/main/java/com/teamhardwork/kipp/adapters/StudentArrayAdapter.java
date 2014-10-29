@@ -3,7 +3,6 @@ package com.teamhardwork.kipp.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +24,9 @@ import com.teamhardwork.kipp.utilities.Recommendation;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class StudentArrayAdapter extends ArrayAdapter<Student> {
     private Context context;
     public static final int warningColor = Color.parseColor("#FFD119"); // color for warning tips
@@ -41,15 +43,10 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
 
         ViewHolder v;
         if (convertView == null) {
-            v = new ViewHolder();
             convertView = LayoutInflater.from(getContext()).inflate(
                     R.layout.item_student_row, parent, false);
 
-            v.ivProfilePic = (ImageView) convertView.findViewById(R.id.ivProfilePic);
-            v.tvName = (TextView) convertView.findViewById(R.id.tvName);
-            v.tvRecentBehaviors = (TextView) convertView.findViewById(R.id.tvRecentBehaviors);
-            v.tvNewBehavior = (TextView) convertView.findViewById(R.id.tvNewBehavior);
-            v.ivTips = (ImageView) convertView.findViewById(R.id.ivTips);
+            v = new ViewHolder(convertView);
             convertView.setTag(v);
         } else {
             v = (ViewHolder) convertView.getTag();
@@ -61,39 +58,60 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
         v.ivProfilePic.setImageResource(student.getAvatar().getResourceId());
         v.tvName.setTypeface(typeface);
         v.tvName.setText(student.getFullName());
-        v.tvRecentBehaviors.setText("");
-        v.tvNewBehavior.setText("");
-        updateStudentInfo(student, v.tvRecentBehaviors, v.tvNewBehavior, v.ivTips);
+        hideAllRecentBehaviors(v);
+
+        updateStudentInfo(student, v);
 
         return convertView;
     }
 
-    public void updateStudentInfo(final Student student,
-                                  final TextView tvRecentBehaviors,
-                                  final TextView tvNewBehavior,
-                                  final ImageView ivTips) {
-        ivTips.setImageResource(0);
+    void hideAllRecentBehaviors(ViewHolder holder) {
+        holder.ivFirstBehavior.setVisibility(View.GONE);
+        holder.ivSecondBehavior.setVisibility(View.GONE);
+        holder.ivThirdBehavior.setVisibility(View.GONE);
+        holder.ivFourthBehavior.setVisibility(View.GONE);
+        holder.ivLastBehavior.setVisibility(View.GONE);
+    }
+
+    public void updateStudentInfo(final Student student, final ViewHolder holder) {
+        holder.ivTips.setImageResource(0);
+
         FeedQueries.getStudentFeedMostRecent(student, new FindCallback<BehaviorEvent>() {
             @Override
             public void done(List<BehaviorEvent> behaviorEvents, ParseException e) {
                 if (behaviorEvents == null || behaviorEvents.isEmpty()) return;
 
                 if (Recommendation.getInstance().hasRecs(student)) {
-                    ivTips.setImageResource(R.drawable.ic_tips);
+                    holder.ivTips.setImageResource(R.drawable.ic_tips);
                     int tipColor = (Recommendation.getInstance().getRecs(student).getRecType() == Recommendation.RecommendationType.BAD) ?
                             warningColor : infoColor;
-                    ivTips.setColorFilter(tipColor);
+                    holder.ivTips.setColorFilter(tipColor);
                 }
 
-                StringBuilder recentBehaviors = new StringBuilder();
-                int behaviorsSize = Math.min(FeedQueries.MOST_RECENT_MAX, behaviorEvents.size());
+                for(int i = behaviorEvents.size() - 1; i >= 0; i--) {
+                    int eventResource = behaviorEvents.get(i).getBehavior().getColorResource();
 
-                for (int i = behaviorsSize - 1; i >= 1; i--) {
-                    recentBehaviors.append(getBehaviorHtmlString(behaviorEvents.get(i).getBehavior()));
+                    if(i == behaviorEvents.size() - 1) {
+                        holder.ivLastBehavior.setImageResource(eventResource);
+                        holder.ivLastBehavior.setVisibility(View.VISIBLE);
+                    }
+                    else if(i == behaviorEvents.size() - 2) {
+                        holder.ivFourthBehavior.setImageResource(eventResource);
+                        holder.ivFourthBehavior.setVisibility(View.VISIBLE);
+                    }
+                    else if(i == behaviorEvents.size() - 3) {
+                        holder.ivThirdBehavior.setImageResource(eventResource);
+                        holder.ivThirdBehavior.setVisibility(View.VISIBLE);
+                    }
+                    else if(i == behaviorEvents.size() - 4) {
+                        holder.ivSecondBehavior.setImageResource(eventResource);
+                        holder.ivSecondBehavior.setVisibility(View.VISIBLE);
+                    }
+                    else if(i == behaviorEvents.size() - 5) {
+                        holder.ivFirstBehavior.setImageResource(eventResource);
+                        holder.ivFirstBehavior.setVisibility(View.VISIBLE);
+                    }
                 }
-
-                tvRecentBehaviors.setText(Html.fromHtml(recentBehaviors.toString()));
-                tvNewBehavior.setText(Html.fromHtml(getBehaviorHtmlString(behaviorEvents.get(0).getBehavior())));
             }
         });
     }
@@ -107,11 +125,33 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> {
         }
     }
 
-    private static class ViewHolder {
+    static class ViewHolder {
+        @InjectView(R.id.ivProfilePic)
         ImageView ivProfilePic;
+
+        @InjectView(R.id.tvName)
         TextView tvName;
-        TextView tvRecentBehaviors;
-        TextView tvNewBehavior;
+
+        @InjectView(R.id.ivFirstBehavior)
+        ImageView ivFirstBehavior;
+
+        @InjectView(R.id.ivSecondBehavior)
+        ImageView ivSecondBehavior;
+
+        @InjectView(R.id.ivThirdBehavior)
+        ImageView ivThirdBehavior;
+
+        @InjectView(R.id.ivFourthBehavior)
+        ImageView ivFourthBehavior;
+
+        @InjectView(R.id.ivLastBehavior)
+        ImageView ivLastBehavior;
+
+        @InjectView(R.id.ivTips)
         ImageView ivTips;
+
+        public ViewHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
     }
 }

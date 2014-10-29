@@ -258,21 +258,23 @@ public class RosterFragment extends BaseKippFragment implements Recommendation.R
     }
 
     public void updateStudentBehavior(final View view, final Student student, final BehaviorEvent event) {
-        final TextView tvRecentBehaviors = (TextView) view.findViewById(R.id.tvRecentBehaviors);
-        final TextView tvNewBehavior = (TextView) view.findViewById(R.id.tvNewBehavior);
+        final ImageView ivFirstBehavior = (ImageView) view.findViewById(R.id.ivFirstBehavior);
+        final ImageView ivSecondBehavior = (ImageView) view.findViewById(R.id.ivSecondBehavior);
+        final ImageView ivThirdBehavior = (ImageView) view.findViewById(R.id.ivThirdBehavior);
+        final ImageView ivFourthBehavior = (ImageView) view.findViewById(R.id.ivFourthBehavior);
+        final ImageView ivNewBehavior = (ImageView) view.findViewById(R.id.ivLastBehavior);
         final ImageView ivTips = (ImageView) view.findViewById(R.id.ivTips);
 
-        tvRecentBehaviors.setText("");
-        tvNewBehavior.setText("");
         ivTips.setImageResource(0);
 
-        tvNewBehavior.setText(Html.fromHtml(StudentArrayAdapter.getBehaviorHtmlString(event.getBehavior())));
-        ObjectAnimator scaleX = ObjectAnimator.ofFloat(tvNewBehavior, "scaleX", 2.0f, 1.0f)
+        ivNewBehavior.setImageResource(event.getBehavior().getColorResource());
+
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(ivNewBehavior, "scaleX", 2.0f, 1.0f)
                 .setDuration(1000);
-        scaleX.setRepeatCount(8);
-        ObjectAnimator scaleY = ObjectAnimator.ofFloat(tvNewBehavior, "scaleY", 2.0f, 1.0f)
+        scaleX.setRepeatCount(5);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(ivNewBehavior, "scaleY", 2.0f, 1.0f)
                 .setDuration(1000);
-        scaleY.setRepeatCount(8);
+        scaleY.setRepeatCount(5);
         AnimatorSet set = new AnimatorSet();
         set.playTogether(scaleX, scaleY);
         set.setStartDelay(3000);
@@ -289,12 +291,26 @@ public class RosterFragment extends BaseKippFragment implements Recommendation.R
             public void done(List<BehaviorEvent> behaviorEvents, ParseException e) {
                 if (behaviorEvents == null || behaviorEvents.isEmpty()) return;
 
-                StringBuilder recentBehaviors = new StringBuilder();
-                int behaviorsSize = Math.min(FeedQueries.MOST_RECENT_MAX, behaviorEvents.size());
-                for (int i = behaviorsSize - 1; i >= 1; i--) {
-                    recentBehaviors.append(StudentArrayAdapter.getBehaviorHtmlString(behaviorEvents.get(i).getBehavior()));
+                for(int i = behaviorEvents.size() - 1; i >= 0; i--) {
+                    int eventResource = behaviorEvents.get(i).getBehavior().getColorResource();
+
+                    if(i == behaviorEvents.size() - 2) {
+                        ivFourthBehavior.setImageResource(eventResource);
+                        ivFourthBehavior.setVisibility(View.VISIBLE);
+                    }
+                    else if(i == behaviorEvents.size() - 3) {
+                        ivThirdBehavior.setImageResource(eventResource);
+                        ivThirdBehavior.setVisibility(View.VISIBLE);
+                    }
+                    else if(i == behaviorEvents.size() - 4) {
+                        ivSecondBehavior.setImageResource(eventResource);
+                        ivSecondBehavior.setVisibility(View.VISIBLE);
+                    }
+                    else if(i == behaviorEvents.size() - 5) {
+                        ivFirstBehavior.setImageResource(eventResource);
+                        ivFirstBehavior.setVisibility(View.VISIBLE);
+                    }
                 }
-                tvRecentBehaviors.setText(Html.fromHtml(recentBehaviors.toString()));
             }
         });
     }

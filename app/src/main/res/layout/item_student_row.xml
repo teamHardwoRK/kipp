@@ -57,28 +57,57 @@
             android:text="@string/default_student_name"
             />
 
-        <TextView
-            android:id="@+id/tvRecentBehaviors"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
+            android:id="@+id/llrecentBehaviors"
             android:layout_below="@id/tvName"
-            android:layout_marginTop="-8dp"
             android:layout_alignLeft="@id/tvName"
-            android:layout_toRightOf="@id/ivProfilePic"
-            android:text="++"
-            android:textSize="30sp"/>
-        <TextView
-            android:id="@+id/tvNewBehavior"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:layout_below="@id/tvName"
-            android:layout_toRightOf="@id/tvRecentBehaviors"
-            android:textSize="30sp"
-            android:layout_marginTop="-8dp"
-            android:text="+"
-            android:layout_alignBottom="@id/tvRecentBehaviors"
+            android:layout_marginTop="6dp"
+            android:orientation="horizontal"
+            >
+            <ImageView
+                android:layout_marginLeft="4dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/ivFirstBehavior"
+                android:src="@drawable/color_bull_ic"
+                android:visibility="gone"
+                />
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/ivSecondBehavior"
+                android:src="@drawable/color_bull_ic"
+                android:layout_marginLeft="4dp"
+                android:visibility="gone"
+                />
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/ivThirdBehavior"
+                android:src="@drawable/color_bull_ic"
+                android:layout_marginLeft="4dp"
+                android:visibility="gone"
+                />
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/ivFourthBehavior"
+                android:src="@drawable/color_bull_ic"
+                android:layout_marginLeft="4dp"
+                android:visibility="gone"
+                />
+        </LinearLayout>
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/ivLastBehavior"
+            android:src="@drawable/color_bull_ic"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@id/llrecentBehaviors"
+            android:layout_alignTop="@id/llrecentBehaviors"
+            android:visibility="gone"
             />
 
         <TextView
