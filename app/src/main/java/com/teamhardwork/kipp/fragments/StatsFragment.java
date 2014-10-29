@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -52,6 +53,8 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
 
     protected String statForString = "Class";
 
+    @InjectView(R.id.ivBack)
+    ImageView ivBack;
     @InjectView(R.id.rlRecommendationContainer)
     RelativeLayout rlRecommendationContainer;
     @InjectView(R.id.tvRecommendation)
@@ -252,6 +255,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
             legendItem.setText(behavior.getTitle() + ": " + percentage);
             legendItem.setVisibility(View.VISIBLE);
         }
+        ivBack.setVisibility(View.VISIBLE);
     }
 
     private void turnOffExtraLegendItems() {
@@ -259,6 +263,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
         tvExtraTwo.setVisibility(View.GONE);
         tvExtraThree.setVisibility(View.GONE);
         tvExtraFour.setVisibility(View.GONE);
+        ivBack.setVisibility(View.GONE);
     }
 
     private String getPercentString(double fraction) {
