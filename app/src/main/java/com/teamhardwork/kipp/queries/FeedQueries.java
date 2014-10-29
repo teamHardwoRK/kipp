@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class FeedQueries {
 
-    private static final int QUERY_LIMIT = 40;
+    private static final int QUERY_LIMIT = 200;
 
     public static void getLatestClassEvents(SchoolClass schoolClass, List<BehaviorEvent> eventList,
                                             FindCallback<BehaviorEvent> callback) {
