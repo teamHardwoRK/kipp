@@ -11,13 +11,14 @@ import com.teamhardwork.kipp.utilities.Recommendation;
 import java.util.List;
 
 public class StudentStatsFragment extends StatsFragment {
-    public static final String STUDENT_ID = "studentId";
+    public static final String TAG = "student_stats_fragment";
+    public static final String STUDENT_ID_ARG_KEY = "student_id";
 
     private Student student;
 
     public static StudentStatsFragment newInstance(String studentId) {
         Bundle args = new Bundle();
-        args.putString(STUDENT_ID, studentId);
+        args.putString(STUDENT_ID_ARG_KEY, studentId);
         StudentStatsFragment studentStatsFragment = new StudentStatsFragment();
         studentStatsFragment.setArguments(args);
         return studentStatsFragment;
@@ -26,7 +27,7 @@ public class StudentStatsFragment extends StatsFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String studentId = getArguments().getString(STUDENT_ID);
+        String studentId = getArguments().getString(STUDENT_ID_ARG_KEY);
         student = Student.getStudent(studentId);
         statForString = student.getFullName();
     }

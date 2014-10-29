@@ -23,7 +23,6 @@ dependencies {
     compile project(':HoloGraphLibrary')
     compile project(':swipelistview')
     compile project(':viewpagerindicator')
-    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
     compile 'com.facebook.rebound:rebound:0.3.6'
     compile 'com.nhaarman.listviewanimations:lib-core:3.1.0@aar'
     compile 'com.nhaarman.listviewanimations:lib-manipulation:3.1.0@aar'

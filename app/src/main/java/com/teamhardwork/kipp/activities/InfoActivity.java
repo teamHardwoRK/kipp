@@ -3,23 +3,22 @@ package com.teamhardwork.kipp.activities;
 import android.app.ActionBar;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v13.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.astuetz.PagerSlidingTabStrip;
 import com.squareup.picasso.Picasso;
 import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
-import com.teamhardwork.kipp.adapters.InfoPagerAdapter;
 import com.teamhardwork.kipp.dialogfragments.AddActionDialogFragment;
+import com.teamhardwork.kipp.fragments.ActionLogFragment;
 import com.teamhardwork.kipp.fragments.FeedFragment;
+import com.teamhardwork.kipp.fragments.StudentStatsFragment;
+import com.teamhardwork.kipp.listeners.FragmentTabListener;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.users.Student;
 
@@ -28,13 +27,10 @@ import butterknife.InjectView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class InfoActivity extends BaseKippActivity implements FeedFragment.FeedListener {
-    @InjectView(R.id.vpPager)
-    ViewPager vpPager;
-    @InjectView(R.id.tabs)
-    PagerSlidingTabStrip tabs;
+    @InjectView(R.id.flInfoContainer)
+    FrameLayout flInfoContainer;
 
     private Student selected;
-    private InfoPagerAdapter infoPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +44,7 @@ public class InfoActivity extends BaseKippActivity implements FeedFragment.FeedL
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         String selectedId = (selected != null) ? selected.getObjectId() : null;
-
-        infoPagerAdapter = new InfoPagerAdapter(getFragmentManager(), selectedId);
-        vpPager.setAdapter(infoPagerAdapter);
-        tabs.setViewPager(vpPager);
+        setupTabs(selectedId);
     }
 
     private void setActionBarTitle() {
@@ -149,17 +142,58 @@ public class InfoActivity extends BaseKippActivity implements FeedFragment.FeedL
         dialogFragment.show(getFragmentManager(), "dialog_fragment_add_action");
     }
 
+    private void setupTabs(String selectedStudentId) {
+        ActionBar actionBar = getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+        Bundle args = new Bundle();
+        args.putString(StudentStatsFragment.STUDENT_ID_ARG_KEY, selectedStudentId);
+
+        ActionBar.Tab tab1 = actionBar
+                .newTab()
+                .setText("Stats")
+                .setTabListener(
+                        new FragmentTabListener<StudentStatsFragment>(R.id.flInfoContainer, this,
+                                StudentStatsFragment.TAG, StudentStatsFragment.class, args));
+        actionBar.addTab(tab1);
+        actionBar.selectTab(tab1);
+
+        ActionBar.Tab tab2 = actionBar
+                .newTab()
+                .setText("Behaviors")
+                .setTabListener(
+                        new FragmentTabListener<FeedFragment>(R.id.flInfoContainer, this,
+                                FeedFragment.TAG, FeedFragment.class, args));
+        actionBar.addTab(tab2);
+
+        ActionBar.Tab tab3 = actionBar
+                .newTab()
+                .setText("Log")
+                .setTabListener(
+                        new FragmentTabListener<ActionLogFragment>(R.id.flInfoContainer, this,
+                                ActionLogFragment.TAG, ActionLogFragment.class, args));
+        actionBar.addTab(tab3);
+    }
+
     @Override
     protected void updateFragments() {
         super.updateFragments();
-        if (infoPagerAdapter.getActionLogFragment() != null) {
-            infoPagerAdapter.getActionLogFragment().updateData();
+        StudentStatsFragment studentStatsFragment = (StudentStatsFragment) getFragmentManager()
+                .findFragmentByTag(StudentStatsFragment.STUDENT_ID_ARG_KEY);
+        if (studentStatsFragment != null) {
+            studentStatsFragment.updateData();
         }
-        if (infoPagerAdapter.getFeedFragment() != null) {
-            infoPagerAdapter.getFeedFragment().updateData();
+
+        FeedFragment feedFragment = (FeedFragment) getFragmentManager()
+                .findFragmentByTag(FeedFragment.TAG);
+        if (feedFragment != null) {
+            feedFragment.updateData();
         }
-        if (infoPagerAdapter.getStatsFragment() != null) {
-            infoPagerAdapter.getStatsFragment().updateData();
+
+        ActionLogFragment actionLogFragment = (ActionLogFragment) getFragmentManager()
+                .findFragmentByTag(ActionLogFragment.TAG);
+        if (actionLogFragment != null) {
+            actionLogFragment.updateData();
         }
     }
 }

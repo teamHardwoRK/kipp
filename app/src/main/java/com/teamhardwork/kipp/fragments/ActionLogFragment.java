@@ -21,8 +21,8 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class ActionLogFragment extends BaseKippFragment implements Updatable {
-
-    private static final String CURRENT_STUDENT_ID_KEY = "student_id";
+    public static final String TAG = "action_log_fragment";
+    private static final String STUDENT_ID_ARG_KEY = "student_id";
 
     ActionEventAdapter actionAdapter;
     Student student;
@@ -32,7 +32,7 @@ public class ActionLogFragment extends BaseKippFragment implements Updatable {
 
     public static ActionLogFragment newInstance(String currentStudentId) {
         Bundle args = new Bundle();
-        args.putString(CURRENT_STUDENT_ID_KEY, currentStudentId);
+        args.putString(STUDENT_ID_ARG_KEY, currentStudentId);
         ActionLogFragment fragment = new ActionLogFragment();
         fragment.setArguments(args);
         return fragment;
@@ -43,8 +43,8 @@ public class ActionLogFragment extends BaseKippFragment implements Updatable {
         View view = inflater.inflate(R.layout.fragment_action_log, container, false);
         ButterKnife.inject(this, view);
 
-        if (getArguments() != null && getArguments().containsKey(CURRENT_STUDENT_ID_KEY)) {
-            String currentStudentId = getArguments().getString(CURRENT_STUDENT_ID_KEY);
+        if (getArguments() != null && getArguments().containsKey(STUDENT_ID_ARG_KEY)) {
+            String currentStudentId = getArguments().getString(STUDENT_ID_ARG_KEY);
             student = Student.getStudent(currentStudentId);
         }
 

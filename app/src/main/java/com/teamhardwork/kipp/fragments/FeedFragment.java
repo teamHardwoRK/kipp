@@ -7,15 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.teamhardwork.kipp.R;
-import com.teamhardwork.kipp.adapters.ActionEventAdapter;
 import com.teamhardwork.kipp.adapters.BehaviorEventAdapter;
-import com.teamhardwork.kipp.models.Action;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.users.Student;
 import com.teamhardwork.kipp.queries.FeedQueries;
@@ -27,7 +23,8 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class FeedFragment extends BaseKippFragment implements Updatable {
-    private static final String CURRENT_STUDENT_ID_KEY = "student_id";
+    public static final String TAG = "behavior_log_fragment";
+    public static final String STUDENT_ID_ARG_KEY = "student_id";
 
     FeedType feedType;
     Student student;
@@ -40,7 +37,7 @@ public class FeedFragment extends BaseKippFragment implements Updatable {
 
     public static FeedFragment newInstance(String currentStudentId) {
         Bundle args = new Bundle();
-        args.putString(CURRENT_STUDENT_ID_KEY, currentStudentId);
+        args.putString(STUDENT_ID_ARG_KEY, currentStudentId);
         FeedFragment fragment = new FeedFragment();
         fragment.setArguments(args);
         return fragment;
@@ -58,8 +55,8 @@ public class FeedFragment extends BaseKippFragment implements Updatable {
         ButterKnife.inject(this, view);
 
         boolean classMode = true;
-        if (getArguments() != null && getArguments().containsKey(CURRENT_STUDENT_ID_KEY)) {
-            String currentStudentId = getArguments().getString(CURRENT_STUDENT_ID_KEY);
+        if (getArguments() != null && getArguments().containsKey(STUDENT_ID_ARG_KEY)) {
+            String currentStudentId = getArguments().getString(STUDENT_ID_ARG_KEY);
             student = Student.getStudent(currentStudentId);
             classMode = false;
         }
