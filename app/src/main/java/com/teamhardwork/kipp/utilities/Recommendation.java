@@ -17,33 +17,33 @@ public class Recommendation {
     private static final int RISK_ELEVATED = 6;
     private static final int RISK_SEVERE = 10;
     private static final int RECENT_TREND_MAX = 10;
-    private static final String REC_CLEANING_UP_RECENT = " *Recent Trend: cleaning up";
-    private static final String REC_ON_TASK_RECENT = " *Recent Trend: staying on task";
-    private static final String REC_RESPECTING_EVERYONE_RECENT = " *Recent Trend: respecting everyone";
-    private static final String REC_SHOWING_GRATITUDE_RECENT = " *Recent Trend: showing gratitude";
-    private static final String REC_SILENT_REMINDERS_RECENT = " *Recent Trend: silent reminders";
-    private static final String REC_VOLUNTEERING_RECENT = " *Recent Trend: volunteering";
+    private static final String REC_CLEANING_UP_RECENT = " *Recent Trend: cleaning up.";
+    private static final String REC_ON_TASK_RECENT = " *Recent Trend: staying on task.";
+    private static final String REC_RESPECTING_EVERYONE_RECENT = " *Recent Trend: respecting everyone.";
+    private static final String REC_SHOWING_GRATITUDE_RECENT = " *Recent Trend: showing gratitude.";
+    private static final String REC_SILENT_REMINDERS_RECENT = " *Recent Trend: silent reminders.";
+    private static final String REC_VOLUNTEERING_RECENT = " *Recent Trend: volunteering.";
 
-    private static final String REC_DRESS_CODE_VIOLATION_RECENT = " *Recent Trend: dress code violation";
-    private static final String REC_LACK_OF_INTEGRITY_RECENT = " *Recent Trend: lack of integrity";
-    private static final String REC_LATE_RECENT = " *Recent Trend: late";
-    private static final String REC_TALKING_RECENT = " *Recent Trend: talking in class";
-    private static final String REC_HORSEPLAY_RECENT = " *Recent Trend: horseplay";
-    private static final String REC_FIGHTING_RECENT = " *Recent Trend: fighting";
+    private static final String REC_DRESS_CODE_VIOLATION_RECENT = " *Recent Trend: dress code violation.";
+    private static final String REC_LACK_OF_INTEGRITY_RECENT = " *Recent Trend: lack of integrity.";
+    private static final String REC_LATE_RECENT = " *Recent Trend: late.";
+    private static final String REC_TALKING_RECENT = " *Recent Trend: talking in class.";
+    private static final String REC_HORSEPLAY_RECENT = " *Recent Trend: horseplay.";
+    private static final String REC_FIGHTING_RECENT = " *Recent Trend: fighting.";
 
-    private static final String REC_CLEANING_UP = " deserves a star for consistently cleaning up";
-    private static final String REC_ON_TASK = " deserves a star for consistently staying on task";
-    private static final String REC_RESPECTING_EVERYONE = " deserves a star for always showing respect to everyone";
-    private static final String REC_SHOWING_GRATITUDE = " deserves a star for always showing gratitude to everyone";
-    private static final String REC_SILENT_REMINDERS = " deserves a star";
-    private static final String REC_VOLUNTEERING = " deserves a star for actively volunteering";
+    private static final String REC_CLEANING_UP = " deserves a star for consistently cleaning up.";
+    private static final String REC_ON_TASK = " deserves a star for consistently staying on task.";
+    private static final String REC_RESPECTING_EVERYONE = " deserves a star for always showing respect to everyone.";
+    private static final String REC_SHOWING_GRATITUDE = " deserves a star for always showing gratitude to everyone.";
+    private static final String REC_SILENT_REMINDERS = " deserves a star.";
+    private static final String REC_VOLUNTEERING = " deserves a star for actively volunteering.";
 
-    private static final String REC_DRESS_CODE_VIOLATION = " needs to learn the proper dress code";
-    private static final String REC_LACK_OF_INTEGRITY = " needs to have a talk about integrity";
-    private static final String REC_LATE = " is frequently late to class- contact the parents";
-    private static final String REC_TALKING = " frequently talks in class- contact the parents";
-    private static final String REC_HORSEPLAY = " must go to detention for horseplay";
-    private static final String REC_FIGHTING = " must do to detention for fighting in school- and contact the parents";
+    private static final String REC_DRESS_CODE_VIOLATION = " needs to learn the proper dress code.";
+    private static final String REC_LACK_OF_INTEGRITY = " needs to have a talk about integrity.";
+    private static final String REC_LATE = " is frequently late to class- contact the parents.";
+    private static final String REC_TALKING = " frequently talks in class- contact the parents.";
+    private static final String REC_HORSEPLAY = " must go to detention for horseplay.";
+    private static final String REC_FIGHTING = " must do to detention for fighting in school- and contact the parents.";
 
     private static Recommendation instance = null;
     private HashMap<Student, RecommendationData> studentRecs;
