@@ -14,7 +14,6 @@
     * **log in**
     * **view a class roster**
         * **switch between different class rosters**
-        * **filter students by gender**
         * **view class-level behavior statistics**
         * **view a feed of behavior entries for the class**
             * **perform actions on a student within the feed (e.g., call, text, email, add note)**
@@ -24,11 +23,10 @@
             * view action logs (e.g., parent calls, conferences, etc.)
         * **add a behavior event for a student**
             * **examples: talking during class (bad), being disruptive (bad), helping others (good)**
-        * take attendance each day
-    * project the latest classroom feed onto a classroom chromecast enabled display
-    * add custom behavior events
-    * add course milestones to the feed.  E.g., add an event to the feed when a students completes a classwork section.
 
 Sprint 2:
 ![alt text](https://github.com/teamHardwoRK/kipp/blob/master/docs/anim_kipp_sprint_2.gif "Sprint 2")
-    
+
+Sprint 3:
+![alt text](https://github.com/teamHardwoRK/kipp/blob/master/docs/kipp_20141029.gif "Sprint 3")
+
