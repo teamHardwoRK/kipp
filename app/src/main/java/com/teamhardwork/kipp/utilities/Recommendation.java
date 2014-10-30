@@ -217,7 +217,7 @@ public class Recommendation {
                 RecommendationData recData;
                 if (prevalentBehavior != null) {
                     recData = getRecPerBehavior(prevalentBehavior, false);
-                    if (trendyRec != null) recData.addRec(trendyRec.toString());
+                    if (trendyRec != null && !trendyBehavior.getTitle().equals(prevalentBehavior.getTitle())) recData.addRec(trendyRec.toString());
                     studentRecs.put(student, recData);
                     if (listener != null) {
                         listener.onAddRec(student, recData);
