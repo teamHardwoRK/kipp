@@ -14,25 +14,19 @@ import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.utilities.DateUtilities;
 
+import org.joda.time.DateTime;
+
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
-public class BehaviorEventAdapter extends ArrayAdapter<BehaviorEvent> {
+public class BehaviorEventAdapter extends ArrayAdapter<BehaviorEvent> implements StickyListHeadersAdapter {
     List<BehaviorEvent> eventList;
     boolean classMode;
-
-    /**
-     * Type of ListView item that requires to display the header section
-     */
-    private static final int TYPE_HEADER_ITEM = 0;
-
-    /**
-     * Type of the ListView item that does not display the header section
-     */
-    private static final int TYPE_REGULAR_ITEM = 1;
 
     private SimpleDateFormat dateFormatter;
 
@@ -45,44 +39,6 @@ public class BehaviorEventAdapter extends ArrayAdapter<BehaviorEvent> {
 
     public List<BehaviorEvent> getEventList() {
         return eventList;
-    }
-
-    /**
-     * Returns the number of types of Views that will be created by getView(int, View, ViewGroup)
-     */
-    @Override
-    public int getViewTypeCount() {
-        // At the moment we have 2 types:
-        // 0 - TYPE_HEADER_ITEM
-        // 1 - TYPE_REGULAR_ITEM
-        return 2;
-    }
-
-    /**
-     * Get the type of View that will be created by getView(int, View, ViewGroup) for the
-     * specified item.
-     *
-     * @param position
-     * @return the view type
-     */
-    @Override
-    public int getItemViewType(int position) {
-        // Check BehaviorEvent date vs previous element date
-        if (position == 0) {
-            return TYPE_HEADER_ITEM; // First item have header
-        }
-
-        BehaviorEvent previousBehavior = getItem(position -1);
-        BehaviorEvent currentBehavior = getItem(position);
-
-        String previousDate = dateFormatter.format(previousBehavior.getOccurredAt());
-        String currentDate = dateFormatter.format(currentBehavior.getOccurredAt());
-
-        if (currentDate.equals(previousDate)) {
-            return TYPE_REGULAR_ITEM;
-        } else {
-            return TYPE_HEADER_ITEM;
-        }
     }
 
     @Override
@@ -109,15 +65,6 @@ public class BehaviorEventAdapter extends ArrayAdapter<BehaviorEvent> {
         Typeface typeface = KippApplication.getDefaultTypeFace(getContext());
         BehaviorEvent event = getItem(position);
 
-        int viewType = getItemViewType(position);
-
-        if (viewType == TYPE_HEADER_ITEM) {
-            holder.tvHeader.setText(dateFormatter.format(event.getOccurredAt()));
-            holder.tvHeader.setVisibility(View.VISIBLE);
-        } else {
-            holder.tvHeader.setVisibility(View.GONE);
-        }
-
         holder.tvBehaviorName.setText(event.getBehavior().getTitle());
         holder.tvBehaviorName.setTypeface(typeface);
 
@@ -137,25 +84,45 @@ public class BehaviorEventAdapter extends ArrayAdapter<BehaviorEvent> {
         return DateUtilities.timestampAge(event.getOccurredAt()) + " " + getContext().getResources().getString(R.string.past_label);
     }
 
-/*    @Override
-    public int getItemViewType(int position) {
-        if(classMode) {
-            return 0;
+    @Override
+    public View getHeaderView(int i, View convertView, ViewGroup viewGroup) {
+        HeaderHolder holder;
+
+        if(convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.header_behavior_event, viewGroup, false);
+
+            holder = new HeaderHolder(convertView);
+            convertView.setTag(holder);
         }
         else {
-            return 1;
+            holder = (HeaderHolder) convertView.getTag();
         }
+        Typeface typeface = KippApplication.getDefaultTypeFace(getContext());
+        holder.tvHeader.setText(dateFormatter.format(getItem(i).getOccurredAt()));
+        holder.tvHeader.setTypeface(typeface);
 
+        return convertView;
     }
 
     @Override
-    public int getViewTypeCount() {
-        return 2;
-    }*/
+    public long getHeaderId(int i) {
+        BehaviorEvent event = getItem(i);
+        Date date = event.getOccurredAt();
+        DateTime startOfDay = new DateTime(date).withTimeAtStartOfDay();
 
-    class ViewHolder {
+        return startOfDay.getMillis();
+    }
+
+    class HeaderHolder {
         @InjectView(R.id.tvHeader)
         TextView tvHeader;
+
+        public HeaderHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
+    }
+
+    class ViewHolder {
         @InjectView(R.id.tvBehaviorName)
         TextView tvBehaviorName;
         @InjectView(R.id.tvEventTimestamp)

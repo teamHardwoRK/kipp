@@ -21,6 +21,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class FeedFragment extends BaseKippFragment implements Updatable {
     public static final String TAG = "behavior_log_fragment";
@@ -30,7 +31,7 @@ public class FeedFragment extends BaseKippFragment implements Updatable {
     Student student;
 
     @InjectView(R.id.lvBehaviorFeed)
-    ListView lvBehaviorFeed;
+    StickyListHeadersListView lvBehaviorFeed;
 
     BehaviorEventAdapter behaviorAdapter;
     FeedListener listener;

@@ -5,16 +5,6 @@
     android:layout_height="match_parent"
     android:paddingBottom="5dp">
 
-    <TextView
-        android:id="@+id/tvHeader"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:text="Today"
-        android:textSize="20sp"
-        android:layout_marginTop="15dp"
-        style="?android:listSeparatorTextViewStyle"/>
-
     <ImageView
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
@@ -23,7 +13,7 @@
         android:layout_height="60dp"
         android:scaleType="centerCrop"
         android:src="@drawable/color_bull_ic"
-        android:layout_below="@+id/tvHeader"/>
+        />
 
     <TextView
         android:id="@+id/tvBehaviorName"
@@ -33,7 +23,6 @@
         android:layout_marginTop="12dp"
         android:layout_marginLeft="10dp"
         android:text="@string/default_behavior_name"
-        android:layout_below="@+id/tvHeader"
         android:textSize="20sp"
         android:textStyle="bold" />
 

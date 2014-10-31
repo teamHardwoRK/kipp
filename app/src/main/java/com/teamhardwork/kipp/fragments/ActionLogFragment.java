@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -19,6 +18,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 
 public class ActionLogFragment extends BaseKippFragment implements Updatable {
     public static final String TAG = "action_log_fragment";
@@ -28,7 +28,7 @@ public class ActionLogFragment extends BaseKippFragment implements Updatable {
     Student student;
 
     @InjectView(R.id.lvActionFeed)
-    ListView lvActionFeed;
+    StickyListHeadersListView lvActionFeed;
 
     public static ActionLogFragment newInstance(String currentStudentId) {
         Bundle args = new Bundle();
