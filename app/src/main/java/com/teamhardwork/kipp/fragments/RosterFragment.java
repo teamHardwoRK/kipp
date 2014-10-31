@@ -5,6 +5,8 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -45,6 +48,7 @@ public class RosterFragment extends BaseKippFragment implements Recommendation.R
     private List<BehaviorEvent> classBehaviorEvents;
     private int frontViewId;
     private int backViewId;
+    private EditText etFilter;
 
     @Override
     public void onAttach(Activity activity) {
@@ -111,7 +115,35 @@ public class RosterFragment extends BaseKippFragment implements Recommendation.R
         return v;
     }
 
+    private TextWatcher filterTextWatcher = new TextWatcher() {
+
+        public void afterTextChanged(Editable s) {
+        }
+
+        public void beforeTextChanged(CharSequence s, int start, int count,
+                                      int after) {
+        }
+
+        public void onTextChanged(CharSequence s, int start, int before,
+                                  int count) {
+            if (etFilter.getText().toString().matches("")) {
+                aStudents.resetFilter();
+            }
+            aStudents.getFilter().filter(s.toString());
+        }
+
+    };
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        etFilter.removeTextChangedListener(filterTextWatcher);
+    }
+
     private void setupViews(View v) {
+        etFilter = (EditText) v.findViewById(R.id.etFilter);
+        etFilter.addTextChangedListener(filterTextWatcher);
+
         lvStudents = (SwipeListView) v.findViewById(R.id.lvStudents);
         lvStudents.setAdapter(aStudents);
 
