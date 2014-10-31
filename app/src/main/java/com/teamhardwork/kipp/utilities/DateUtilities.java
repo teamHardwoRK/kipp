@@ -9,6 +9,7 @@ import java.util.Date;
 
 public class DateUtilities {
     static final String DATE_FORMAT = "yyyy-MM-dd HH:mm Z";
+    static final String TIME_FORMAT = "h:mm a";
 
     public static Date stringToDate(String dateString) {
         SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);
@@ -49,5 +50,11 @@ public class DateUtilities {
             sb.append(period.getSeconds()).append("s ");
         }
         return sb.toString();
+    }
+
+    /** Returns a time string with the format 'HH:MM a' */
+    public static String timeToString(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat(TIME_FORMAT);
+        return format.format(date);
     }
 }

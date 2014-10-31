@@ -57,7 +57,7 @@ public class ActionEventAdapter extends ArrayAdapter<Action> implements StickyLi
         holder.ivActionIcon.setImageResource(action.getType().getGreenResource());
         holder.tvActionTypeName.setTypeface(typeface);
         holder.tvActionTypeName.setText(action.getType().getDisplayName());
-        holder.tvEventTimeStamp.setText(age(action));
+        holder.tvEventTimeStamp.setText(DateUtilities.timeToString(action.getOccurredAt()));
         holder.tvEventTimeStamp.setTypeface(typeface);
 
         return convertView;
