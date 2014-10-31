@@ -7,8 +7,9 @@
 
     <ImageView
         android:id="@+id/ivBehaviorIcon"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/tvHeader"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
@@ -20,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="8dp"
         android:layout_toRightOf="@+id/ivBehaviorIcon"
         android:text="@string/default_student_name"
         android:textSize="18sp"
@@ -32,15 +33,16 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/tvStudentName"
         android:layout_below="@id/tvStudentName"
-        android:layout_marginTop="5dp"
         android:text="@string/default_behavior_name" />
 
     <TextView
         android:id="@+id/tvEventTimestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
         android:text="2h ago"
-        android:textColor="#8B939A" />
+        android:textColor="#8B939A"
+        android:layout_marginRight="10dp"
+        android:layout_alignBaseline="@+id/tvStudentName"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>
