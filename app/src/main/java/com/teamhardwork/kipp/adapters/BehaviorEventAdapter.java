@@ -73,6 +73,7 @@ public class BehaviorEventAdapter extends ArrayAdapter<BehaviorEvent> implements
             holder.tvStudentName.setTypeface(typeface);
         }
 
+        // TODO: Make use of new method in DateUtilities to print time 'HH:MM a'
         holder.tvEventTimestamp.setText(age(event));
         holder.tvEventTimestamp.setTypeface(typeface);
         holder.ivBehaviorIcon.setImageResource(event.getBehavior().getColorResource());
