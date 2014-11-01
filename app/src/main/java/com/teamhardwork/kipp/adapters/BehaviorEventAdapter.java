@@ -111,7 +111,7 @@ public class BehaviorEventAdapter extends ArrayAdapter<BehaviorEvent> implements
         Date date = event.getOccurredAt();
         DateTime startOfDay = new DateTime(date).withTimeAtStartOfDay();
 
-        return startOfDay.getMillis();
+        return startOfDay.minusHours(7).getMillis();
     }
 
     class HeaderHolder {

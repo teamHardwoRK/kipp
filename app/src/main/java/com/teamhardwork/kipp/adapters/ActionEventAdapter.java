@@ -93,7 +93,7 @@ public class ActionEventAdapter extends ArrayAdapter<Action> implements StickyLi
         Date date = action.getOccurredAt();
         DateTime startOfDay = new DateTime(date).withTimeAtStartOfDay();
 
-        return startOfDay.getMillis();
+        return startOfDay.minusHours(7).getMillis();
     }
 
     class HeaderHolder {
