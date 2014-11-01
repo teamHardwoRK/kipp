@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -91,12 +90,9 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
     RelativeLayout rlLegend;
     @InjectView(R.id.rlBackButton)
     RelativeLayout rlBackButton;
-    @InjectView(R.id.ivBack)
-    ImageView ivBack;
-    @InjectView(R.id.tvBack)
-    TextView tvBack;
 
     private ChartMode chartMode = ChartMode.OVERALL;
+    private ChartMode previousMode;
     private List<TextView> legendItems;
     private Map<Behavior, Integer> behaviorCounts;
     private List<BehaviorEvent> curBehaviorEvents;
@@ -137,6 +133,8 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
                         spring.getCurrentValue(), 0, 1, 1, 0.5);
                 pieGraph.setScaleX(mappedValue);
                 pieGraph.setScaleY(mappedValue);
+                barGraph.setScaleX(mappedValue);
+                barGraph.setScaleY(mappedValue);
             }
         });
 
@@ -156,16 +154,6 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
             }
         });
 
-        rlBackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (chartMode != ChartMode.OVERALL) {
-                    activateOverallChart(curBehaviorEvents);
-                    chartMode = ChartMode.OVERALL;
-                }
-            }
-        });
-
         pieGraph.setInnerCircleRatio(0);
         pieGraph.setOnSliceClickedListener(new PieGraph.OnSliceClickedListener() {
             @Override
@@ -182,7 +170,6 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
                     }
                 } else {
                     setupBarGraph();
-                    rlBackButton.setVisibility(View.GONE);
                 }
             }
         });
@@ -195,6 +182,8 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
     }
 
     private void setupBarGraph() {
+        previousMode = chartMode;
+        chartMode = ChartMode.BAR;
         pieGraph.setVisibility(View.GONE);
         rlLegend.setVisibility(View.GONE);
         rlBarChartContainer.setVisibility(View.VISIBLE);
@@ -234,7 +223,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
             points.add(d6);
 
             barGraph.setBars(points);
-        };
+        }
 
         rlBarChartContainer.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in));
     }
@@ -255,7 +244,8 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
         FeedQueries.getClassFeed(currentClass, overallResponseCallback);
     }
 
-    protected void setRecommendation(List<BehaviorEvent> behaviorEvents) {}
+    protected void setRecommendation(List<BehaviorEvent> behaviorEvents) {
+    }
 
     private void activateOverallChart(List<BehaviorEvent> behaviorEvents) {
         unsetChartValues();
@@ -284,14 +274,20 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
         }
     }
 
-    @OnClick(R.id.ivBarGraphBack)
-    void barToPie() {
-        pieGraph.setVisibility(View.VISIBLE);
-        rlLegend.setVisibility(View.VISIBLE);
-        rlBarChartContainer.setVisibility(View.GONE);
-        pieGraph.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in));
-        rlLegend.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in));
-        rlBackButton.setVisibility(View.VISIBLE);
+    @OnClick(R.id.rlBackButton)
+    void gotoPreviousChart() {
+
+        if (chartMode == ChartMode.BAR) {
+            pieGraph.setVisibility(View.VISIBLE);
+            rlLegend.setVisibility(View.VISIBLE);
+            rlBarChartContainer.setVisibility(View.GONE);
+            pieGraph.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in));
+            rlLegend.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in));
+            chartMode = previousMode;
+        } else if (chartMode != ChartMode.OVERALL) {
+            activateOverallChart(curBehaviorEvents);
+            chartMode = ChartMode.OVERALL;
+        }
     }
 
     private void setupChart() {
@@ -379,7 +375,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
     }
 
     public enum ChartMode {
-        OVERALL, BAD_DETAIL, GOOD_DETAIL
+        OVERALL, BAD_DETAIL, GOOD_DETAIL, BAR
     }
 
     private enum OverallSlices {
