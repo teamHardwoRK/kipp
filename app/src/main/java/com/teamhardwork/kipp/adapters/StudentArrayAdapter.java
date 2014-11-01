@@ -25,7 +25,6 @@ import com.teamhardwork.kipp.queries.FeedQueries;
 import com.teamhardwork.kipp.utilities.Recommendation;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,11 +32,11 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class StudentArrayAdapter extends ArrayAdapter<Student> implements Filterable {
+    public static final int warningColor = Color.parseColor("#FFD119"); // color for warning tips
+    public static final int infoColor = Color.parseColor("#1C70EF");
     private Context context;
     private List<Student> students;
     private List<Student> originalRoster;
-    public static final int warningColor = Color.parseColor("#FFD119"); // color for warning tips
-    public static final int infoColor = Color.parseColor("#1C70EF");
     private Filter studentFilter;
 
     public StudentArrayAdapter(Context context, int resource, List<Student> students) {
@@ -47,11 +46,13 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> implements Filter
         this.originalRoster = new ArrayList<Student>(students);
     }
 
-    @Override
-    public void addAll(Collection<? extends Student> collection) {
-        if (collection == null) return;
-        super.addAll(collection);
-        this.originalRoster.addAll(collection);
+    public static String getBehaviorHtmlString(Behavior behavior) {
+        if (behavior.getCategory() == BehaviorCategory.SLIP ||
+                behavior.getCategory() == BehaviorCategory.FALL) {
+            return new String("<font color=\"#FF6B6B\"> - </font>");
+        } else {
+            return new String("<font color=\"#C7F464\"> + </font>");
+        }
     }
 
     @Override
@@ -102,7 +103,8 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> implements Filter
 
                 if (Recommendation.getInstance().hasRecs(student)) {
                     holder.ivTips.setImageResource(R.drawable.ic_tips);
-                    int tipColor = (Recommendation.getInstance().getRecs(student).getRecType() == Recommendation.RecommendationType.BAD) ?
+                    int tipColor = (Recommendation.getInstance().getRecs(student).getRecType()
+                            == Recommendation.RecommendationType.BAD) ?
                             warningColor : infoColor;
                     holder.ivTips.setColorFilter(tipColor);
                 }
@@ -131,45 +133,6 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> implements Filter
         });
     }
 
-    public static String getBehaviorHtmlString(Behavior behavior) {
-        if (behavior.getCategory() == BehaviorCategory.SLIP ||
-                behavior.getCategory() == BehaviorCategory.FALL) {
-            return new String("<font color=\"#FF6B6B\"> - </font>");
-        } else {
-            return new String("<font color=\"#C7F464\"> + </font>");
-        }
-    }
-
-    static class ViewHolder {
-        @InjectView(R.id.ivProfilePic)
-        ImageView ivProfilePic;
-
-        @InjectView(R.id.tvName)
-        TextView tvName;
-
-        @InjectView(R.id.ivFirstBehavior)
-        ImageView ivFirstBehavior;
-
-        @InjectView(R.id.ivSecondBehavior)
-        ImageView ivSecondBehavior;
-
-        @InjectView(R.id.ivThirdBehavior)
-        ImageView ivThirdBehavior;
-
-        @InjectView(R.id.ivFourthBehavior)
-        ImageView ivFourthBehavior;
-
-        @InjectView(R.id.ivLastBehavior)
-        ImageView ivLastBehavior;
-
-        @InjectView(R.id.ivTips)
-        ImageView ivTips;
-
-        public ViewHolder(View view) {
-            ButterKnife.inject(this, view);
-        }
-    }
-
     public void resetFilter() {
         students = originalRoster;
     }
@@ -182,19 +145,12 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> implements Filter
                     FilterResults results = new FilterResults();
                     List<Student> filteredStudents = new ArrayList<Student>();
 
-                    if (constraint == null || constraint.length() == 0) {
-                        // No filter implemented we return all the list
-                        results.values = students;
-                        results.count = students.size();
-                    } else {
-                        for (Student student : students) {
-                            if (student.getFirstName().toLowerCase()
-                                    .contains(constraint.toString()))
-                                filteredStudents.add(student);
-                        }
-                        results.values = filteredStudents;
-                        results.count = filteredStudents.size();
+                    for (Student student : originalRoster) {
+                        if (student.getFirstName().toLowerCase().startsWith(constraint.toString()))
+                            filteredStudents.add(student);
                     }
+                    results.values = filteredStudents;
+                    results.count = filteredStudents.size();
                     return results;
                 }
 
@@ -206,8 +162,8 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> implements Filter
                     if (results.count == 0)
                         notifyDataSetInvalidated();
                     else {
-                        students = (List<Student>) results.values;
-                        notifyDataSetChanged();
+                        clear();
+                        addAll((List<Student>) results.values);
                     }
                 }
 
@@ -216,5 +172,32 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> implements Filter
         }
 
         return studentFilter;
+    }
+
+    public void setOriginalRoster(List<Student> originalRoster) {
+        this.originalRoster = originalRoster;
+    }
+
+    static class ViewHolder {
+        @InjectView(R.id.ivProfilePic)
+        ImageView ivProfilePic;
+        @InjectView(R.id.tvName)
+        TextView tvName;
+        @InjectView(R.id.ivFirstBehavior)
+        ImageView ivFirstBehavior;
+        @InjectView(R.id.ivSecondBehavior)
+        ImageView ivSecondBehavior;
+        @InjectView(R.id.ivThirdBehavior)
+        ImageView ivThirdBehavior;
+        @InjectView(R.id.ivFourthBehavior)
+        ImageView ivFourthBehavior;
+        @InjectView(R.id.ivLastBehavior)
+        ImageView ivLastBehavior;
+        @InjectView(R.id.ivTips)
+        ImageView ivTips;
+
+        public ViewHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
     }
 }

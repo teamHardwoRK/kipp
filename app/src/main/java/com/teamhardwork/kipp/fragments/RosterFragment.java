@@ -93,6 +93,7 @@ public class RosterFragment extends BaseKippFragment implements Recommendation.R
                     students = foundStudents;
                     Collections.sort(students);
                     aStudents.addAll(students);
+                    aStudents.setOriginalRoster(students);
                     progressBar.setVisibility(View.GONE);
                     if (!Recommendation.getInstance().isInit()) {
                         for (Student student : students) {
