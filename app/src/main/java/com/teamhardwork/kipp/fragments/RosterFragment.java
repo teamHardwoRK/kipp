@@ -16,6 +16,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -48,7 +51,6 @@ public class RosterFragment extends BaseKippFragment implements Recommendation.R
     private List<BehaviorEvent> classBehaviorEvents;
     private int frontViewId;
     private int backViewId;
-    private EditText etFilter;
 
     @Override
     public void onAttach(Activity activity) {
@@ -116,35 +118,12 @@ public class RosterFragment extends BaseKippFragment implements Recommendation.R
         return v;
     }
 
-    private TextWatcher filterTextWatcher = new TextWatcher() {
-
-        public void afterTextChanged(Editable s) {
-        }
-
-        public void beforeTextChanged(CharSequence s, int start, int count,
-                                      int after) {
-        }
-
-        public void onTextChanged(CharSequence s, int start, int before,
-                                  int count) {
-            if (etFilter.getText().toString().matches("")) {
-                aStudents.resetFilter();
-            }
-            aStudents.getFilter().filter(s.toString());
-        }
-
-    };
-
     @Override
     public void onDestroy() {
         super.onDestroy();
-        etFilter.removeTextChangedListener(filterTextWatcher);
     }
 
     private void setupViews(View v) {
-        etFilter = (EditText) v.findViewById(R.id.etFilter);
-        etFilter.addTextChangedListener(filterTextWatcher);
-
         lvStudents = (SwipeListView) v.findViewById(R.id.lvStudents);
         lvStudents.setAdapter(aStudents);
 
@@ -325,22 +304,19 @@ public class RosterFragment extends BaseKippFragment implements Recommendation.R
 
                 Collections.reverse(behaviorEvents);
 
-                for(int i = behaviorEvents.size() - 1; i >= 0; i--) {
+                for (int i = behaviorEvents.size() - 1; i >= 0; i--) {
                     int eventResource = behaviorEvents.get(i).getBehavior().getColorResource();
 
-                    if(i == behaviorEvents.size() - 2) {
+                    if (i == behaviorEvents.size() - 2) {
                         ivFourthBehavior.setImageResource(eventResource);
                         ivFourthBehavior.setVisibility(View.VISIBLE);
-                    }
-                    else if(i == behaviorEvents.size() - 3) {
+                    } else if (i == behaviorEvents.size() - 3) {
                         ivThirdBehavior.setImageResource(eventResource);
                         ivThirdBehavior.setVisibility(View.VISIBLE);
-                    }
-                    else if(i == behaviorEvents.size() - 4) {
+                    } else if (i == behaviorEvents.size() - 4) {
                         ivSecondBehavior.setImageResource(eventResource);
                         ivSecondBehavior.setVisibility(View.VISIBLE);
-                    }
-                    else if(i == behaviorEvents.size() - 5) {
+                    } else if (i == behaviorEvents.size() - 5) {
                         ivFirstBehavior.setImageResource(eventResource);
                         ivFirstBehavior.setVisibility(View.VISIBLE);
                     }
@@ -393,5 +369,9 @@ public class RosterFragment extends BaseKippFragment implements Recommendation.R
     public interface RosterSwipeListener {
         public void showBehaviorPagerFragment(ArrayList<Student> students, SchoolClass schoolClass
                 , boolean isPositive);
+    }
+
+    public StudentArrayAdapter getStudentsAdapter() {
+        return aStudents;
     }
 }

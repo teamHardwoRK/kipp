@@ -1,22 +1,15 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:focusable="true"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
-
-    <EditText android:id="@+id/etFilter"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:hint="Type to filter"
-        android:inputType="text"
-        android:maxLines="1" />
 
     <com.fortysevendeg.swipelistview.SwipeListView xmlns:swipe="http://schemas.android.com/apk/res-auto"
         android:id="@+id/lvStudents"
@@ -34,5 +27,4 @@
         swipe:swipeDrawableChecked="@drawable/choice_selected"
         swipe:swipeDrawableUnchecked="@drawable/choice_unselected"
         swipe:swipeFrontView="@+id/front" />
-
-</LinearLayout>
+</RelativeLayout>

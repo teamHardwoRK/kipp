@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.parse.ParseUser;
@@ -66,6 +67,10 @@ public class RosterActivity extends BaseKippActivity implements
         setupTabs();
     }
 
+    private RosterFragment getRosterFragment() {
+        return (RosterFragment) getFragmentManager().findFragmentByTag(ROSTER_FRAGMENT_TAG);
+    }
+
     private void setupTabs() {
         ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -110,7 +115,49 @@ public class RosterActivity extends BaseKippActivity implements
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.roster, menu);
+        setupMenuSearch(menu);
         return true;
+    }
+
+//    private TextWatcher filterTextWatcher = new TextWatcher() {
+//
+//        public void afterTextChanged(Editable s) {
+//        }
+//
+//        public void beforeTextChanged(CharSequence s, int start, int count,
+//                                      int after) {
+//        }
+//
+//        public void onTextChanged(CharSequence s, int start, int before,
+//                                  int count) {
+//            if (etFilter.getText().toString().matches("")) {
+//                aStudents.resetFilter();
+//            }
+//            aStudents.getFilter().filter(s.toString());
+//        }
+//
+//    };
+
+    private void setupMenuSearch(Menu menu) {
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if (s.matches("")) {
+                    getRosterFragment().getStudentsAdapter().resetFilter();
+                } else {
+                    getRosterFragment().getStudentsAdapter().getFilter().filter(s);
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -198,7 +245,7 @@ public class RosterActivity extends BaseKippActivity implements
     protected void updateFragments() {
         super.updateFragments();
 
-        RosterFragment rosterFragment = (RosterFragment) getFragmentManager().findFragmentByTag(ROSTER_FRAGMENT_TAG);
+        RosterFragment rosterFragment = getRosterFragment();
         if (rosterFragment != null) {
             rosterFragment.updateData();
         }

@@ -134,7 +134,8 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> implements Filter
     }
 
     public void resetFilter() {
-        students = originalRoster;
+        clear();
+        addAll(originalRoster);
     }
 
     public Filter getFilter() {
@@ -166,8 +167,6 @@ public class StudentArrayAdapter extends ArrayAdapter<Student> implements Filter
                         addAll((List<Student>) results.values);
                     }
                 }
-
-
             };
         }
 
