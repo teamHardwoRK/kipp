@@ -3,7 +3,9 @@ package com.teamhardwork.kipp.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Typeface;
 
+import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.receivers.KippPushBroadcastReceiver;
 
@@ -70,5 +72,9 @@ public abstract class BaseKippActivity extends Activity {
         receiveIntentFilter.addAction("com.parse.push.intent.OPEN");
 
         this.registerReceiver(pushReceiver, receiveIntentFilter);
+    }
+
+    protected Typeface getDefaultTypeface() {
+        return KippApplication.getDefaultTypeFace(this);
     }
 }

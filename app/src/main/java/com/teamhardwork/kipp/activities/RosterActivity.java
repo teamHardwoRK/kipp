@@ -4,9 +4,13 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.LightingColorFilter;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -49,6 +53,7 @@ public class RosterActivity extends BaseKippActivity implements
     private Fragment pagerFragment;
     private ArrayList<Student> selectedStudents;
     private SchoolClass schoolClass;
+    private SearchView searchView;
 
     @Override
     public void addAction(BehaviorEvent event) {
@@ -119,29 +124,17 @@ public class RosterActivity extends BaseKippActivity implements
         return true;
     }
 
-//    private TextWatcher filterTextWatcher = new TextWatcher() {
-//
-//        public void afterTextChanged(Editable s) {
-//        }
-//
-//        public void beforeTextChanged(CharSequence s, int start, int count,
-//                                      int after) {
-//        }
-//
-//        public void onTextChanged(CharSequence s, int start, int before,
-//                                  int count) {
-//            if (etFilter.getText().toString().matches("")) {
-//                aStudents.resetFilter();
-//            }
-//            aStudents.getFilter().filter(s.toString());
-//        }
-//
-//    };
-
     private void setupMenuSearch(Menu menu) {
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
 
+        searchView = (SearchView) searchItem.getActionView();
+        int id = searchView.getContext().getResources()
+                .getIdentifier("android:id/search_src_text", null, null);
+        ((EditText) searchView.findViewById(id)).setTextColor(Color.WHITE);
+        ((EditText) searchView.findViewById(id)).setHintTextColor(Color.WHITE);
+        ((EditText) searchView.findViewById(id)).setTypeface(getDefaultTypeface());
+
+        searchView.setQueryHint("Enter First Name");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -187,11 +180,20 @@ public class RosterActivity extends BaseKippActivity implements
     }
 
     private void gotoInfoActivity(Student student) {
+        clearSearchView();
+
         Intent i = new Intent(this, InfoActivity.class);
         if (student != null) {
             i.putExtra("selected_student_id", student.getObjectId());
         }
         enterActivity(i);
+    }
+
+    private void clearSearchView() {
+        if (searchView != null) {
+            searchView.setQuery("", false);
+            searchView.clearFocus();
+        }
     }
 
     public void showBehaviorPagerFragment(ArrayList<Student> students, SchoolClass schoolClass, boolean isPositive) {
