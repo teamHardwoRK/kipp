@@ -5,42 +5,6 @@
     android:layout_height="match_parent"
     tools:context="com.teamhardwork.kipp.fragments.StatsFragment">
 
-    <RelativeLayout
-        android:id="@+id/rlRecommendationContainer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:paddingLeft="5dp"
-        android:paddingRight="10dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:background="#F6D05C">
-
-        <TextView
-            android:id="@+id/tvRecommendation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:text="@string/default_recommendation"
-            android:layout_toLeftOf="@+id/btnDismissRecommendation"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:textColor="#FFFFFF" />
-
-        <Button
-            android:id="@+id/btnDismissRecommendation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="Dismiss"
-            android:textColor="#FFFFFF"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:background="@drawable/btn_yellow"
-            />
-    </RelativeLayout>
-
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
@@ -51,17 +15,22 @@
         android:id="@+id/pieGraph"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
         android:layout_marginLeft="10dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/rlRecommendationContainer"/>
+        android:layout_marginRight="10dp" />
 
     <RelativeLayout
         android:id="@+id/rlBarChartContainer"
-        android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_centerInParent="true"
-        android:layout_height="match_parent">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:visibility="gone">
 
 
         <com.echo.holographlibrary.BarGraph
@@ -71,13 +40,13 @@
             android:layout_centerInParent="true" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:text="On Task Records (Last 6 Months)"
-            android:layout_below="@id/barGraph"
             android:id="@+id/tvBarLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/barGraph"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
-            android:layout_height="wrap_content" />
+            android:text="On Task Records (Last 6 Months)" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -85,20 +54,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:orientation="vertical"
-        android:background="@drawable/bg_legend"
         android:layout_marginTop="15dp"
-        android:padding="15dp"
-        >
+        android:background="@drawable/bg_legend"
+        android:orientation="vertical"
+        android:padding="15dp">
 
         <TextView
             android:id="@+id/tvLegendDescription"
-            android:textStyle="bold"
-            android:textSize="17dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            />
+            android:textSize="17dp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvGood"
@@ -107,46 +74,44 @@
             android:layout_below="@id/tvLegendDescription"
             android:layout_marginTop="10dp"
             android:paddingLeft="20dp"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvBad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:layout_below="@id/tvGood"
-            android:textStyle="bold"
+            android:layout_marginTop="5dp"
             android:paddingLeft="20dp"
-            />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvExtraOne"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:textStyle="bold"
-            android:paddingLeft="20dp"
             android:layout_below="@id/tvBad"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="20dp"
+            android:textStyle="bold"
             android:visibility="gone" />
 
         <TextView
             android:id="@+id/tvExtraTwo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:textStyle="bold"
-            android:paddingLeft="20dp"
             android:layout_below="@id/tvExtraOne"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="20dp"
+            android:textStyle="bold"
             android:visibility="gone" />
 
         <TextView
             android:id="@+id/tvExtraThree"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/tvExtraTwo"
             android:layout_marginTop="5dp"
             android:paddingLeft="20dp"
-            android:layout_below="@+id/tvExtraTwo"
             android:textStyle="bold"
             android:visibility="gone" />
 
@@ -154,40 +119,73 @@
             android:id="@+id/tvExtraFour"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/tvExtraThree"
             android:layout_marginTop="5dp"
             android:paddingLeft="20dp"
             android:textStyle="bold"
-            android:layout_below="@id/tvExtraThree"
             android:visibility="gone" />
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/rlBackButton"
-        android:layout_below="@id/rlRecommendationContainer"
+        android:id="@+id/rlRecommendationContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_alignParentTop="true"
+        android:background="#F6D05C"
+        android:paddingBottom="10dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/tvRecommendation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/btnDismissRecommendation"
+            android:text="@string/default_recommendation"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:id="@+id/btnDismissRecommendation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/btn_yellow"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Dismiss"
+            android:textColor="#FFFFFF" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlBackButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
         android:layout_marginLeft="20dp"
-        android:visibility="gone"
-        >
+        android:layout_marginTop="75dp"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/ivBack"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/img_back_arrow"
-            />
+            android:src="@drawable/img_back_arrow" />
 
         <TextView
             android:id="@+id/tvBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Back"
-            android:layout_toRightOf="@id/ivBack"
             android:layout_marginLeft="5dp"
-            android:textColor="@color/ActionBarGreen"
-            />
+            android:layout_toRightOf="@id/ivBack"
+            android:text="Back"
+            android:textColor="@color/ActionBarGreen" />
     </RelativeLayout>
 
 </RelativeLayout>
