@@ -42,6 +42,7 @@ public class SchoolClass extends ParseObject {
     public static SchoolClass findSchoolClassByTeacher(Teacher teacher) throws ParseException {
         // TODO: Add logic to get class by current time.
         ParseQuery<SchoolClass> query = ParseQuery.getQuery(SchoolClass.class);
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
         query.whereEqualTo(TEACHER, teacher);
         return query.getFirst();
     }
