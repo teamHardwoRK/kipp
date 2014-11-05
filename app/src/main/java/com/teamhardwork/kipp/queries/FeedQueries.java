@@ -45,6 +45,7 @@ public class FeedQueries {
 
     public static void getClassFeed(SchoolClass schoolClass, FindCallback<BehaviorEvent> callback) {
         ParseQuery<BehaviorEvent> query = ParseQuery.getQuery(BehaviorEvent.class);
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
         query.whereEqualTo(BehaviorEvent.SCHOOL_CLASS, schoolClass);
         query.include(BehaviorEvent.STUDENT);
         query.orderByDescending(BehaviorEvent.OCCURRED_AT).setLimit(QUERY_LIMIT);
@@ -53,6 +54,7 @@ public class FeedQueries {
 
     public static void getStudentFeed(Student student, FindCallback<BehaviorEvent> callback) {
         ParseQuery<BehaviorEvent> query = ParseQuery.getQuery(BehaviorEvent.class);
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
         query.whereEqualTo(BehaviorEvent.STUDENT, student);
         query.include(BehaviorEvent.STUDENT);
         query.orderByDescending(BehaviorEvent.OCCURRED_AT).setLimit(QUERY_LIMIT);

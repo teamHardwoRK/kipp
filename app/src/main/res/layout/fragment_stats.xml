@@ -9,6 +9,7 @@
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_centerInParent="true" />
 
     <com.echo.holographlibrary.PieGraph
@@ -57,6 +58,7 @@
         android:layout_marginTop="15dp"
         android:background="@drawable/bg_legend"
         android:orientation="vertical"
+        android:visibility="gone"
         android:padding="15dp">
 
         <TextView

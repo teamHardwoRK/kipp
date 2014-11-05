@@ -57,7 +57,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
             Behavior.SILENT_REMINDERS, Behavior.VOLUNTEERING);
 
     protected String statForString = "Class";
-
+    protected FindCallback<BehaviorEvent> overallResponseCallback;
     @InjectView(R.id.tvBarLabel)
     TextView tvBarLabel;
     @InjectView(R.id.rlBarChartContainer)
@@ -90,23 +90,11 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
     RelativeLayout rlLegend;
     @InjectView(R.id.rlBackButton)
     RelativeLayout rlBackButton;
-
     private ChartMode chartMode = ChartMode.OVERALL;
     private ChartMode previousMode;
     private List<TextView> legendItems;
     private Map<Behavior, Integer> behaviorCounts;
     private List<BehaviorEvent> curBehaviorEvents;
-    protected FindCallback<BehaviorEvent> overallResponseCallback =
-            new FindCallback<BehaviorEvent>() {
-                @Override
-                public void done(List<BehaviorEvent> behaviorEvents, ParseException e) {
-                    curBehaviorEvents = behaviorEvents;
-                    behaviorCounts = BehaviorEventListFilterer.getGroupedCount(behaviorEvents);
-                    activateOverallChart(behaviorEvents);
-                    setRecommendation(behaviorEvents);
-                    progressBar.setVisibility(View.GONE);
-                }
-            };
     private Spring mScaleSpring;
 
     @Override
@@ -115,6 +103,18 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
         View rtnView = inflater.inflate(R.layout.fragment_stats, container, false);
         ButterKnife.inject(this, rtnView);
         setTypeface();
+
+        overallResponseCallback = new FindCallback<BehaviorEvent>() {
+            @Override
+            public void done(List<BehaviorEvent> behaviorEvents, ParseException e) {
+                curBehaviorEvents = behaviorEvents;
+                behaviorCounts = BehaviorEventListFilterer.getGroupedCount(behaviorEvents);
+                activateOverallChart(behaviorEvents);
+                setRecommendation(behaviorEvents);
+                rlLegend.setVisibility(View.VISIBLE);
+                rlLegend.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in));
+            }
+        };
 
         legendItems = Arrays.asList(tvGood, tvBad, tvExtraOne, tvExtraTwo, tvExtraThree,
                 tvExtraFour);
@@ -292,7 +292,8 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
 
     private void setupChart() {
         pieGraph.setInnerCircleRatio(200);
-        addSlice(pieGraph, GOOD_COLOR_ID, 0, "Good");
+        pieGraph.setDuration(1000);
+        addSlice(pieGraph, GOOD_COLOR_ID, 100, "Good");
         addSlice(pieGraph, BAD_COLOR_ID, 0, "Bad");
         addSlice(pieGraph, EXTRA_COLOR_ONE, 0, "Extra One");
         addSlice(pieGraph, EXTRA_COLOR_TWO, 0, "Extra TWO");
