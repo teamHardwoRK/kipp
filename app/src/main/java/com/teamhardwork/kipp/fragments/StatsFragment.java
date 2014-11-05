@@ -111,8 +111,12 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
                 behaviorCounts = BehaviorEventListFilterer.getGroupedCount(behaviorEvents);
                 activateOverallChart(behaviorEvents);
                 setRecommendation(behaviorEvents);
-                rlLegend.setVisibility(View.VISIBLE);
-                rlLegend.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in));
+
+                if (rlLegend.getVisibility() != View.VISIBLE) {
+                    rlLegend.setVisibility(View.VISIBLE);
+                    rlLegend.startAnimation(AnimationUtils.loadAnimation(getActivity(),
+                            R.anim.fade_in));
+                }
             }
         };
 
