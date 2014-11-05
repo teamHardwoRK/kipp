@@ -72,6 +72,7 @@ public class FeedQueries {
 
     public static void getStudentActionLog(Student student, FindCallback<Action> callback) {
         ParseQuery<Action> query = ParseQuery.getQuery(Action.class);
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
         query.whereEqualTo(Action.STUDENT, student);
         query.include(Action.STUDENT);
         query.orderByDescending(Action.OCCURRED_AT).setLimit(QUERY_LIMIT);

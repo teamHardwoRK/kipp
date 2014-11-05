@@ -59,8 +59,13 @@ public class ActionLogFragment extends BaseKippFragment implements Updatable {
             @Override
             public void done(List<Action> actions, ParseException e) {
                 actionAdapter.clear();
+                if (actions == null) {
+                    return;
+                }
                 actionAdapter.addAll(actions);
-                progressBar.setVisibility(View.GONE);
+                if (progressBar.getVisibility() != View.GONE) {
+                    progressBar.setVisibility(View.GONE);
+                }
             }
         });
     }
