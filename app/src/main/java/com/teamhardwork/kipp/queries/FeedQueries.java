@@ -63,6 +63,7 @@ public class FeedQueries {
 
     public static void getStudentFeedMostRecent(Student student, FindCallback<BehaviorEvent> callback) {
         ParseQuery<BehaviorEvent> query = ParseQuery.getQuery(BehaviorEvent.class);
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
         query.whereEqualTo(BehaviorEvent.STUDENT, student);
         query.include(BehaviorEvent.STUDENT);
         query.orderByDescending(BehaviorEvent.OCCURRED_AT).setLimit(MOST_RECENT_MAX);

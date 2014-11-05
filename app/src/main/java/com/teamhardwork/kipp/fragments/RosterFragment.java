@@ -93,7 +93,11 @@ public class RosterFragment extends BaseKippFragment implements Recommendation.R
                 @Override
                 public void done(List<Student> foundStudents, ParseException e) {
                     students = foundStudents;
+                    if (students == null) {
+                        return;
+                    }
                     Collections.sort(students);
+                    aStudents.clear();
                     aStudents.addAll(students);
                     aStudents.setOriginalRoster(students);
                     progressBar.setVisibility(View.GONE);

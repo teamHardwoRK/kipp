@@ -87,6 +87,7 @@ public class SchoolClass extends ParseObject {
 
     public void getClassRosterAsync(FindCallback<Student> callback) {
         ParseQuery query = getStudentRelation().getQuery();
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
         query.findInBackground(callback);
     }
 

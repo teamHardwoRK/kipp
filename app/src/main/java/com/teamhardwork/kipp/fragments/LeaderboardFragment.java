@@ -78,6 +78,7 @@ public class LeaderboardFragment extends BaseKippFragment implements Updatable {
             public void done(List<Student> students, ParseException e) {
                 Collections.sort(students, StudentListFilterer.pointsComparator);
                 Collections.reverse(students);
+                leaderboardAdapter.clear();
                 leaderboardAdapter.addAll(students);
                 progressBar.setVisibility(View.GONE);
 
