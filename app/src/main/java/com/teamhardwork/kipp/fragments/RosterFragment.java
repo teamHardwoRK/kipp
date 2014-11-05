@@ -105,6 +105,8 @@ public class RosterFragment extends BaseKippFragment implements Recommendation.R
                     }
                 }
             });
+        } else {
+            progressBar.setVisibility(View.GONE);
         }
 
 
@@ -116,11 +118,6 @@ public class RosterFragment extends BaseKippFragment implements Recommendation.R
         });
 
         return v;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 
     private void setupViews(View v) {
