@@ -41,6 +41,7 @@ import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.InjectViews;
 import butterknife.OnClick;
 
 // Stats for class
@@ -53,14 +54,9 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
     private static final int EXTRA_COLOR_FOUR = Color.parseColor("#E66C2C");
 
     private static final List<Integer> COLORS = Collections.unmodifiableList(Arrays.asList(
-            GOOD_COLOR_ID,
-            BAD_COLOR_ID,
-            EXTRA_COLOR_ONE,
-            EXTRA_COLOR_TWO,
-            EXTRA_COLOR_THREE,
+            GOOD_COLOR_ID, BAD_COLOR_ID, EXTRA_COLOR_ONE, EXTRA_COLOR_TWO, EXTRA_COLOR_THREE,
             EXTRA_COLOR_FOUR
     ));
-
     private static final List<Behavior> badBehaviors = Arrays.asList(Behavior.DRESS_CODE_VIOLATION,
             Behavior.LACK_OF_INTEGRITY, Behavior.LATE, Behavior.TALKING, Behavior.HORSEPLAY,
             Behavior.FIGHTING);
@@ -91,25 +87,15 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
     PieGraph pieGraph;
     @InjectView(R.id.tvLegendDescription)
     TextView tvLegendDescription;
-    @InjectView(R.id.tvGood)
-    TextView tvGood;
-    @InjectView(R.id.tvBad)
-    TextView tvBad;
-    @InjectView(R.id.tvExtraOne)
-    TextView tvExtraOne;
-    @InjectView(R.id.tvExtraTwo)
-    TextView tvExtraTwo;
-    @InjectView(R.id.tvExtraThree)
-    TextView tvExtraThree;
-    @InjectView(R.id.tvExtraFour)
-    TextView tvExtraFour;
     @InjectView(R.id.llLegend)
     RelativeLayout rlLegend;
     @InjectView(R.id.rlBackButton)
     RelativeLayout rlBackButton;
+    @InjectViews({R.id.tvGood, R.id.tvBad, R.id.tvExtraOne, R.id.tvExtraTwo, R.id.tvExtraThree,
+            R.id.tvExtraFour})
+    List<TextView> legendItems;
     private ChartMode chartMode;
     private ChartMode previousMode;
-    private List<TextView> legendItems;
     private Map<Behavior, Integer> behaviorCounts;
     private List<BehaviorEvent> curBehaviorEvents;
     private Spring mScaleSpring;
@@ -134,14 +120,11 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
                     if (rlLegend.getVisibility() != View.VISIBLE) {
                         rlLegend.setVisibility(View.VISIBLE);
                         rlLegend.startAnimation(AnimationUtils.loadAnimation(getActivity(),
-                                R.anim.fade_in));
+                                R.anim.left_in));
                     }
                 }
             }
         };
-
-        legendItems = Arrays.asList(tvGood, tvBad, tvExtraOne, tvExtraTwo, tvExtraThree,
-                tvExtraFour);
 
         setupChart();
         fillChartWithOverallData();
@@ -211,16 +194,29 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
         pieGraph.setVisibility(View.GONE);
         rlLegend.setVisibility(View.GONE);
         rlBarChartContainer.setVisibility(View.VISIBLE);
+        barGraph.setDuration(1000);
+        barGraph.setInterpolator(new AccelerateDecelerateInterpolator());
+        barGraph.setValueStringPrecision(0);
+        barGraph.setAxisColor(Color.parseColor("#58B488"));
+        barGraph.setShowBarText(false);
+        barGraph.setShowPopup(false);
+        barGraph.getHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                barGraph.setShowBarText(true);
+            }
+        }, 1000);
 
         tvBarLabel.setTypeface(KippApplication.getDefaultTypeFace(getActivity()));
         ArrayList<Bar> points = new ArrayList<Bar>();
         for (int i = 0; i < BAR_LABELS.size(); i++) {
             Bar bar = new Bar();
-            bar.setValue(1);
+            bar.setValue(0);
             bar.setColor(COLORS.get(i));
             bar.setLabelColor(COLORS.get(i));
             bar.setName(BAR_LABELS.get(i));
             bar.setGoalValue(BAR_VALUES.get(i));
+            bar.setValueColor(COLORS.get(i));
             points.add(bar);
         }
         barGraph.setBars(points);
@@ -234,8 +230,6 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                barGraph.setDuration(1000);
-                barGraph.setInterpolator(new AccelerateDecelerateInterpolator());
                 barGraph.animateToGoalValues();
                 // TODO: Sometimes rlLegend and back button behave weirdly after call to animateToGoalValues
                 rlLegend.setVisibility(View.GONE);
@@ -254,12 +248,10 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
         Typeface typeface = KippApplication.getDefaultTypeFace(getActivity());
         tvRecommendation.setTypeface(typeface);
         tvLegendDescription.setTypeface(typeface);
-        tvGood.setTypeface(typeface);
-        tvBad.setTypeface(typeface);
-        tvExtraFour.setTypeface(typeface);
-        tvExtraThree.setTypeface(typeface);
-        tvExtraTwo.setTypeface(typeface);
-        tvExtraOne.setTypeface(typeface);
+
+        for (TextView tvLegendItem : legendItems) {
+            tvLegendItem.setTypeface(typeface);
+        }
     }
 
     protected void fillChartWithOverallData() {
@@ -300,16 +292,51 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
     @OnClick(R.id.rlBackButton)
     void gotoPreviousChart() {
         if (chartMode == ChartMode.BAR) {
-            pieGraph.setVisibility(View.VISIBLE);
-            rlLegend.setVisibility(View.VISIBLE);
-            rlBarChartContainer.setVisibility(View.GONE);
-            pieGraph.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.right_in));
-            rlLegend.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.right_in));
+            Animation enterRight = AnimationUtils.loadAnimation(getActivity(), R.anim.right_in);
+            enterRight.setStartOffset(1000);
+            enterRight.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    rlBarChartContainer.setVisibility(View.GONE);
+                    pieGraph.setVisibility(View.VISIBLE);
+                    rlLegend.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+
+            barChartExit(1000);
+            pieGraph.startAnimation(enterRight);
+            rlLegend.startAnimation(enterRight);
+
+
             chartMode = previousMode;
         } else if (chartMode != ChartMode.OVERALL) {
             activateOverallChart(curBehaviorEvents);
             chartMode = ChartMode.OVERALL;
         }
+    }
+
+    private void barChartExit(int durationMillis) {
+        List<Bar> bars = barGraph.getBars();
+        for (Bar bar : bars) {
+            bar.setGoalValue(0);
+        }
+        barGraph.setShowBarText(false);
+        barGraph.setDuration(durationMillis);
+        barGraph.animateToGoalValues();
+        barGraph.getHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                rlBarChartContainer.setVisibility(View.GONE);
+            }
+        },durationMillis);
     }
 
     private void setupChart() {
@@ -326,17 +353,18 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
     }
 
     private void setupLegend() {
-        tvGood.setTextColor(GOOD_COLOR_ID);
-        tvBad.setTextColor(BAD_COLOR_ID);
-        tvExtraOne.setTextColor(EXTRA_COLOR_ONE);
-        tvExtraTwo.setTextColor(EXTRA_COLOR_TWO);
-        tvExtraThree.setTextColor(EXTRA_COLOR_THREE);
-        tvExtraFour.setTextColor(EXTRA_COLOR_FOUR);
+        for (int i = 0; i < legendItems.size(); i++) {
+            TextView legendItem = legendItems.get(i);
+            legendItem.setTextColor(COLORS.get(i));
+        }
     }
 
     private void activateOverallLegend(int numGood, int numBad) {
         int total = numGood + numBad;
-        tvLegendDescription.setText("Behavior for " + statForString + "\n\t\t\t(total " + (numBad + numGood) + ")");
+        tvLegendDescription.setText("Behavior for " + statForString +
+                "\n\t\t\t(total " + (numBad + numGood) + ")");
+        TextView tvGood = legendItems.get(0);
+        TextView tvBad = legendItems.get(1);
         tvGood.setText("Good: " + getPercentString((double) numGood / total));
         tvBad.setText("Bad: " + getPercentString((double) numBad / total));
         tvGood.setVisibility(View.VISIBLE);
@@ -368,10 +396,9 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
     }
 
     private void turnOffExtraLegendItems() {
-        tvExtraOne.setVisibility(View.GONE);
-        tvExtraTwo.setVisibility(View.GONE);
-        tvExtraThree.setVisibility(View.GONE);
-        tvExtraFour.setVisibility(View.GONE);
+        for (int i = 2; i < legendItems.size(); i++) {
+            legendItems.get(i).setVisibility(View.GONE);
+        }
         rlBackButton.setVisibility(View.GONE);
     }
 

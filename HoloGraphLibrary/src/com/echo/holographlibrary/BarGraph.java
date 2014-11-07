@@ -37,6 +37,7 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Region;
+import android.graphics.Typeface;
 import android.graphics.drawable.NinePatchDrawable;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -310,6 +311,9 @@ public class BarGraph extends View implements HoloGraphAnimate {
             if (mShowAxisLabel) {
                 mPaint.setColor(bar.getLabelColor());
                 mPaint.setTextSize(labelTextSize);
+                Typeface typeface = Typeface.createFromAsset(getContext().getAssets(),
+                        "fonts/VarelaRound-Regular.otf");
+                mPaint.setTypeface(typeface);
                 if (isAnimating()) mPaint.setAlpha(alpha);
                 float textWidth = mPaint.measureText(bar.getName());
                 int x = (int) (((mBoundsRect.left + mBoundsRect.right) / 2) - (textWidth / 2));
@@ -497,8 +501,8 @@ public class BarGraph extends View implements HoloGraphAnimate {
         if (mValueAnimator != null)
             mValueAnimator.cancel();
 
-        mOldMaxValue = 0;
-        mGoalMaxValue = 0;
+        mOldMaxValue = 10;
+        mGoalMaxValue = 10;
         for (Bar b : mBars) {
             b.setOldValue(b.getValue());
             mOldMaxValue = Math.max(mOldMaxValue, b.getValue());
