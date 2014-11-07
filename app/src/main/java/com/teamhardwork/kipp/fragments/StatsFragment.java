@@ -1,6 +1,5 @@
 package com.teamhardwork.kipp.fragments;
 
-
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -107,6 +106,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
         ButterKnife.inject(this, rtnView);
         setTypeface();
         chartMode = ChartMode.OVERALL;
+        previousMode = null;
 
         overallResponseCallback = new FindCallback<BehaviorEvent>() {
             @Override
@@ -119,8 +119,8 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
 
                     if (rlLegend.getVisibility() != View.VISIBLE) {
                         rlLegend.setVisibility(View.VISIBLE);
-                        rlLegend.startAnimation(AnimationUtils.loadAnimation(getActivity(),
-                                R.anim.left_in));
+                        Animation enter = AnimationUtils.loadAnimation(getActivity(), R.anim.top_in);
+                        rlLegend.setAnimation(enter);
                     }
                 }
             }
@@ -166,6 +166,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
             @Override
             public void onClick(int index) {
                 if (chartMode == ChartMode.OVERALL) {
+                    previousMode = chartMode;
                     switch (index) {
                         case 0:
                             chartMode = ChartMode.GOOD_DETAIL;
@@ -231,9 +232,6 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
             @Override
             public void onAnimationEnd(Animation animation) {
                 barGraph.animateToGoalValues();
-                // TODO: Sometimes rlLegend and back button behave weirdly after call to animateToGoalValues
-                rlLegend.setVisibility(View.GONE);
-                rlBackButton.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -292,17 +290,18 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
     @OnClick(R.id.rlBackButton)
     void gotoPreviousChart() {
         if (chartMode == ChartMode.BAR) {
+            // Shrink bar chart, grow pie chart
             Animation enterRight = AnimationUtils.loadAnimation(getActivity(), R.anim.right_in);
             enterRight.setStartOffset(1000);
             enterRight.setAnimationListener(new Animation.AnimationListener() {
                 @Override
-                public void onAnimationStart(Animation animation) {                }
+                public void onAnimationStart(Animation animation) {
+                    prepareBarToPieAnimation();
+                }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    rlBarChartContainer.setVisibility(View.GONE);
-                    pieGraph.setVisibility(View.VISIBLE);
-                    rlLegend.setVisibility(View.VISIBLE);
+                    executeBarToPieAnimation();
                 }
 
                 @Override
@@ -313,14 +312,48 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
 
             barChartExit(1000);
             pieGraph.startAnimation(enterRight);
-            rlLegend.startAnimation(enterRight);
-
 
             chartMode = previousMode;
+            previousMode = ChartMode.BAR;
         } else if (chartMode != ChartMode.OVERALL) {
             activateOverallChart(curBehaviorEvents);
+            previousMode = chartMode;
             chartMode = ChartMode.OVERALL;
         }
+    }
+
+    private void prepareBarToPieAnimation() {
+        pieGraph.setVisibility(View.VISIBLE);
+        List<PieSlice> slices = pieGraph.getSlices();
+        for (PieSlice slice : slices) {
+            slice.setGoalValue(slice.getValue());
+            slice.setValue(0);
+        }
+        slices.get(0).setValue(1);
+    }
+
+    private void executeBarToPieAnimation() {
+        rlBarChartContainer.setVisibility(View.GONE);
+        pieGraph.animateToGoalValues();
+        Animation enter = AnimationUtils.loadAnimation(getActivity(), R.anim.top_in);
+        enter.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                rlLegend.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        rlLegend.setAnimation(enter);
+
     }
 
     private void barChartExit(int durationMillis) {
@@ -336,7 +369,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
             public void run() {
                 rlBarChartContainer.setVisibility(View.GONE);
             }
-        },durationMillis);
+        }, durationMillis);
     }
 
     private void setupChart() {
@@ -370,6 +403,31 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
         tvGood.setVisibility(View.VISIBLE);
         tvBad.setVisibility(View.VISIBLE);
         turnOffExtraLegendItems();
+        animateLegendUpdate();
+    }
+
+    private void animateLegendUpdate() {
+        if (previousMode != null) { // Don't call when pie graph is initializing
+            Animation exit = AnimationUtils.loadAnimation(getActivity(), R.anim.bottom_out);
+            exit.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    Animation enter = AnimationUtils.loadAnimation(getActivity(), R.anim.top_in);
+                    rlLegend.setAnimation(enter);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            rlLegend.setAnimation(exit);
+        }
     }
 
     private void activateLegendForBehaviors(Map<Behavior, Integer> groupedCounts,
@@ -393,6 +451,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
             legendItem.setVisibility(View.VISIBLE);
         }
         rlBackButton.setVisibility(View.VISIBLE);
+        animateLegendUpdate();
     }
 
     private void turnOffExtraLegendItems() {
