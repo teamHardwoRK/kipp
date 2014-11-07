@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -33,6 +35,7 @@ import com.teamhardwork.kipp.utilities.behavior_event.BehaviorEventListFilterer;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -49,13 +52,27 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
     private static final int EXTRA_COLOR_THREE = Color.parseColor("#FDD017");
     private static final int EXTRA_COLOR_FOUR = Color.parseColor("#E66C2C");
 
+    private static final List<Integer> COLORS = Collections.unmodifiableList(Arrays.asList(
+            GOOD_COLOR_ID,
+            BAD_COLOR_ID,
+            EXTRA_COLOR_ONE,
+            EXTRA_COLOR_TWO,
+            EXTRA_COLOR_THREE,
+            EXTRA_COLOR_FOUR
+    ));
+
     private static final List<Behavior> badBehaviors = Arrays.asList(Behavior.DRESS_CODE_VIOLATION,
             Behavior.LACK_OF_INTEGRITY, Behavior.LATE, Behavior.TALKING, Behavior.HORSEPLAY,
             Behavior.FIGHTING);
     private static final List<Behavior> goodBehaviors = Arrays.asList(Behavior.CLEANING_UP,
             Behavior.ON_TASK, Behavior.RESPECTING_EVERYONE, Behavior.SHOWING_GRATITUDE,
             Behavior.SILENT_REMINDERS, Behavior.VOLUNTEERING);
-
+    private static final List<Integer> BAR_VALUES = Collections.unmodifiableList(
+            Arrays.asList(3, 8, 5, 10, 6, 1)
+    );
+    private static final List<String> BAR_LABELS = Collections.unmodifiableList(
+            Arrays.asList("Jun", "Jul", "Aug", "Sep", "Oct", "Nov")
+    );
     protected String statForString = "Class";
     protected FindCallback<BehaviorEvent> overallResponseCallback;
     @InjectView(R.id.tvBarLabel)
@@ -90,7 +107,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
     RelativeLayout rlLegend;
     @InjectView(R.id.rlBackButton)
     RelativeLayout rlBackButton;
-    private ChartMode chartMode = ChartMode.OVERALL;
+    private ChartMode chartMode;
     private ChartMode previousMode;
     private List<TextView> legendItems;
     private Map<Behavior, Integer> behaviorCounts;
@@ -103,19 +120,22 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
         View rtnView = inflater.inflate(R.layout.fragment_stats, container, false);
         ButterKnife.inject(this, rtnView);
         setTypeface();
+        chartMode = ChartMode.OVERALL;
 
         overallResponseCallback = new FindCallback<BehaviorEvent>() {
             @Override
             public void done(List<BehaviorEvent> behaviorEvents, ParseException e) {
-                curBehaviorEvents = behaviorEvents;
-                behaviorCounts = BehaviorEventListFilterer.getGroupedCount(behaviorEvents);
-                activateOverallChart(behaviorEvents);
-                setRecommendation(behaviorEvents);
+                if (chartMode == ChartMode.OVERALL) {
+                    curBehaviorEvents = behaviorEvents;
+                    behaviorCounts = BehaviorEventListFilterer.getGroupedCount(behaviorEvents);
+                    activateOverallChart(behaviorEvents);
+                    setRecommendation(behaviorEvents);
 
-                if (rlLegend.getVisibility() != View.VISIBLE) {
-                    rlLegend.setVisibility(View.VISIBLE);
-                    rlLegend.startAnimation(AnimationUtils.loadAnimation(getActivity(),
-                            R.anim.fade_in));
+                    if (rlLegend.getVisibility() != View.VISIBLE) {
+                        rlLegend.setVisibility(View.VISIBLE);
+                        rlLegend.startAnimation(AnimationUtils.loadAnimation(getActivity(),
+                                R.anim.fade_in));
+                    }
                 }
             }
         };
@@ -192,44 +212,42 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
         rlLegend.setVisibility(View.GONE);
         rlBarChartContainer.setVisibility(View.VISIBLE);
 
-        if (barGraph.getBars().size() == 0) {
-            tvBarLabel.setTypeface(KippApplication.getDefaultTypeFace(getActivity()));
-            ArrayList<Bar> points = new ArrayList<Bar>();
-            Bar d = new Bar();
-            d.setColor(Color.parseColor("#99CC00"));
-            d.setName("May");
-            d.setValue(10);
-            Bar d2 = new Bar();
-            d2.setColor(Color.parseColor("#99CC00"));
-            d2.setName("Jun");
-            d2.setValue(2);
-            Bar d3 = new Bar();
-            d3.setColor(Color.parseColor("#99CC00"));
-            d3.setName("Jul");
-            d3.setValue(5);
-            Bar d4 = new Bar();
-            d4.setColor(Color.parseColor("#99CC00"));
-            d4.setName("Aug");
-            d4.setValue(2);
-            Bar d5 = new Bar();
-            d5.setColor(Color.parseColor("#99CC00"));
-            d5.setName("Sep");
-            d5.setValue(6);
-            Bar d6 = new Bar();
-            d6.setColor(Color.parseColor("#99CC00"));
-            d6.setName("Oct");
-            d6.setValue(8);
-            points.add(d);
-            points.add(d2);
-            points.add(d3);
-            points.add(d4);
-            points.add(d5);
-            points.add(d6);
-
-            barGraph.setBars(points);
+        tvBarLabel.setTypeface(KippApplication.getDefaultTypeFace(getActivity()));
+        ArrayList<Bar> points = new ArrayList<Bar>();
+        for (int i = 0; i < BAR_LABELS.size(); i++) {
+            Bar bar = new Bar();
+            bar.setValue(1);
+            bar.setColor(COLORS.get(i));
+            bar.setLabelColor(COLORS.get(i));
+            bar.setName(BAR_LABELS.get(i));
+            bar.setGoalValue(BAR_VALUES.get(i));
+            points.add(bar);
         }
+        barGraph.setBars(points);
 
-        rlBarChartContainer.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in));
+        Animation enter = AnimationUtils.loadAnimation(getActivity(), R.anim.left_in);
+        enter.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                barGraph.setDuration(1000);
+                barGraph.setInterpolator(new AccelerateDecelerateInterpolator());
+                barGraph.animateToGoalValues();
+                // TODO: Sometimes rlLegend and back button behave weirdly after call to animateToGoalValues
+                rlLegend.setVisibility(View.GONE);
+                rlBackButton.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        rlBarChartContainer.startAnimation(enter);
     }
 
     void setTypeface() {
@@ -249,6 +267,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
     }
 
     protected void setRecommendation(List<BehaviorEvent> behaviorEvents) {
+
     }
 
     private void activateOverallChart(List<BehaviorEvent> behaviorEvents) {
@@ -280,13 +299,12 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
 
     @OnClick(R.id.rlBackButton)
     void gotoPreviousChart() {
-
         if (chartMode == ChartMode.BAR) {
             pieGraph.setVisibility(View.VISIBLE);
             rlLegend.setVisibility(View.VISIBLE);
             rlBarChartContainer.setVisibility(View.GONE);
-            pieGraph.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in));
-            rlLegend.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.fade_in));
+            pieGraph.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.right_in));
+            rlLegend.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.right_in));
             chartMode = previousMode;
         } else if (chartMode != ChartMode.OVERALL) {
             activateOverallChart(curBehaviorEvents);
