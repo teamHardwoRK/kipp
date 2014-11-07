@@ -117,4 +117,11 @@ public class BehaviorPagerFragment extends DialogFragment {
             vpPager.setCurrentItem(1);
         }
     }
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogSlideTopBottomAnimation;
+        return dialog;
+    }
 }

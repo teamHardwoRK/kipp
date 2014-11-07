@@ -102,4 +102,10 @@
         <item name="android:background">#dddaaa</item>
         <item name="android:padding">@dimen/padding_new_tag</item>
     </style>
+
+    <!-- Dialogs -->
+    <style name="DialogSlideTopBottomAnimation">
+        <item name="android:windowEnterAnimation">@anim/top_in</item>
+        <item name="android:windowExitAnimation">@anim/bottom_out</item>
+    </style>
 </resources>

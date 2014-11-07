@@ -7,18 +7,9 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <ProgressBar
-        android:id="@+id/pbAddAction"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:visibility="visible" />
-
     <GridView
         android:id="@+id/gvActions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:numColumns="3"
-        android:visibility="invisible" />
+        android:numColumns="3" />
 </RelativeLayout>

@@ -1,17 +1,18 @@
 package com.teamhardwork.kipp.dialogfragments;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.parse.GetCallback;
@@ -45,9 +46,6 @@ public class AddActionDialogFragment extends DialogFragment {
     @InjectView(R.id.gvActions)
     GridView gvActions;
 
-    @InjectView(R.id.pbAddAction)
-    ProgressBar pbAddAction;
-
     public static AddActionDialogFragment getInstance(Student student) {
         AddActionDialogFragment dialogFragment = new AddActionDialogFragment();
         Bundle bundle = new Bundle();
@@ -72,7 +70,7 @@ public class AddActionDialogFragment extends DialogFragment {
 
         View view = inflater.inflate(R.layout.fragment_add_action, container, false);
         ButterKnife.inject(this, view);
-        getDialog().getWindow().setBackgroundDrawableResource(R.color.Transparent);
+        getDialog().getWindow().setBackgroundDrawableResource(R.drawable.btn_light_green);
 
         gvActions.setAdapter(new AddActionAdapter(getActivity(), Role.STUDENT));
         setupListeners();
@@ -94,7 +92,6 @@ public class AddActionDialogFragment extends DialogFragment {
                 public void done(BehaviorEvent event, ParseException e) {
                     AddActionDialogFragment.this.event = event;
                     AddActionDialogFragment.this.student = event.getStudent();
-                    hideProgressBar();
                 }
             });
         } else {
@@ -103,16 +100,9 @@ public class AddActionDialogFragment extends DialogFragment {
                 @Override
                 public void done(Student student, ParseException e) {
                     AddActionDialogFragment.this.student = student;
-                    hideProgressBar();
                 }
             });
         }
-    }
-
-    void hideProgressBar() {
-        pbAddAction.setVisibility(View.GONE);
-        gvActions.setVisibility(View.VISIBLE);
-        getDialog().getWindow().setBackgroundDrawableResource(R.drawable.btn_light_green);
     }
 
     void setupListeners() {
@@ -167,16 +157,19 @@ public class AddActionDialogFragment extends DialogFragment {
                         break;
                 }
 
-                if (hasInfo)
+                if (hasInfo) {
                     startActivityForResult(Intent.createChooser(intent, message), EMAIL_REQUEST_CODE);
-                else
+                    getActivity().overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                } else {
                     Toast.makeText(getActivity(), "No contact data", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
         switch (resultCode) {
             // implicit EMAIL intents always return RESULT_CANCELED
             case Activity.RESULT_CANCELED:
@@ -192,8 +185,25 @@ public class AddActionDialogFragment extends DialogFragment {
                 action.setSchoolClass(((KippApplication) getActivity().getApplication()).getSchoolClass());
                 action.setStudent(student);
                 action.saveInBackground();
-
-                dismiss();
         }
+
+        dismissDialogAfterBackTransition();
+    }
+
+    private void dismissDialogAfterBackTransition() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dismiss();
+            }
+        }, 700);
+    }
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogSlideTopBottomAnimation;
+        return dialog;
     }
 }
