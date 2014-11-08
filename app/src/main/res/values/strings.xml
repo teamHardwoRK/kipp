@@ -27,4 +27,6 @@
     <string name="default_rank">2</string>
     <string name="string_default_points">405 points</string>
     <string name="default_recommendation">John deserves a hand!</string>
+
+    <string name="is_rebound_enabled_tag_key">isReboundEnabledTagKey</string>
 </resources>
