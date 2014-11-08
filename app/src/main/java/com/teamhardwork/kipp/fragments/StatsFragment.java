@@ -29,6 +29,7 @@ import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.enums.Behavior;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.queries.FeedQueries;
+import com.teamhardwork.kipp.utilities.ReboundAnimator;
 import com.teamhardwork.kipp.utilities.behavior_event.BehaviorEventListFilterer;
 
 import java.text.MessageFormat;
@@ -166,6 +167,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
         pieGraph.setOnSliceClickedListener(new PieGraph.OnSliceClickedListener() {
             @Override
             public void onClick(int index) {
+                ReboundAnimator.startClickAnimation(pieGraph);
                 if (chartMode == ChartMode.OVERALL) {
                     previousMode = chartMode;
                     switch (index) {

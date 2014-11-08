@@ -24,6 +24,7 @@ import com.teamhardwork.kipp.graphics.SadFaceDrawable;
 import com.teamhardwork.kipp.graphics.StarAnimationSet;
 import com.teamhardwork.kipp.graphics.StarDrawable;
 import com.teamhardwork.kipp.utilities.GraphicsUtils;
+import com.teamhardwork.kipp.utilities.ReboundAnimator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,6 +91,7 @@ public class BehaviorFragment extends Fragment {
         gvBehaviors.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long mylng) {
+                ReboundAnimator.startClickAnimation(view);
                 // pass behavior back to listener
                 Behavior behavior = behaviorsAdapter.getItem(position);
                 if (behavior.getPoints() > 0) {

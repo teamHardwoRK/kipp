@@ -5,8 +5,6 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -16,10 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -363,6 +357,10 @@ public class RosterFragment extends BaseKippFragment implements Recommendation.R
         ivTips.setColorFilter(tipColor);
     }
 
+    public StudentArrayAdapter getStudentsAdapter() {
+        return aStudents;
+    }
+
     public interface OnStudentSelectedListener {
         public void onStudentSelected(Student student);
     }
@@ -370,9 +368,5 @@ public class RosterFragment extends BaseKippFragment implements Recommendation.R
     public interface RosterSwipeListener {
         public void showBehaviorPagerFragment(ArrayList<Student> students, SchoolClass schoolClass
                 , boolean isPositive);
-    }
-
-    public StudentArrayAdapter getStudentsAdapter() {
-        return aStudents;
     }
 }
