@@ -120,6 +120,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
                     if (rlLegend.getVisibility() != View.VISIBLE) {
                         rlLegend.setVisibility(View.VISIBLE);
                         Animation enter = AnimationUtils.loadAnimation(getActivity(), R.anim.top_in);
+                        enter.setStartOffset(1000);
                         rlLegend.setAnimation(enter);
                     }
                 }
@@ -181,10 +182,6 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
                 }
             }
         });
-
-        rlRecommendationContainer.setVisibility(View.GONE);
-        tvRecommendation.setVisibility(View.GONE);
-        btnDismissRecommendation.setVisibility(View.GONE);
 
         return rtnView;
     }

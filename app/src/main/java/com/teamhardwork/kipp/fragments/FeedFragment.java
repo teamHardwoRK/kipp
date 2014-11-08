@@ -87,19 +87,12 @@ public class FeedFragment extends BaseKippFragment implements Updatable {
         });
     }
 
-    void showProgressBar() {
-        lvBehaviorFeed.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
     void showBehaviorFeed() {
         progressBar.setVisibility(View.GONE);
         lvBehaviorFeed.setVisibility(View.VISIBLE);
     }
 
     public void changeToStudentFeed() {
-        showProgressBar();
-
         FeedQueries.getStudentFeed(student, new FindCallback<BehaviorEvent>() {
             @Override
             public void done(List<BehaviorEvent> behaviorEvents, ParseException e) {
@@ -112,8 +105,6 @@ public class FeedFragment extends BaseKippFragment implements Updatable {
     }
 
     public void changeToClassFeed() {
-        showProgressBar();
-
         FeedQueries.getClassFeed(currentClass, new FindCallback<BehaviorEvent>() {
             @Override
             public void done(List<BehaviorEvent> behaviorEvents, ParseException e) {
