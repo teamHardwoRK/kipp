@@ -7,14 +7,12 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.echo.holographlibrary.Bar;
 import com.echo.holographlibrary.BarGraph;
 import com.echo.holographlibrary.PieGraph;
 import com.echo.holographlibrary.PieSlice;
@@ -29,11 +27,11 @@ import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.enums.Behavior;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.queries.FeedQueries;
+import com.teamhardwork.kipp.stats.BarStats;
 import com.teamhardwork.kipp.utilities.ReboundAnimator;
 import com.teamhardwork.kipp.utilities.behavior_event.BehaviorEventListFilterer;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -63,12 +61,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
     private static final List<Behavior> goodBehaviors = Arrays.asList(Behavior.CLEANING_UP,
             Behavior.ON_TASK, Behavior.RESPECTING_EVERYONE, Behavior.SHOWING_GRATITUDE,
             Behavior.SILENT_REMINDERS, Behavior.VOLUNTEERING);
-    private static final List<Integer> BAR_VALUES = Collections.unmodifiableList(
-            Arrays.asList(3, 8, 5, 10, 6, 1)
-    );
-    private static final List<String> BAR_LABELS = Collections.unmodifiableList(
-            Arrays.asList("Jun", "Jul", "Aug", "Sep", "Oct", "Nov")
-    );
+
     protected String statForString = "Class";
     protected FindCallback<BehaviorEvent> overallResponseCallback;
     @InjectView(R.id.tvBarLabel)
@@ -99,6 +92,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
     private Map<Behavior, Integer> behaviorCounts;
     private List<BehaviorEvent> curBehaviorEvents;
     private Spring mScaleSpring;
+    private BarStats barStats;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -130,6 +124,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
 
         setupChart();
         fillChartWithOverallData();
+        barStats = new BarStats(getActivity(), rlBarChartContainer, barGraph, tvBarLabel);
 
         mScaleSpring = SpringSystem.create().createSpring();
 
@@ -193,52 +188,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
         chartMode = ChartMode.BAR;
         pieGraph.setVisibility(View.GONE);
         rlLegend.setVisibility(View.GONE);
-        rlBarChartContainer.setVisibility(View.VISIBLE);
-        barGraph.setDuration(1000);
-        barGraph.setInterpolator(new AccelerateDecelerateInterpolator());
-        barGraph.setValueStringPrecision(0);
-        barGraph.setAxisColor(Color.parseColor("#58B488"));
-        barGraph.setShowBarText(false);
-        barGraph.setShowPopup(false);
-        barGraph.getHandler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                barGraph.setShowBarText(true);
-            }
-        }, 1000);
-
-        tvBarLabel.setTypeface(KippApplication.getDefaultTypeFace(getActivity()));
-        ArrayList<Bar> points = new ArrayList<Bar>();
-        for (int i = 0; i < BAR_LABELS.size(); i++) {
-            Bar bar = new Bar();
-            bar.setValue(0);
-            bar.setColor(COLORS.get(i));
-            bar.setLabelColor(COLORS.get(i));
-            bar.setName(BAR_LABELS.get(i));
-            bar.setGoalValue(BAR_VALUES.get(i));
-            bar.setValueColor(COLORS.get(i));
-            points.add(bar);
-        }
-        barGraph.setBars(points);
-
-        Animation enter = AnimationUtils.loadAnimation(getActivity(), R.anim.left_in);
-        enter.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                barGraph.animateToGoalValues();
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        rlBarChartContainer.startAnimation(enter);
+        barStats.setup();
     }
 
     void setTypeface() {
@@ -309,7 +259,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
                 }
             });
 
-            barChartExit(1000);
+            barStats.barChartExit(1000);
             pieGraph.startAnimation(enterRight);
 
             chartMode = previousMode;
@@ -355,21 +305,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
 
     }
 
-    private void barChartExit(int durationMillis) {
-        List<Bar> bars = barGraph.getBars();
-        for (Bar bar : bars) {
-            bar.setGoalValue(0);
-        }
-        barGraph.setShowBarText(false);
-        barGraph.setDuration(durationMillis);
-        barGraph.animateToGoalValues();
-        barGraph.getHandler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                rlBarChartContainer.setVisibility(View.GONE);
-            }
-        }, durationMillis);
-    }
+
 
     private void setupChart() {
         pieGraph.setInnerCircleRatio(200);
