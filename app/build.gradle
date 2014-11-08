@@ -20,6 +20,9 @@ android {
 }
 
 dependencies {
+    // Support Libraries
+    compile 'com.android.support:support-v4:21.0.0'
+
     compile project(':HoloGraphLibrary')
     compile project(':swipelistview')
     compile project(':viewpagerindicator')
