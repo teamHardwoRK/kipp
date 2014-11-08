@@ -13,6 +13,7 @@ import com.echo.holographlibrary.Bar;
 import com.echo.holographlibrary.BarGraph;
 import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
+import com.teamhardwork.kipp.models.BehaviorEvent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,12 +46,21 @@ public class BarStats {
     private RelativeLayout rlBarChartContainer;
     private BarGraph barGraph;
     private TextView tvBarLabel;
+    private List<BehaviorEvent> behaviorEvents = null;
+    private List<BehaviorEvent> good = null;
+    private List<BehaviorEvent> bad = null;
 
     public BarStats(Context context, RelativeLayout rlBarChartContainer, BarGraph barGraph, TextView tvBarLabel) {
         this.context = context;
         this.rlBarChartContainer = rlBarChartContainer;
         this.barGraph = barGraph;
         this.tvBarLabel = tvBarLabel;
+    }
+
+    public void activateBarStats(List<BehaviorEvent> behaviorEvents, List<BehaviorEvent> good, List<BehaviorEvent> bad) {
+        this.behaviorEvents = behaviorEvents;
+        this.good = good;
+        this.bad = bad;
     }
 
     public void setup () {

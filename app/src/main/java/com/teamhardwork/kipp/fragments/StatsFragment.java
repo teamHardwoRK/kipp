@@ -91,6 +91,8 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
     private ChartMode previousMode;
     private Map<Behavior, Integer> behaviorCounts;
     private List<BehaviorEvent> curBehaviorEvents;
+    private List<BehaviorEvent> curGood;
+    private List<BehaviorEvent> curBad;
     private Spring mScaleSpring;
     private BarStats barStats;
 
@@ -99,6 +101,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
                              Bundle savedInstanceState) {
         View rtnView = inflater.inflate(R.layout.fragment_stats, container, false);
         ButterKnife.inject(this, rtnView);
+        barStats = new BarStats(getActivity(), rlBarChartContainer, barGraph, tvBarLabel);
         setTypeface();
         chartMode = ChartMode.OVERALL;
         previousMode = null;
@@ -124,7 +127,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
 
         setupChart();
         fillChartWithOverallData();
-        barStats = new BarStats(getActivity(), rlBarChartContainer, barGraph, tvBarLabel);
+
 
         mScaleSpring = SpringSystem.create().createSpring();
 
@@ -211,12 +214,13 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
 
     private void activateOverallChart(List<BehaviorEvent> behaviorEvents) {
         unsetChartValues();
-        List<BehaviorEvent> good = BehaviorEventListFilterer.keepGood(behaviorEvents);
-        List<BehaviorEvent> bad = BehaviorEventListFilterer.keepBad(behaviorEvents);
-        pieGraph.getSlice(OverallSlices.GOOD.ordinal()).setGoalValue(good.size());
-        pieGraph.getSlice(OverallSlices.BAD.ordinal()).setGoalValue(bad.size());
+        curGood = BehaviorEventListFilterer.keepGood(behaviorEvents);
+        curBad = BehaviorEventListFilterer.keepBad(behaviorEvents);
+        pieGraph.getSlice(OverallSlices.GOOD.ordinal()).setGoalValue(curGood.size());
+        pieGraph.getSlice(OverallSlices.BAD.ordinal()).setGoalValue(curBad.size());
         pieGraph.animateToGoalValues();
-        activateOverallLegend(good.size(), bad.size());
+        activateOverallLegend(curGood.size(), curBad.size());
+        barStats.activateBarStats(behaviorEvents, curGood, curBad);
     }
 
     private void activateChartForBehaviors(Map<Behavior, Integer> groupedCounts,
