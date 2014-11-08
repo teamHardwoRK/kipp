@@ -113,6 +113,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
                     curBehaviorEvents = behaviorEvents;
                     behaviorCounts = BehaviorEventListFilterer.getGroupedCount(behaviorEvents);
                     activateOverallChart(behaviorEvents);
+                    barStats.activateBarStats(behaviorEvents, behaviorCounts);
                     setRecommendation(behaviorEvents);
 
                     if (rlLegend.getVisibility() != View.VISIBLE) {
@@ -220,7 +221,6 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
         pieGraph.getSlice(OverallSlices.BAD.ordinal()).setGoalValue(curBad.size());
         pieGraph.animateToGoalValues();
         activateOverallLegend(curGood.size(), curBad.size());
-        barStats.activateBarStats(behaviorEvents, curGood, curBad);
     }
 
     private void activateChartForBehaviors(Map<Behavior, Integer> groupedCounts,

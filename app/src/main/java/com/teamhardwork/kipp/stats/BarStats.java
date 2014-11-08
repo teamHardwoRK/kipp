@@ -13,12 +13,15 @@ import com.echo.holographlibrary.Bar;
 import com.echo.holographlibrary.BarGraph;
 import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
+import com.teamhardwork.kipp.enums.Behavior;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by hugh_sd on 11/8/14.
@@ -47,8 +50,8 @@ public class BarStats {
     private BarGraph barGraph;
     private TextView tvBarLabel;
     private List<BehaviorEvent> behaviorEvents = null;
-    private List<BehaviorEvent> good = null;
-    private List<BehaviorEvent> bad = null;
+    private Map<Behavior, Integer> behaviorCounts;
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat ("EEEE");
 
     public BarStats(Context context, RelativeLayout rlBarChartContainer, BarGraph barGraph, TextView tvBarLabel) {
         this.context = context;
@@ -57,10 +60,9 @@ public class BarStats {
         this.tvBarLabel = tvBarLabel;
     }
 
-    public void activateBarStats(List<BehaviorEvent> behaviorEvents, List<BehaviorEvent> good, List<BehaviorEvent> bad) {
+    public void activateBarStats(List<BehaviorEvent> behaviorEvents, Map<Behavior, Integer> behaviorCounts) {
         this.behaviorEvents = behaviorEvents;
-        this.good = good;
-        this.bad = bad;
+        this.behaviorCounts = behaviorCounts;
     }
 
     public void setup () {
