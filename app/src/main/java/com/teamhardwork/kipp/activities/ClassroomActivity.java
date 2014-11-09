@@ -53,7 +53,6 @@ public class ClassroomActivity extends BaseKippActivity implements
     private Fragment pagerFragment;
     private ArrayList<Student> selectedStudents;
     private SchoolClass schoolClass;
-    private SearchView searchView;
     private DrawerLayout dlRoster;
     private ViewGroup drawerItemsListContainer;
     private ActionBarDrawerToggle abDrawerToggle;
@@ -249,40 +248,7 @@ public class ClassroomActivity extends BaseKippActivity implements
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.classroom, menu);
-        setupMenuSearch(menu);
         return true;
-    }
-
-    private void setupMenuSearch(Menu menu) {
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        if (searchItem == null) throw new IllegalArgumentException("menu item is null and that is very suspicious.");
-
-        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        if (searchView == null) throw new IllegalArgumentException("search view is null and that is very suspicious.");
-
-        int id = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
-
-        ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text)).setTextColor(Color.WHITE);
-        ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text)).setHintTextColor(Color.WHITE);
-        ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text)).setTypeface(getDefaultTypeface());
-
-        searchView.setQueryHint("Enter First Name");
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                if (s.matches("")) {
-                    getRosterFragment().getStudentsAdapter().resetFilter();
-                } else {
-                    getRosterFragment().getStudentsAdapter().getFilter().filter(s);
-                }
-                return false;
-            }
-        });
     }
 
     @Override
@@ -310,7 +276,11 @@ public class ClassroomActivity extends BaseKippActivity implements
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the nav drawer is open, hide action items related to the content view
         boolean drawerOpen = dlRoster.isDrawerOpen(Gravity.START);
-        menu.findItem(R.id.action_search).setVisible(!drawerOpen);
+        
+        if (navDrawerItemIdSelected == NAVDRAWER_ITEM_CLASS) {
+            menu.findItem(R.id.action_search).setVisible(!drawerOpen);
+        }
+
         menu.findItem(R.id.action_logout).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
@@ -342,20 +312,13 @@ public class ClassroomActivity extends BaseKippActivity implements
     }
 
     private void gotoInfoActivity(Student student) {
-        clearSearchView();
+        getRosterFragment().clearSearchView();
 
         Intent i = new Intent(this, InfoActivity.class);
         if (student != null) {
             i.putExtra("selected_student_id", student.getObjectId());
         }
         enterActivity(i);
-    }
-
-    private void clearSearchView() {
-        if (searchView != null) {
-            searchView.setQuery("", false);
-            searchView.clearFocus();
-        }
     }
 
     public void showBehaviorPagerFragment(ArrayList<Student> students, SchoolClass schoolClass, boolean isPositive) {
