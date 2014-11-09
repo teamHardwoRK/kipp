@@ -2,6 +2,7 @@
 <resources>
     <!-- Commons -->
     <color name="background_app">#dedede</color>
+    <color name="theme_primary">#22BD89</color>
 
     <color name="background_list_back">#e3e3e3</color>
     <color name="background_list_front">#ffffff</color>
@@ -10,6 +11,14 @@
     <color name="line">#ffbcbcbc</color>
     <color name="background_new_tag">#ff0000</color>
     <color name="text_new_tag">#ffffff</color>
+
+    <!-- Nav Drawer -->
+    <color name="navdrawer_background">#ffffffff</color>
+    <color name="navdrawer_text_color">#de000000</color>
+    <color name="navdrawer_text_color_selected">@color/theme_primary</color>
+    <color name="navdrawer_icon_tint">#888</color>
+    <color name="navdrawer_icon_tint_selected">@color/theme_primary</color>
+    <color name="navdrawer_background_cover">#17845f</color>
 
     <!-- Color List -->
     <color name="Black">#000000</color>

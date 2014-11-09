@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,14 +6,93 @@
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="0dp"
+    android:id="@+id/dlRoster"
     tools:context="com.teamhardwork.kipp.activities.RosterActivity">
 
     <FrameLayout
         android:id="@+id/flRoster"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true" />
-</RelativeLayout>
+
+    <!-- Navigation drawer -->
+    <LinearLayout
+        android:id="@+id/flNavDrawer"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:orientation="vertical"
+        android:background="@color/navdrawer_background">
+
+        <!-- Account info -->
+        <FrameLayout
+            android:id="@+id/flChosenAccountView"
+            android:layout_width="match_parent"
+            android:layout_height="140dp">
+
+            <ImageView android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:background="@color/navdrawer_background_cover"
+                android:id="@+id/ivProfileCoverImage" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="16dp"
+                android:id="@+id/rlChosenAccountContentView">
+
+                <ImageView
+                    android:id="@+id/ivProfileImage"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/img_stormtrooper"
+                    android:scaleType="centerCrop" />
+
+                <TextView
+                    android:id="@+id/tvProfileEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/ivProfileImage"
+                    android:layout_alignParentBottom="true"
+                    android:paddingBottom="16dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/White"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:text="billwalsh@gmail.com"/>
+
+                <TextView
+                    android:id="@+id/tvProfileName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/tvProfileEmail"
+                    android:layout_alignLeft="@id/ivProfileImage"
+                    android:textSize="18sp"
+                    android:textColor="@color/White"
+                    android:text="Bill Walsh"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:ellipsize="end" />
+
+            </RelativeLayout>
+
+        </FrameLayout>
+
+        <!-- Drawer items -->
+        <LinearLayout android:id="@+id/llNavDrawerItemList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical"/>
+    </LinearLayout>
+
+
+</android.support.v4.widget.DrawerLayout>
