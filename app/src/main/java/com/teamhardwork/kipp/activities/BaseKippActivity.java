@@ -1,9 +1,9 @@
 package com.teamhardwork.kipp.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Typeface;
+import android.support.v7.app.ActionBarActivity;
 
 import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
@@ -15,7 +15,7 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 /**
  * Created by rcarino on 10/26/14.
  */
-public abstract class BaseKippActivity extends Activity {
+public abstract class BaseKippActivity extends ActionBarActivity {
     private KippPushBroadcastReceiver pushReceiver;
 
     @Override
