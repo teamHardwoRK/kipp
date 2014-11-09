@@ -72,7 +72,7 @@ public class LoginActivity extends BaseKippActivity {
     void onLoginSuccess() {
         ((KippApplication) getApplication()).setTeacher();
         ((KippApplication) getApplication()).setSchoolClass();
-        Intent i = new Intent(this, RosterActivity.class);
+        Intent i = new Intent(this, ClassroomActivity.class);
         enterActivity(i);
     }
 }

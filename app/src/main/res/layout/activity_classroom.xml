@@ -7,7 +7,7 @@
     android:paddingRight="0dp"
     android:paddingTop="0dp"
     android:id="@+id/dlRoster"
-    tools:context="com.teamhardwork.kipp.activities.RosterActivity">
+    tools:context="com.teamhardwork.kipp.activities.ClassroomActivity">
 
     <FrameLayout
         android:id="@+id/flRoster"

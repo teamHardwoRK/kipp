@@ -6,9 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.graphics.LightingColorFilter;
 import android.os.Bundle;
-import android.support.v4.internal.view.SupportMenuItem;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -19,8 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.support.v7.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,16 +34,14 @@ import com.teamhardwork.kipp.fragments.RosterFragment;
 import com.teamhardwork.kipp.fragments.StatsFragment;
 import com.teamhardwork.kipp.graphics.SadFaceAnimationSet;
 import com.teamhardwork.kipp.graphics.StarAnimationSet;
-import com.teamhardwork.kipp.listeners.FragmentTabListener;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.SchoolClass;
 import com.teamhardwork.kipp.models.users.Student;
-import com.teamhardwork.kipp.utilities.ViewUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-public class RosterActivity extends BaseKippActivity implements
+public class ClassroomActivity extends BaseKippActivity implements
         RosterFragment.OnStudentSelectedListener,
         RosterFragment.RosterSwipeListener,
         BehaviorFragment.BehaviorListener,
@@ -56,18 +50,12 @@ public class RosterActivity extends BaseKippActivity implements
         StarAnimationSet.StarAnimationSetListener,
         LeaderboardFragment.OnStudentSelectedListener {
 
-    private final String ROSTER_FRAGMENT_TAG = "RosterFragment";
-    private final String STATS_FRAGMENT_TAG = "StatsFragment";
-    private final String LOG_FRAGMENT_TAG = "LogFragment";
-    private final String LEADERBOARD_FRAGMENT_TAG = "LeaderboardFragment";
-    private final String BEHAVIOR_PAGER_FRAGMENT_TAG = "BehaviorPagerFragment";
     private Fragment pagerFragment;
     private ArrayList<Student> selectedStudents;
     private SchoolClass schoolClass;
     private SearchView searchView;
     private DrawerLayout dlRoster;
     private ViewGroup drawerItemsListContainer;
-    private LinearLayout llAccountInfo;
     private ActionBarDrawerToggle abDrawerToggle;
 
     //  list of all possible nav items.
@@ -111,7 +99,7 @@ public class RosterActivity extends BaseKippActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_roster);
+        setContentView(R.layout.activity_classroom);
 
         SchoolClass schoolClass = ((KippApplication) getApplication()).getSchoolClass();
 
@@ -260,7 +248,7 @@ public class RosterActivity extends BaseKippActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.roster, menu);
+        getMenuInflater().inflate(R.menu.classroom, menu);
         setupMenuSearch(menu);
         return true;
     }
@@ -342,7 +330,7 @@ public class RosterActivity extends BaseKippActivity implements
 
     @Override
     public void onStudentSelected(Student student) {
-        Fragment rosterFragment = getSupportFragmentManager().findFragmentByTag(ROSTER_FRAGMENT_TAG);
+        Fragment rosterFragment = getSupportFragmentManager().findFragmentByTag(RosterFragment.class.getName());
 
         // HACK: reset roster Fragment to get around swiping issue
         if (rosterFragment != null) {
@@ -375,14 +363,14 @@ public class RosterActivity extends BaseKippActivity implements
         this.schoolClass = schoolClass;
 
         FragmentManager fm = getSupportFragmentManager();
-        pagerFragment = fm.findFragmentByTag(BEHAVIOR_PAGER_FRAGMENT_TAG);
+        pagerFragment = fm.findFragmentByTag(BehaviorPagerFragment.class.getName());
 
         // show behavior Fragment
         if (pagerFragment == null) {
             pagerFragment = BehaviorPagerFragment.newInstance(isPositive);
         }
 
-        ((BehaviorPagerFragment) pagerFragment).show(fm, BEHAVIOR_PAGER_FRAGMENT_TAG);
+        ((BehaviorPagerFragment) pagerFragment).show(fm, BehaviorPagerFragment.class.getName());
     }
 
     @Override
@@ -396,7 +384,7 @@ public class RosterActivity extends BaseKippActivity implements
             behaviorEvent.setOccurredAt(new Date());
             behaviorEvent.setNotes("");
             behaviorEvent.saveInBackground();
-            Toast.makeText(RosterActivity.this,
+            Toast.makeText(ClassroomActivity.this,
                     "behaviorEvent saved for " + curStudent.getFirstName(), Toast.LENGTH_SHORT)
                     .show();
 
@@ -409,7 +397,7 @@ public class RosterActivity extends BaseKippActivity implements
     @Override
     public void onAnimationEnd() {
         FragmentManager fm = getSupportFragmentManager();
-        pagerFragment = fm.findFragmentByTag(BEHAVIOR_PAGER_FRAGMENT_TAG);
+        pagerFragment = fm.findFragmentByTag(BehaviorPagerFragment.class.getName());
 
         if (pagerFragment != null) {
             // this will by default remove the fragment instance
