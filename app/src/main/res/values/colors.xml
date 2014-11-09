@@ -3,6 +3,8 @@
     <!-- Commons -->
     <color name="background_app">#dedede</color>
     <color name="theme_primary">#22BD89</color>
+    <color name="theme_primary_dark">#17845f</color>
+    <color name="theme_accent">#1589FF</color>
 
     <color name="background_list_back">#e3e3e3</color>
     <color name="background_list_front">#ffffff</color>
