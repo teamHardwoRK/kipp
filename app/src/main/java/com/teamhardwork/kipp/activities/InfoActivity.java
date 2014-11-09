@@ -1,6 +1,6 @@
 package com.teamhardwork.kipp.activities;
 
-import android.app.ActionBar;
+import android.support.v7.app.ActionBar;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -11,15 +11,15 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.support.v7.app.ActionBar.Tab;
 
-import com.squareup.picasso.Picasso;
 import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.dialogfragments.AddActionDialogFragment;
 import com.teamhardwork.kipp.fragments.ActionLogFragment;
 import com.teamhardwork.kipp.fragments.FeedFragment;
 import com.teamhardwork.kipp.fragments.StudentStatsFragment;
-import com.teamhardwork.kipp.listeners.FragmentTabListener;
+import com.teamhardwork.kipp.listeners.SupportFragmentTabListener;
 import com.teamhardwork.kipp.models.BehaviorEvent;
 import com.teamhardwork.kipp.models.users.Student;
 import com.teamhardwork.kipp.utilities.ViewUtils;
@@ -42,7 +42,7 @@ public class InfoActivity extends BaseKippActivity implements FeedFragment.FeedL
         setActionBarTitle();
 
         // Back action bar navigation
-        ActionBar actionBar = getActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         String selectedId = (selected != null) ? selected.getObjectId() : null;
@@ -54,13 +54,13 @@ public class InfoActivity extends BaseKippActivity implements FeedFragment.FeedL
         if (selected != null) {
             setCustomStudentActionBar();
         } else {
-            getActionBar().setTitle(((KippApplication) getApplication()).getSchoolClass().getName());
+            getSupportActionBar().setTitle(((KippApplication) getApplication()).getSchoolClass().getName());
         }
     }
 
     // Hackily construct a new action bar because we want a circular image view near the title
     private void setCustomStudentActionBar() {
-        ActionBar actionBar = getActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 
         LinearLayout llActionBar = new LinearLayout(actionBar.getThemedContext());
@@ -146,17 +146,17 @@ public class InfoActivity extends BaseKippActivity implements FeedFragment.FeedL
     }
 
     private void setupTabs(String selectedStudentId) {
-        ActionBar actionBar = getActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         Bundle args = new Bundle();
         args.putString(StudentStatsFragment.STUDENT_ID_ARG_KEY, selectedStudentId);
 
-        ActionBar.Tab tab1 = actionBar
+        Tab tab1 = actionBar
                 .newTab()
                 .setCustomView(ViewUtils.tabTextView(this, "STATS"))
                 .setTabListener(
-                        new FragmentTabListener<StudentStatsFragment>(R.id.flInfoContainer, this,
+                        new SupportFragmentTabListener<StudentStatsFragment>(R.id.flInfoContainer, this,
                                 StudentStatsFragment.TAG, StudentStatsFragment.class, args));
         actionBar.addTab(tab1);
         actionBar.selectTab(tab1);
@@ -165,7 +165,7 @@ public class InfoActivity extends BaseKippActivity implements FeedFragment.FeedL
                 .newTab()
                 .setCustomView(ViewUtils.tabTextView(this, "BEHAVIORS"))
                 .setTabListener(
-                        new FragmentTabListener<FeedFragment>(R.id.flInfoContainer, this,
+                        new SupportFragmentTabListener<FeedFragment>(R.id.flInfoContainer, this,
                                 FeedFragment.TAG, FeedFragment.class, args));
         actionBar.addTab(tab2);
 
@@ -173,7 +173,7 @@ public class InfoActivity extends BaseKippActivity implements FeedFragment.FeedL
                 .newTab()
                 .setCustomView(ViewUtils.tabTextView(this, "ACTIONS"))
                 .setTabListener(
-                        new FragmentTabListener<ActionLogFragment>(R.id.flInfoContainer, this,
+                        new SupportFragmentTabListener<ActionLogFragment>(R.id.flInfoContainer, this,
                                 ActionLogFragment.TAG, ActionLogFragment.class, args));
         actionBar.addTab(tab3);
     }
@@ -181,19 +181,19 @@ public class InfoActivity extends BaseKippActivity implements FeedFragment.FeedL
     @Override
     protected void updateFragments() {
         super.updateFragments();
-        StudentStatsFragment studentStatsFragment = (StudentStatsFragment) getFragmentManager()
+        StudentStatsFragment studentStatsFragment = (StudentStatsFragment) getSupportFragmentManager()
                 .findFragmentByTag(StudentStatsFragment.TAG);
         if (studentStatsFragment != null) {
             studentStatsFragment.updateData();
         }
 
-        FeedFragment feedFragment = (FeedFragment) getFragmentManager()
+        FeedFragment feedFragment = (FeedFragment) getSupportFragmentManager()
                 .findFragmentByTag(FeedFragment.TAG);
         if (feedFragment != null) {
             feedFragment.updateData();
         }
 
-        ActionLogFragment actionLogFragment = (ActionLogFragment) getFragmentManager()
+        ActionLogFragment actionLogFragment = (ActionLogFragment) getSupportFragmentManager()
                 .findFragmentByTag(ActionLogFragment.TAG);
         if (actionLogFragment != null) {
             actionLogFragment.updateData();

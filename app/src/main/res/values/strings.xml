@@ -29,4 +29,15 @@
     <string name="default_recommendation">John deserves a hand!</string>
 
     <string name="is_rebound_enabled_tag_key">isReboundEnabledTagKey</string>
+
+
+    <!-- NavDrawer Menu items -->
+    <string name="navdrawer_item_class">Class</string>
+    <string name="navdrawer_item_stats">Stats</string>
+    <string name="navdrawer_item_logs">Logs</string>
+    <string name="navdrawer_item_rank">Rank</string>
+
+    <string name="placeholder_drawer_item">Drawer Item</string>
+    <string name="drawer_open">Open Drawer</string>
+    <string name="drawer_close">Close Drawer</string>
 </resources>
