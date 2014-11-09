@@ -216,12 +216,16 @@ public class RosterActivity extends BaseKippActivity implements
 
         switch (itemId) {
             case NAVDRAWER_ITEM_CLASS:
+                showFragment(RosterFragment.class);
                 break;
             case NAVDRAWER_ITEM_STATS:
+                showFragment(StatsFragment.class);
                 break;
             case NAVDRAWER_ITEM_LOG:
+                showFragment(FeedFragment.class);
                 break;
             case NAVDRAWER_ITEM_RANK:
+                showFragment(LeaderboardFragment.class);
                 break;
         }
 
@@ -422,18 +426,18 @@ public class RosterActivity extends BaseKippActivity implements
             rosterFragment.updateData();
         }
 
-        StatsFragment statsFragment = (StatsFragment) getSupportFragmentManager().findFragmentByTag(STATS_FRAGMENT_TAG);
+        StatsFragment statsFragment = (StatsFragment) getSupportFragmentManager().findFragmentByTag(StatsFragment.class.getName());
         if (statsFragment != null) {
             statsFragment.updateData();
         }
 
-        FeedFragment feedFragment = (FeedFragment) getSupportFragmentManager().findFragmentByTag(LOG_FRAGMENT_TAG);
+        FeedFragment feedFragment = (FeedFragment) getSupportFragmentManager().findFragmentByTag(FeedFragment.class.getName());
         if (feedFragment != null) {
             feedFragment.updateData();
         }
 
         LeaderboardFragment leaderboardFragment = (LeaderboardFragment) getSupportFragmentManager()
-                .findFragmentByTag(LEADERBOARD_FRAGMENT_TAG);
+                .findFragmentByTag(LeaderboardFragment.class.getName());
         if (leaderboardFragment != null) {
             leaderboardFragment.updateData();
         }
