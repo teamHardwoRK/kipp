@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Gravity;
 import android.view.Menu;
@@ -99,8 +100,15 @@ public class ClassroomActivity extends BaseKippActivity implements
 
         SchoolClass schoolClass = ((KippApplication) getApplication()).getSchoolClass();
 
-        getSupportActionBar().setTitle(schoolClass.getName());
-        getSupportActionBar().setSubtitle(getString(R.string.navdrawer_item_class));
+        ActionBar actionBar = getSupportActionBar();
+
+        if(actionBar != null) {
+            actionBar.setSubtitle(getString(R.string.navdrawer_item_class));
+
+            if(schoolClass != null) {
+                actionBar.setTitle(schoolClass.getName());
+            }
+        }
 
         setupNavDrawer();
 
