@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBar.TabListener;
 
+import com.teamhardwork.kipp.R;
+
 public class SupportFragmentTabListener<T extends Fragment> implements TabListener {
     private Fragment mFragment;
     private final FragmentActivity mActivity;
@@ -46,6 +48,7 @@ public class SupportFragmentTabListener<T extends Fragment> implements TabListen
 
     public void onTabSelected(Tab tab, FragmentTransaction sft) {
         // Check if the fragment is already initialized
+        sft.setCustomAnimations(R.anim.right_in, R.anim.left_out);
         if (mFragment == null) {
             // If not, instantiate and add it to the activity
             mFragment = Fragment.instantiate(mActivity, mClass.getName(), mfragmentArgs);
