@@ -178,9 +178,11 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
                             chartMode = ChartMode.BAD_DETAIL;
                             activateChartForBehaviors(behaviorCounts, badBehaviors);
                     }
-                } else if (chartMode == ChartMode.GOOD_DETAIL ) {
+                } else if (chartMode == ChartMode.GOOD_DETAIL &&
+                           index < goodBehaviors.size()) {
                     setupBarGraph(goodBehaviors.get(index), pieGraph.getSlice(index).getColor());
-                } else if (chartMode == ChartMode.BAD_DETAIL ) {
+                } else if (chartMode == ChartMode.BAD_DETAIL &&
+                           index < badBehaviors.size()) {
                     setupBarGraph(badBehaviors.get(index), pieGraph.getSlice(index).getColor());
                 }
             }
