@@ -167,6 +167,7 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
             @Override
             public void onClick(int index) {
                 ReboundAnimator.startClickAnimation(pieGraph);
+                Behavior behavior;
                 if (chartMode == ChartMode.OVERALL) {
                     previousMode = chartMode;
                     switch (index) {
@@ -178,8 +179,12 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
                             chartMode = ChartMode.BAD_DETAIL;
                             activateChartForBehaviors(behaviorCounts, badBehaviors);
                     }
-                } else {
-                    setupBarGraph();
+                } else if (chartMode == ChartMode.GOOD_DETAIL ) {
+                    behavior = goodBehaviors.get(index);
+                    setupBarGraph(behavior, pieGraph.getSlice(index).getColor());
+                } else if (chartMode == ChartMode.BAD_DETAIL ) {
+                    behavior = badBehaviors.get(index);
+                    setupBarGraph(behavior, pieGraph.getSlice(index).getColor());
                 }
             }
         });
@@ -187,12 +192,12 @@ public class StatsFragment extends BaseKippFragment implements Updatable {
         return rtnView;
     }
 
-    private void setupBarGraph() {
+    private void setupBarGraph(Behavior behavior, int color) {
         previousMode = chartMode;
         chartMode = ChartMode.BAR;
         pieGraph.setVisibility(View.GONE);
         rlLegend.setVisibility(View.GONE);
-        barStats.setup();
+        barStats.setup(behavior, color);
     }
 
     void setTypeface() {

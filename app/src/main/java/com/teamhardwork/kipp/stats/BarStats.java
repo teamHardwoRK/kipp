@@ -2,6 +2,7 @@ package com.teamhardwork.kipp.stats;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
@@ -15,13 +16,17 @@ import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;
 import com.teamhardwork.kipp.enums.Behavior;
 import com.teamhardwork.kipp.models.BehaviorEvent;
+import com.teamhardwork.kipp.utilities.behavior_event.BehaviorEventListFilterer;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by hugh_sd on 11/8/14.
@@ -51,7 +56,8 @@ public class BarStats {
     private TextView tvBarLabel;
     private List<BehaviorEvent> behaviorEvents = null;
     private Map<Behavior, Integer> behaviorCounts;
-    private SimpleDateFormat dateFormatter = new SimpleDateFormat ("EEEE");
+    private SimpleDateFormat simpleDateFormatMonth = new SimpleDateFormat("MMM");
+    private SimpleDateFormat simpleDateFormatWeek = new SimpleDateFormat("W");
 
     public BarStats(Context context, RelativeLayout rlBarChartContainer, BarGraph barGraph, TextView tvBarLabel) {
         this.context = context;
@@ -65,7 +71,57 @@ public class BarStats {
         this.behaviorCounts = behaviorCounts;
     }
 
-    public void setup () {
+    public Map<Date, Integer> setupBarData(List<BehaviorEvent> events, TextView label) {
+        Map<Date, Integer> barData = new TreeMap<Date, Integer>();
+        Calendar prevCalendar = Calendar.getInstance();
+        Calendar currCalendar = Calendar.getInstance();
+        int currCount = 0, diffYears, diffWeeks;
+
+        if (events == null || events.isEmpty()) return null;
+
+        prevCalendar.setTime(events.get(events.size() - 1).getOccurredAt());
+        currCount++;
+        for (int i = events.size() - 2; i >= 0; i--) {
+            BehaviorEvent event = events.get(i);
+            currCalendar.setTime(event.getOccurredAt());
+            diffYears = currCalendar.get(Calendar.YEAR) - prevCalendar.get(Calendar.YEAR);
+            diffWeeks = currCalendar.get(Calendar.WEEK_OF_YEAR) - prevCalendar.get(Calendar.WEEK_OF_YEAR);
+
+            Log.e("BarGraph", "prevEvent: " + prevCalendar.toString());
+            Log.e("BarGraph", "currEvent: " + currCalendar.toString());
+
+            if (diffYears == 0 && diffWeeks == 0) {
+                currCount++;
+                if (i == 0) {
+                    barData.put(prevCalendar.getTime(), currCount);
+                }
+            } else {
+                barData.put(prevCalendar.getTime(), currCount);
+                currCount = 1;
+            }
+
+            prevCalendar.setTime(event.getOccurredAt());
+        }
+
+        label.setTypeface(KippApplication.getDefaultTypeFace(context));
+        label.setText(events.get(0).getBehavior().getTitle() + " (last " + barData.size() + " weeks)");
+
+        return barData;
+    }
+
+    public void setup(Behavior behavior, int behaviorColor) {
+        if (behaviorEvents == null || behavior == null) {
+            barChartExit(1000);
+            return;
+        }
+
+        int behaviorCount = behaviorCounts.get(behavior);
+        Log.e("BarGraph", "behavior " + behavior.getTitle() + ": " + behaviorCount);
+
+        List<BehaviorEvent> filteredEvents = BehaviorEventListFilterer.filterByBehavior(behaviorEvents, behavior);
+        Map<Date, Integer> barData = setupBarData(filteredEvents, tvBarLabel);
+        Log.e("BarGraph", barData.toString());
+
         rlBarChartContainer.setVisibility(View.VISIBLE);
         barGraph.setDuration(1000);
         barGraph.setInterpolator(new AccelerateDecelerateInterpolator());
@@ -80,19 +136,18 @@ public class BarStats {
             }
         }, 1000);
 
-        tvBarLabel.setTypeface(KippApplication.getDefaultTypeFace(context));
-        ArrayList<Bar> points = new ArrayList<Bar>();
-        for (int i = 0; i < BAR_LABELS.size(); i++) {
+        ArrayList<Bar> barsList = new ArrayList<Bar>();
+        for (Date date : barData.keySet()) {
             Bar bar = new Bar();
+            bar.setColor(behaviorColor);
+            bar.setName(simpleDateFormatMonth.format(date) + ", wk " + simpleDateFormatWeek.format(date));
             bar.setValue(0);
-            bar.setColor(COLORS.get(i));
-            bar.setLabelColor(COLORS.get(i));
-            bar.setName(BAR_LABELS.get(i));
-            bar.setGoalValue(BAR_VALUES.get(i));
-            bar.setValueColor(COLORS.get(i));
-            points.add(bar);
+            bar.setGoalValue(barData.get(date));
+            bar.setLabelColor(behaviorColor);
+            bar.setValueColor(behaviorColor);
+            barsList.add(bar);
         }
-        barGraph.setBars(points);
+        barGraph.setBars(barsList);
 
         Animation enter = AnimationUtils.loadAnimation(context, R.anim.left_in);
         enter.setAnimationListener(new Animation.AnimationListener() {
