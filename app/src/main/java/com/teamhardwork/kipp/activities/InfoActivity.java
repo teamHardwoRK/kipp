@@ -1,8 +1,9 @@
 package com.teamhardwork.kipp.activities;
 
-import android.support.v7.app.ActionBar;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBar.Tab;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.support.v7.app.ActionBar.Tab;
 
 import com.teamhardwork.kipp.KippApplication;
 import com.teamhardwork.kipp.R;

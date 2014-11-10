@@ -1,18 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.teamhardwork.kipp.activities.RosterActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/action_search"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always"
-        android:title="Search" />
+        android:title="Search"
+        android:orderInCategory="1"/>
 
-    <item
-        android:id="@+id/action_logout"
-        android:orderInCategory="100"
-        android:icon="@drawable/ic_logout"
-        app:showAsAction="always"
-        android:title="@string/action_logout" />
 </menu>

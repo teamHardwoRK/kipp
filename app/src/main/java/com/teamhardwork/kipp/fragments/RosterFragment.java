@@ -4,7 +4,10 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
 import android.util.DisplayMetrics;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -14,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -39,12 +43,14 @@ public class RosterFragment extends BaseKippFragment implements Recommendation.R
     List<Student> students;
     StudentArrayAdapter aStudents;
     SwipeListView lvStudents;
+    private SearchView searchView;
     private RosterSwipeListener listener;
     private OnStudentSelectedListener onStudentSelectedListener;
     private ArrayList<Student> selectedStudents;
     private List<BehaviorEvent> classBehaviorEvents;
     private int frontViewId;
     private int backViewId;
+
 
     @Override
     public void onAttach(Activity activity) {
@@ -368,5 +374,55 @@ public class RosterFragment extends BaseKippFragment implements Recommendation.R
     public interface RosterSwipeListener {
         public void showBehaviorPagerFragment(ArrayList<Student> students, SchoolClass schoolClass
                 , boolean isPositive);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.roster, menu);
+        setupMenuSearch(menu);
+    }
+
+    private void setupMenuSearch(Menu menu) {
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        if (searchItem == null) throw new IllegalArgumentException("menu item is null and that is very suspicious.");
+
+        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        if (searchView == null) throw new IllegalArgumentException("search view is null and that is very suspicious.");
+
+        int id = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+
+        ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text)).setTextColor(Color.WHITE);
+        ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text)).setHintTextColor(Color.WHITE);
+        //((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text)).setTypeface(getActivity().getBaseContext().getDefaultTypeface());
+
+        searchView.setQueryHint("Enter First Name");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if (s.matches("")) {
+                    aStudents.resetFilter();
+                } else {
+                    aStudents.getFilter().filter(s);
+                }
+                return false;
+            }
+        });
+    }
+
+    public void clearSearchView() {
+        if (searchView != null) {
+            searchView.setQuery("", false);
+            searchView.clearFocus();
+        }
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
     }
 }
