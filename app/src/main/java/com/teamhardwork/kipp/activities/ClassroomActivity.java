@@ -3,6 +3,7 @@ package com.teamhardwork.kipp.activities;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -194,36 +195,42 @@ public class ClassroomActivity extends BaseKippActivity implements
     }
 
     private void onNavDrawerItemSelected(final int itemId) {
+        dlRoster.closeDrawer(Gravity.START);
+
         if (itemId == navDrawerItemIdSelected) {
-            dlRoster.closeDrawer(Gravity.START);
             return;
         }
 
-        switch (itemId) {
-            case NAVDRAWER_ITEM_CLASS:
-                showFragment(RosterFragment.class);
-                getSupportActionBar().setSubtitle(getString(NAVDRAWER_TITLE_RES_ID[itemId]));
-                break;
-            case NAVDRAWER_ITEM_STATS:
-                showFragment(StatsFragment.class);
-                getSupportActionBar().setSubtitle(getString(NAVDRAWER_TITLE_RES_ID[itemId]));
-                break;
-            case NAVDRAWER_ITEM_LOG:
-                showFragment(FeedFragment.class);
-                getSupportActionBar().setSubtitle(getString(NAVDRAWER_TITLE_RES_ID[itemId]));
-                break;
-            case NAVDRAWER_ITEM_RANK:
-                showFragment(LeaderboardFragment.class);
-                getSupportActionBar().setSubtitle(getString(NAVDRAWER_TITLE_RES_ID[itemId]));
-                break;
-        }
+        Handler handler = new Handler();
+        // Set timer so that fragment transition animation happens after drawer close animation
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                switch (itemId) {
+                    case NAVDRAWER_ITEM_CLASS:
+                        showFragment(RosterFragment.class);
+                        getSupportActionBar().setSubtitle(getString(NAVDRAWER_TITLE_RES_ID[itemId]));
+                        break;
+                    case NAVDRAWER_ITEM_STATS:
+                        showFragment(StatsFragment.class);
+                        getSupportActionBar().setSubtitle(getString(NAVDRAWER_TITLE_RES_ID[itemId]));
+                        break;
+                    case NAVDRAWER_ITEM_LOG:
+                        showFragment(FeedFragment.class);
+                        getSupportActionBar().setSubtitle(getString(NAVDRAWER_TITLE_RES_ID[itemId]));
+                        break;
+                    case NAVDRAWER_ITEM_RANK:
+                        showFragment(LeaderboardFragment.class);
+                        getSupportActionBar().setSubtitle(getString(NAVDRAWER_TITLE_RES_ID[itemId]));
+                        break;
+                }
 
-        navDrawerItemIdSelected = itemId;
+                navDrawerItemIdSelected = itemId;
 
-        // change the active item on the list so the user can see the item changed
-        setSelectedNavDrawerItem(itemId);
-
-        dlRoster.closeDrawer(Gravity.START);
+                // change the active item on the list so the user can see the item changed
+                setSelectedNavDrawerItem(itemId);
+            }
+        }, 200);
     }
 
     /**
@@ -405,6 +412,7 @@ public class ClassroomActivity extends BaseKippActivity implements
                 LeaderboardFragment.class};
         FragmentManager mgr = getSupportFragmentManager();
         FragmentTransaction transaction = mgr.beginTransaction();
+        transaction.setCustomAnimations(R.anim.right_in, R.anim.left_out);
         try {
             for (Class klass : fragmentClasses) {
                 Fragment fragment = mgr.findFragmentByTag(klass.getName());
