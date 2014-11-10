@@ -99,6 +99,8 @@ public class ClassroomActivity extends BaseKippActivity implements
         SchoolClass schoolClass = ((KippApplication) getApplication()).getSchoolClass();
 
         getSupportActionBar().setTitle(schoolClass.getName());
+        getSupportActionBar().setSubtitle(getString(R.string.navdrawer_item_class));
+
         setupNavDrawer();
 
         showFragment(RosterFragment.class);
@@ -200,15 +202,19 @@ public class ClassroomActivity extends BaseKippActivity implements
         switch (itemId) {
             case NAVDRAWER_ITEM_CLASS:
                 showFragment(RosterFragment.class);
+                getSupportActionBar().setSubtitle(getString(NAVDRAWER_TITLE_RES_ID[itemId]));
                 break;
             case NAVDRAWER_ITEM_STATS:
                 showFragment(StatsFragment.class);
+                getSupportActionBar().setSubtitle(getString(NAVDRAWER_TITLE_RES_ID[itemId]));
                 break;
             case NAVDRAWER_ITEM_LOG:
                 showFragment(FeedFragment.class);
+                getSupportActionBar().setSubtitle(getString(NAVDRAWER_TITLE_RES_ID[itemId]));
                 break;
             case NAVDRAWER_ITEM_RANK:
                 showFragment(LeaderboardFragment.class);
+                getSupportActionBar().setSubtitle(getString(NAVDRAWER_TITLE_RES_ID[itemId]));
                 break;
         }
 
