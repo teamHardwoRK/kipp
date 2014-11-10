@@ -51,7 +51,7 @@
                     android:id="@+id/ivProfileImage"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:src="@drawable/img_stormtrooper"
+                    android:src="@drawable/avatar_ned"
                     android:scaleType="centerCrop" />
 
                 <TextView
