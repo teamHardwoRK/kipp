@@ -10,6 +10,17 @@ import java.util.Map;
 
 public class BehaviorEventListFilterer {
 
+    public static List<BehaviorEvent> filterByBehavior(List<BehaviorEvent> list, Behavior behavior) {
+        List<BehaviorEvent> filtered = new ArrayList<BehaviorEvent>();
+        for (BehaviorEvent event : list) {
+            Behavior curBehavior = event.getBehavior();
+            if (curBehavior.equals(behavior)) {
+                filtered.add(event);
+            }
+        }
+        return filtered;
+    }
+
     public static List<BehaviorEvent> keepGood(List<BehaviorEvent> list) {
         List<BehaviorEvent> kept = new ArrayList<BehaviorEvent>();
         for (BehaviorEvent event : list) {
