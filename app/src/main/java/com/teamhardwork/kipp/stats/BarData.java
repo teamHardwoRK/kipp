@@ -63,7 +63,7 @@ public class BarData {
         isDailyFormat = false;
         configBarDataWeeklyFormat(context, events, label);
 
-        if (barData.size() == 1) {
+        if (barData.size() < 3) {
             isDailyFormat = true;
             configBarDataDailyFormat(context, events, label);
         }
